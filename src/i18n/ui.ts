@@ -1,0 +1,199 @@
+import type { Lang } from './LangProvider'
+
+export type Title = readonly [string, string, string?]
+
+const fr = {
+  nav: {
+    aria: 'Navigation principale',
+    skip: 'Aller au contenu',
+    contact: 'Me contacter',
+    links: { impact: 'Impact', 'hauts-faits': 'Hauts faits', ia: 'IA', lab: 'Index', about: 'À propos', passions: 'Passions' },
+  },
+  clockAria: 'Heure locale à Toulouse',
+  hero: {
+    statement: 'AI Product Manager. Je fais passer l’IA du slide à la prod : chez Shippingbo, en hackathon, et la nuit sur 35 projets.',
+    tagline: 'Product · IA · Prototypes',
+    scroll: '(Défiler)',
+    aria: 'Introduction',
+  },
+  morph: {
+    aria: 'Chiffre clé',
+    sr: 'Moins 56 % de tickets support N1.',
+    line1: 'de tickets support N1, en production.',
+    line2: 'Grâce à Miranda, l’assistant IA sur l’API Claude que j’ai porté de la discovery à la prod chez Shippingbo.',
+  },
+  impact: {
+    label: 'Impact',
+    title: ['Dix mois à faire passer l’IA ', 'du slide à la prod', ' chez Shippingbo.'] as Title,
+    intro: (role: string, context: string) => `${role}, dans un ${context}.`,
+    shipped: 'Ce que j’ai livré',
+  },
+  feats: {
+    label: 'Hauts faits',
+    title: ['Trente heures pour passer d’un vrai besoin ', 'à un prototype qui tourne.'] as Title,
+    photoAlt: 'Riyan présente le prototype sur scène au Défi IA4IMPACT de BPCE',
+    brief: 'Le brief',
+    role: 'Mon rôle',
+    soon: 'Bientôt',
+    inPrep: 'En préparation',
+  },
+  ai: {
+    label: 'Projets IA',
+    title: ['Des agents qui lisent, cherchent ', 'et agissent.'] as Title,
+    intro: 'Quatre produits IA que j’ai cadrés et construits moi-même, de l’idée au produit qui tourne.',
+    featured: '(01) À la une',
+    open: (t: string) => `Ouvrir la fiche ${t}`,
+  },
+  chat: {
+    scripted: 'Démo scénarisée',
+    placeholder: 'Pose ta question…',
+    connecting: 'Connexion à Méca-Riyan…',
+    tryLive: 'Essayer pour de vrai',
+    back: 'Revenir à la démo',
+    iframeTitle: 'Méca-Riyan, le vrai chatbot',
+    source: 'Source',
+  },
+  index: {
+    label: 'Index',
+    title: (n: number) => [`${n} projets construits, `, 'tous ici.'] as Title,
+    intro: 'Filtre par catégorie, survole pour voir l’écran, clique pour ouvrir la fiche.',
+    all: 'Tout',
+    toolbar: 'Filtrer les projets par catégorie',
+  },
+  about: {
+    label: 'Qui je suis',
+    title: ['PM le jour, ', 'builder la nuit.'] as Title,
+    photoAlt: 'Portrait de Riyan Besseghir, bras croisés, en veste noire',
+    lead: 'J’ai 25 ans et je suis Product Manager. Ce qui m’intéresse, c’est le moment où une idée devient un produit que quelqu’un utilise vraiment.',
+    paragraphs: [
+      'Chez Shippingbo, j’ai piloté jusqu’à trois feature teams en parallèle pendant dix mois : cadrer, prioriser, écrire les specs, et surtout faire passer l’IA de la démo à la prod.',
+      'Le soir, je continue avec Figma et Claude Code : 35 projets, des agents IA, un jeu vidéo, la traduction d’un jeu japonais. Comprendre la technique de l’intérieur me rend meilleur PM.',
+      'Prochaine étape : transmettre. Je prépare un cours d’IA en école de commerce, et je vise les équipes produit qui construisent l’IA de demain.',
+    ],
+    facts: [
+      ['Âge', '25 ans'],
+      ['Base', 'Toulouse · Paris · Remote'],
+      ['Formation', 'Master Économie Droit Gestion, option AES Gestion des Entreprises (Toulouse Capitole)'],
+      ['Expérience', '10 mois PM/PO chez Shippingbo, stage puis CDD'],
+      ['Langues', 'Français natif · Anglais C1 · Espagnol B2'],
+      ['Outils', 'Figma, Claude Code, Jira, Linear, Notion, SQL, Power BI'],
+      ['En dehors', 'Cinéma (Damien Chazelle), jeu vidéo compétitif, manga, pizzas napolitaines'],
+    ],
+  },
+  passions: {
+    label: 'Passions',
+    title: ['Après minuit, ', 'je code ce que j’aime.'] as Title,
+    intro: 'Un jeu vidéo, la traduction d’un jeu japonais, des outils pour mes parties classées. C’est là que j’apprends le plus vite.',
+    words: ['Manga', 'Jeu vidéo', 'Jazz', 'Cinéma', 'Japon'],
+  },
+  contact: {
+    label: 'Contact',
+    title: ['Une équipe qui veut ', 'livrer de l’IA', ' ? Parlons-en.'] as Title,
+    copy: 'Copier l’adresse',
+    copied: 'Adresse copiée',
+    cv: 'CV (PDF)',
+    built: 'Construit à la main, React · GSAP · WebGL',
+  },
+  links: { try: 'Essayer', code: 'Code', newTab: '(nouvel onglet)', onGithub: 'sur GitHub' },
+  dialog: { close: 'Fermer la fiche projet' },
+}
+
+export type UI = typeof fr
+
+const en: UI = {
+  nav: {
+    aria: 'Main navigation',
+    skip: 'Skip to content',
+    contact: 'Get in touch',
+    links: { impact: 'Impact', 'hauts-faits': 'Highlights', ia: 'AI', lab: 'Index', about: 'About', passions: 'Passions' },
+  },
+  clockAria: 'Local time in Toulouse',
+  hero: {
+    statement: 'AI Product Manager. I take AI from slide deck to production: at Shippingbo, at hackathons, and at night across 35 projects.',
+    tagline: 'Product · AI · Prototypes',
+    scroll: '(Scroll)',
+    aria: 'Introduction',
+  },
+  morph: {
+    aria: 'Key figure',
+    sr: 'Minus 56% level-1 support tickets.',
+    line1: 'level-1 support tickets, in production.',
+    line2: 'Thanks to Miranda, the Claude API assistant I took from discovery to production at Shippingbo.',
+  },
+  impact: {
+    label: 'Impact',
+    title: ['Ten months taking AI ', 'from slides to production', ' at Shippingbo.'],
+    intro: (role: string, context: string) => `${role}, at ${context}.`,
+    shipped: 'What I shipped',
+  },
+  feats: {
+    label: 'Highlights',
+    title: ['Thirty hours to go from a real need ', 'to a working prototype.'],
+    photoAlt: 'Riyan presenting the prototype on stage at BPCE’s IA4IMPACT challenge',
+    brief: 'The brief',
+    role: 'My role',
+    soon: 'Coming soon',
+    inPrep: 'In the works',
+  },
+  ai: {
+    label: 'AI projects',
+    title: ['Agents that read, search ', 'and act.'],
+    intro: 'Four AI products I scoped and built myself, from idea to something that actually runs.',
+    featured: '(01) Featured',
+    open: (t: string) => `Open ${t}`,
+  },
+  chat: {
+    scripted: 'Scripted demo',
+    placeholder: 'Ask me anything…',
+    connecting: 'Connecting to Méca-Riyan…',
+    tryLive: 'Try it for real',
+    back: 'Back to the demo',
+    iframeTitle: 'Méca-Riyan, the live chatbot',
+    source: 'Source',
+  },
+  index: {
+    label: 'Index',
+    title: (n: number) => [`${n} projects built, `, 'all right here.'],
+    intro: 'Filter by category, hover to preview, click to open the case.',
+    all: 'All',
+    toolbar: 'Filter projects by category',
+  },
+  about: {
+    label: 'About',
+    title: ['PM by day, ', 'builder by night.'],
+    photoAlt: 'Portrait of Riyan Besseghir, arms crossed, wearing a black jacket',
+    lead: 'I’m 25 and a Product Manager. What I care about is the moment an idea becomes a product someone actually uses.',
+    paragraphs: [
+      'At Shippingbo, I led up to three feature teams in parallel for ten months: scoping, prioritising, writing specs, and above all taking AI from demo to production.',
+      'At night I keep going with Figma and Claude Code: 35 projects, AI agents, a video game, a fan translation of a Japanese game. Understanding the tech from the inside makes me a better PM.',
+      'Next step: passing it on. I’m preparing an AI course for a business school, and I’m aiming for product teams building tomorrow’s AI.',
+    ],
+    facts: [
+      ['Age', '25'],
+      ['Based in', 'Toulouse · Paris · Remote'],
+      ['Education', 'Master’s in Economics, Law & Management, Business Management track (Toulouse Capitole)'],
+      ['Experience', '10 months as PM/PO at Shippingbo, internship then fixed-term contract'],
+      ['Languages', 'French (native) · English C1 · Spanish B2'],
+      ['Tools', 'Figma, Claude Code, Jira, Linear, Notion, SQL, Power BI'],
+      ['Off hours', 'Cinema (Damien Chazelle), competitive gaming, manga, Neapolitan pizza'],
+    ],
+  },
+  passions: {
+    label: 'Passions',
+    title: ['After midnight, ', 'I build what I love.'],
+    intro: 'A video game, a Japanese game translation, tools for my ranked matches. That’s where I learn fastest.',
+    words: ['Manga', 'Video games', 'Jazz', 'Cinema', 'Japan'],
+  },
+  contact: {
+    label: 'Contact',
+    title: ['Building ', 'AI products', '? Let’s talk.'],
+    copy: 'Copy address',
+    copied: 'Address copied',
+    cv: 'Résumé (PDF, French)',
+    built: 'Handcrafted with React · GSAP · WebGL',
+  },
+  links: { try: 'Try it', code: 'Code', newTab: '(new tab)', onGithub: 'on GitHub' },
+  dialog: { close: 'Close project' },
+}
+
+export const UI_TEXT: Record<Lang, UI> = { fr, en }

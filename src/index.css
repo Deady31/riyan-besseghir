@@ -1,0 +1,255 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/PPNeueMontreal-Regular.woff2') format('woff2'), url('/fonts/PPNeueMontreal-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/PPNeueMontreal-Medium.woff2') format('woff2'), url('/fonts/PPNeueMontreal-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Editorial New';
+  src: url('/fonts/PPEditorialNew-Italic.woff2') format('woff2'), url('/fonts/PPEditorialNew-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Editorial New';
+  src: url('/fonts/PPEditorialNew-UltralightItalic.woff2') format('woff2'), url('/fonts/PPEditorialNew-UltralightItalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@theme {
+  --color-ink: #050505;
+  --color-graphite: #0e0e0e;
+  --color-graphite-2: #161616;
+  --color-line: #232323;
+  --color-paper: #ffffff;
+  --color-mist: #9b9b9b;
+  --color-signal: #8b5cff;
+  --color-signal-soft: #b9a1ff;
+  --color-vermilion: #8b5cff;
+
+  --font-display: 'Neue Montreal', 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Editorial New', 'Instrument Serif', 'Times New Roman', serif;
+  --font-mono: 'Neue Montreal', 'Inter Tight', ui-sans-serif, sans-serif;
+
+  --text-hero: clamp(4.5rem, 1rem + 15vw, 17rem);
+  --text-mega: clamp(3rem, 1rem + 6.5vw, 8rem);
+  --text-title: clamp(2.5rem, 1rem + 4.2vw, 5.5rem);
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: dark;
+  --gutter: clamp(1.25rem, 0.5rem + 3vw, 3rem);
+}
+
+html {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-display);
+  font-feature-settings: 'ss01', 'ss02';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+}
+
+.display em,
+.serif-em em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 200;
+  letter-spacing: -0.03em;
+}
+
+.serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 200;
+  letter-spacing: -0.02em;
+}
+
+.label {
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+::selection {
+  background: var(--color-signal);
+  color: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.rocker {
+  --face: #8b5cff;
+  --face-side: #5a35c9;
+  --off: #242424;
+  --off-side: #151515;
+  --frame: #2c2c2c;
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 7em;
+  height: 4em;
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: var(--color-mist);
+  border-bottom: 0.5em solid var(--frame);
+  border-radius: 0.3em;
+  user-select: none;
+}
+.rocker::before {
+  content: '';
+  position: absolute;
+  inset: 0.5em 0 0 0;
+  background: #0c0c0c;
+  border: 0.5em solid var(--frame);
+  border-bottom: 0;
+}
+.rocker input {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.rocker .switch-left,
+.rocker .switch-right {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5em;
+  width: 3em;
+  transition: all 0.22s var(--ease-expo);
+}
+.rocker .switch-left {
+  height: 2.4em;
+  width: 2.75em;
+  left: 0.85em;
+  bottom: 0.4em;
+  background: var(--off);
+  transform: rotate(15deg) skewX(15deg);
+}
+.rocker .switch-right {
+  right: 0.5em;
+  bottom: 0;
+  background: var(--face);
+  color: #fff;
+}
+.rocker .switch-left::before,
+.rocker .switch-right::before {
+  content: '';
+  position: absolute;
+  width: 0.4em;
+  height: 2.45em;
+  bottom: -0.45em;
+  background: var(--off-side);
+  transform: skewY(-65deg);
+}
+.rocker .switch-left::before {
+  left: -0.4em;
+}
+.rocker .switch-right::before {
+  right: -0.375em;
+  background: transparent;
+  transform: skewY(65deg);
+}
+.rocker input:checked + .switch-left {
+  background: var(--face);
+  color: #fff;
+  bottom: 0;
+  left: 0.5em;
+  height: 2.5em;
+  width: 3em;
+  transform: rotate(0deg) skewX(0deg);
+}
+.rocker input:checked + .switch-left::before {
+  background: transparent;
+  width: 3.0833em;
+}
+.rocker input:checked + .switch-left + .switch-right {
+  background: var(--off);
+  color: var(--color-mist);
+  bottom: 0.4em;
+  right: 0.8em;
+  height: 2.4em;
+  width: 2.75em;
+  transform: rotate(-15deg) skewX(-15deg);
+}
+.rocker input:checked + .switch-left + .switch-right::before {
+  background: var(--off-side);
+}
+.rocker input:not(:checked) + .switch-left + .switch-right::after,
+.rocker input:checked + .switch-left::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 -0.45em 0;
+  height: 0.45em;
+  background: var(--face-side);
+}
+.rocker input:focus-visible ~ .switch-left,
+.rocker input:focus-visible ~ .switch-right {
+  outline: 2px solid var(--color-paper);
+  outline-offset: -2px;
+}
+
+@keyframes dialog-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.redacted {
+  background: var(--color-line);
+  color: transparent;
+  border-radius: 2px;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
