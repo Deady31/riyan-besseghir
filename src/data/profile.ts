@@ -51,8 +51,8 @@ const CONTENT = {
         photo: HACKATHON_PHOTO,
       },
       teasers: [
-        { title: 'Cours d’IA en école de commerce', hint: 'Former les futurs managers à travailler avec l’IA.' },
-        { title: 'Hackathon IA, côté organisateur', hint: 'Cette fois, c’est moi qui écris le brief.' },
+        { title: 'Intervenant IA', hint: 'À venir', file: 'Dossier 01' },
+        { title: 'Organisateur de hackathon IA', hint: 'À venir', file: 'Dossier 02' },
       ],
     },
   },
@@ -92,8 +92,8 @@ const CONTENT = {
         photo: HACKATHON_PHOTO,
       },
       teasers: [
-        { title: 'Teaching AI at a business school', hint: 'Helping future managers work with AI.' },
-        { title: 'An AI hackathon, as organiser', hint: 'This time, I’m the one writing the brief.' },
+        { title: 'AI speaker', hint: 'Coming soon', file: 'File 01' },
+        { title: 'AI hackathon organiser', hint: 'Coming soon', file: 'File 02' },
       ],
     },
   },

@@ -36,6 +36,8 @@ const fr = {
     role: 'Mon rôle',
     soon: 'Bientôt',
     inPrep: 'En préparation',
+    classified: 'Confidentiel',
+    redactedAria: 'Détails confidentiels, annonce à venir',
   },
   ai: {
     label: 'Projets IA',
@@ -68,7 +70,7 @@ const fr = {
     paragraphs: [
       'Chez Shippingbo, j’ai piloté jusqu’à trois feature teams en parallèle pendant dix mois : cadrer, prioriser, écrire les specs, et surtout faire passer l’IA de la démo à la prod.',
       'Le soir, je continue avec Figma et Claude Code : 35 projets, des agents IA, un jeu vidéo, la traduction d’un jeu japonais. Comprendre la technique de l’intérieur me rend meilleur PM.',
-      'Prochaine étape : transmettre. Je prépare un cours d’IA en école de commerce, et je vise les équipes produit qui construisent l’IA de demain.',
+      'Prochaine étape : rejoindre une équipe produit qui construit l’IA de demain, et transmettre ce que j’apprends en chemin.',
     ],
     facts: [
       ['Âge', '25 ans'],
@@ -134,6 +136,8 @@ const en: UI = {
     role: 'My role',
     soon: 'Coming soon',
     inPrep: 'In the works',
+    classified: 'Confidential',
+    redactedAria: 'Confidential details, announcement coming soon',
   },
   ai: {
     label: 'AI projects',
@@ -166,7 +170,7 @@ const en: UI = {
     paragraphs: [
       'At Shippingbo, I led up to three feature teams in parallel for ten months: scoping, prioritising, writing specs, and above all taking AI from demo to production.',
       'At night I keep going with Figma and Claude Code: 35 projects, AI agents, a video game, a fan translation of a Japanese game. Understanding the tech from the inside makes me a better PM.',
-      'Next step: passing it on. I’m preparing an AI course for a business school, and I’m aiming for product teams building tomorrow’s AI.',
+      'Next step: joining a product team building tomorrow’s AI, and passing on what I learn along the way.',
     ],
     facts: [
       ['Age', '25'],

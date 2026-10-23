@@ -1,10 +1,15 @@
 import { useRef } from 'react'
-import { ArrowUpRight } from 'lucide-react'
+import { Lock } from 'lucide-react'
 import { gsap, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { useContent } from '../../data/profile'
 import { TitleParts, useT } from '../../i18n/useT'
 import { SectionHeading } from '../ui/SectionHeading'
 import { RevealText } from '../ui/RevealText'
+
+const REDACTED = [
+  ['92%', '74%', '58%'],
+  ['84%', '96%', '46%'],
+]
 
 export function Feats() {
   const root = useRef<HTMLElement>(null)
@@ -36,6 +41,10 @@ export function Feats() {
         stagger: 0.1,
         scrollTrigger: { trigger: '[data-delivered]', start: 'top 82%', once: true },
       })
+      const tl = gsap.timeline({ scrollTrigger: { trigger: '[data-teasers]', start: 'top 80%', once: true } })
+      tl.from('[data-teaser]', { y: 50, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.15 })
+        .from('[data-teaser] .redacted-bar', { scaleX: 0, transformOrigin: 'left center', duration: 0.7, ease: 'power3.out', stagger: 0.08 }, 0.35)
+        .from('[data-teaser] .classified-stamp', { scale: 2.2, opacity: 0, duration: 0.4, ease: 'power4.in', stagger: 0.15, clearProps: 'transform,opacity' }, 0.9)
     },
     { scope: root },
   )
@@ -90,14 +99,39 @@ export function Feats() {
 
       <div className="mt-32 grid gap-14 px-[var(--gutter)] md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
         <p className="label text-mist">{t.feats.soon}</p>
-        <ul className="border-t border-line">
-          {teasers.map((teaser) => (
-            <li key={teaser.title} className="group grid gap-2 border-b border-line py-8 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_auto] md:items-baseline md:gap-8">
-              <h3 className="text-[clamp(1.75rem,1rem+1.6vw,2.75rem)] tracking-[-0.03em]">{teaser.title}</h3>
-              <p className="text-mist">{teaser.hint}</p>
-              <span className="label inline-flex items-center gap-2 text-signal-soft">
-                {t.feats.inPrep}
-                <ArrowUpRight className="size-4 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+        <ul data-teasers className="grid gap-4 md:grid-cols-2">
+          {teasers.map((teaser, i) => (
+            <li
+              key={teaser.title}
+              data-teaser
+              className="classified group relative overflow-hidden rounded-[20px] border border-line bg-graphite/80 p-7 backdrop-blur-sm md:p-9"
+            >
+              <div className="label flex items-center justify-between gap-4">
+                <span className="inline-flex items-center gap-2 rounded-full border border-signal/50 px-3 py-1 text-signal-soft">
+                  <Lock className="size-3" aria-hidden="true" />
+                  {t.feats.classified}
+                </span>
+                <span className="text-mist">{teaser.file}</span>
+              </div>
+
+              <h3 className="mt-14 text-[clamp(1.75rem,1rem+1.6vw,2.75rem)] tracking-[-0.03em]">{teaser.title}</h3>
+
+              <div className="mt-6 space-y-2.5" role="img" aria-label={t.feats.redactedAria}>
+                {REDACTED[i % REDACTED.length].map((w, j) => (
+                  <span key={j} className="redacted-bar block h-3" style={{ width: w, animationDelay: `${j * 0.35}s` }} />
+                ))}
+              </div>
+
+              <p className="label mt-10 flex items-center gap-2.5 text-paper">
+                <span className="relative flex size-2">
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-signal opacity-70 motion-reduce:hidden" />
+                  <span className="relative inline-flex size-2 rounded-full bg-signal" />
+                </span>
+                {teaser.hint}
+              </p>
+
+              <span className="classified-stamp label pointer-events-none absolute right-6 bottom-6 -rotate-12 md:right-9 md:bottom-8 rounded border-2 border-signal/60 px-3 py-1.5 text-signal/80" aria-hidden="true">
+                {t.feats.classified}
               </span>
             </li>
           ))}
