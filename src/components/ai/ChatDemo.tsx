@@ -11,7 +11,7 @@ const SCRIPT_EN: Msg[] = [
   { from: 'user', text: 'Tell me about your time at Shippingbo.' },
   {
     from: 'bot',
-    text: '10 months as PM/PO, leading up to 3 feature teams. Four AI features shipped, including Miranda, a Claude API assistant that cut level-1 support tickets by 56% in production.',
+    text: '10 months as PM/PO, leading up to 3 feature teams. I led Shippingbo Intelligence, its AI bundle of four features, including Naia, a Claude API assistant that cut level-1 support tickets by 56% in production.',
     source: 'background.md',
   },
   { from: 'user', text: 'And outside of work?' },
@@ -32,7 +32,7 @@ const SCRIPT_FR: Msg[] = [
   { from: 'user', text: 'Parle-moi de ton expérience chez Shippingbo.' },
   {
     from: 'bot',
-    text: '10 mois comme PM/PO, jusqu’à 3 feature teams en parallèle. Quatre features IA livrées, dont Miranda, un assistant sur l’API Claude qui a fait baisser les tickets support N1 de 56 % en production.',
+    text: '10 mois comme PM/PO, jusqu’à 3 feature teams en parallèle. J’ai piloté Shippingbo Intelligence, le bundle de quatre features IA, dont Naia, une assistante sur l’API Claude qui a fait baisser les tickets support N1 de 56 % en production.',
     source: 'parcours.md',
   },
   { from: 'user', text: 'Et en dehors du boulot ?' },

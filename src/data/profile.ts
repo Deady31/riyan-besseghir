@@ -28,11 +28,33 @@ const CONTENT = {
         { value: 10, label: 'mois', note: 'de stage puis CDD' },
       ],
       features: [
-        { name: 'Miranda IA', text: 'Assistant conversationnel sur l’API Claude, connecté en temps réel aux données du compte. Seul PM de la discovery au lancement : 4 grands comptes interviewés, −56 % de tickets support N1 en production.' },
-        { name: 'Audit IA', text: 'Audits ventes, produits, retours et transports générés automatiquement, avec observations, alertes et recommandations.' },
-        { name: 'Classes de vente IA', text: 'Classification automatique ABCD des produits : top sellers, dormants, stratégiques.' },
+        { name: 'Naia, l’assistante IA', text: 'Assistante conversationnelle sur l’API Claude, connectée en temps réel aux données du compte : stocks, commandes, retours en langage naturel. Seul PM de la discovery au lancement, 4 grands comptes interviewés : −56 % de tickets support N1 en production.' },
+        { name: 'Analyses IA', text: 'Des audits lisibles, sans montage Excel : ventes, produits, retours et transports analysés automatiquement pour faire ressortir anomalies, dérives et priorités.' },
+        { name: 'Classes de ventes', text: 'Segmentation ABCD automatique des références selon leur rotation réelle : produits stratégiques, dormants et SKU à surveiller.' },
         { name: 'Commandes identiques', text: 'Détection automatique des doublons pour fiabiliser les opérations.' },
       ],
+      product: {
+        name: 'Shippingbo Intelligence',
+        tagline: 'La couche IA de Shippingbo : moins chercher, mieux comprendre, agir plus vite.',
+        facts: [
+          ['Rôle', 'Product Manager lead, de la discovery à la roadmap'],
+          ['Équipe', '1 designer, 1 dev front, 2 devs back'],
+          ['Période', 'Juil. 2025 → avr. 2026'],
+        ],
+        link: 'https://www.shippingbo.com/solutions/shippingbo-intelligence/',
+        linkLabel: 'Voir la page officielle',
+        credit: 'Visuel © Shippingbo',
+        alt: 'Interface de Shippingbo Intelligence : analyse des commandes générée par IA, avec Naia, la mascotte abeille',
+      },
+      roadmap: {
+        title: 'Roadmap que j’ai conçue, livrée depuis',
+        badge: 'Livré en sept. 2026',
+        items: [
+          { name: 'Import intelligent de documents', text: 'Naia lit PDF et images pour créer commandes et attendus de réception, sans ressaisie.' },
+          { name: 'Compétences réutilisables', text: 'Des instructions enregistrées, relancées et partagées avec l’équipe.' },
+          { name: 'NAIA Action', text: 'Naia agit dans Shippingbo : créer un attendu de réception, ajouter ou modifier un produit.' },
+        ],
+      },
       extra: 'Intégration de l’API TikTok Shop dans le cadre du partenariat officiel 3P : flows multi-marchés, mapping du catalogue, commandes B2C.',
     },
     feats: {
@@ -69,11 +91,33 @@ const CONTENT = {
         { value: 10, label: 'months', note: 'internship, then fixed-term contract' },
       ],
       features: [
-        { name: 'Miranda AI', text: 'A conversational assistant on the Claude API, connected in real time to account data. Sole PM from discovery to launch: 4 key accounts interviewed, −56% level-1 support tickets in production.' },
-        { name: 'AI Audit', text: 'Automatically generated sales, product, returns and shipping audits, with observations, alerts and recommendations.' },
-        { name: 'AI Sales Classes', text: 'Automatic ABCD product classification: top sellers, dormant items, strategic products.' },
+        { name: 'Naia, the AI assistant', text: 'A conversational assistant on the Claude API, connected in real time to account data: stock, orders and returns in plain language. Sole PM from discovery to launch, 4 key accounts interviewed: −56% level-1 support tickets in production.' },
+        { name: 'AI Analyses', text: 'Readable audits without spreadsheet work: sales, products, returns and shipping analysed automatically to surface anomalies, drifts and priorities.' },
+        { name: 'Sales Classes', text: 'Automatic ABCD segmentation of SKUs by real turnover: strategic products, dormant items and SKUs to watch.' },
         { name: 'Duplicate orders', text: 'Automatic duplicate detection to make operations more reliable.' },
       ],
+      product: {
+        name: 'Shippingbo Intelligence',
+        tagline: 'Shippingbo’s AI layer: search less, understand better, act faster.',
+        facts: [
+          ['Role', 'Lead Product Manager, from discovery to roadmap'],
+          ['Team', '1 designer, 1 front-end dev, 2 back-end devs'],
+          ['Period', 'Jul 2025 → Apr 2026'],
+        ],
+        link: 'https://www.shippingbo.com/solutions/shippingbo-intelligence/',
+        linkLabel: 'See the official page',
+        credit: 'Visual © Shippingbo',
+        alt: 'Shippingbo Intelligence interface: AI-generated order analysis, with Naia, the bee mascot',
+      },
+      roadmap: {
+        title: 'Roadmap I designed, shipped since',
+        badge: 'Shipped Sept 2026',
+        items: [
+          { name: 'Smart document import', text: 'Naia reads PDFs and images to create orders and inbound receipts, with no re-keying.' },
+          { name: 'Reusable skills', text: 'Saved instructions you can rerun and share with the team.' },
+          { name: 'NAIA Action', text: 'Naia acts inside Shippingbo: create an inbound receipt, add or edit a product.' },
+        ],
+      },
       extra: 'TikTok Shop API integration under the official 3P partnership: multi-market flows, catalogue mapping, B2C orders.',
     },
     feats: {
