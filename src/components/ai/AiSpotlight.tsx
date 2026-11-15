@@ -119,7 +119,7 @@ export function AiSpotlight() {
       </div>
 
       <div data-feats className="mt-24 grid gap-x-6 gap-y-20 px-[var(--gutter)] md:grid-cols-2">
-        <FeatureCard project={get('lifeos')} index={2} wide />
+        <FeatureCard project={get('finger')} index={2} wide />
         <FeatureCard project={get('departs')} index={3} />
         <FeatureCard project={get('lio')} index={4} />
       </div>

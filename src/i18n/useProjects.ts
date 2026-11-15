@@ -11,7 +11,7 @@ const EN_PROJECTS: Project[] = PROJECTS.map((p) => {
     tagline: o?.tagline ?? p.tagline,
     description: o?.description ?? p.description,
     status: STATUS_EN[p.status] ?? p.status,
-    highlight: p.highlight === 'Projet à la une' ? 'Featured' : p.highlight === 'Jeu' ? 'Game' : p.highlight === 'Rétro-ingénierie' ? 'Reverse engineering' : p.highlight,
+    highlight: p.highlight === 'Projet à la une' ? 'Featured' : p.highlight === 'Jeu' ? 'Game' : p.highlight === 'Rétro-ingénierie' ? 'Reverse engineering' : p.highlight === 'Nouveau' ? 'New' : p.highlight,
   }
 })
 

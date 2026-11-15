@@ -3,6 +3,7 @@ import { gsap, SplitText, useGSAP, prefersReducedMotion } from '../../lib/motion
 import { useContent } from '../../data/profile'
 import { useT } from '../../i18n/useT'
 import { LiveClock } from '../ui/LiveClock'
+import { HeroStickers } from './HeroStickers'
 
 export function Hero() {
   const root = useRef<HTMLElement>(null)
@@ -39,6 +40,7 @@ export function Hero() {
         {PROFILE.name}, {PROFILE.role}
       </h1>
       <div data-hero-inner className="flex h-full flex-col px-[var(--gutter)] pt-28 pb-8 md:pt-32">
+        <HeroStickers />
         <div className="label flex flex-col gap-2 text-mist">
           <p data-meta>
             Toulouse, FR <LiveClock className="ml-2 text-paper tabular-nums" />
@@ -56,7 +58,7 @@ export function Hero() {
           >
             {t.hero.statement}
           </p>
-          <p data-name aria-hidden="true" className="display mt-8 text-[clamp(3.75rem,1rem+8.5vw,11rem)] md:mt-12">
+          <p data-name aria-hidden="true" className="display mt-8 text-[clamp(4rem,1rem+9.5vw,12.5rem)] md:mt-12">
             Riyan
             <br />
             <em>Besseghir</em>

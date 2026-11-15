@@ -8,7 +8,7 @@ import { SectionHeading } from '../ui/SectionHeading'
 import { useOpenProject } from './ProjectDialog'
 import { cn } from '../../lib/cn'
 
-const ORDER: Category[] = ['ia', 'consumer', 'jeux', 'clients', 'pm', 'outils']
+const ORDER: Category[] = ['consumer', 'ia', 'outils', 'jeux', 'pm', 'clients']
 
 type Filter = Category | 'all'
 
@@ -24,7 +24,7 @@ function Preview({ project, visible }: { project: Project | null; visible: boole
       aria-hidden="true"
     >
       {shot && (
-        <div className={cn('overflow-hidden rounded-xl border border-line bg-graphite shadow-2xl shadow-black/70', shot.frame === 'mobile' ? 'w-48' : 'w-[380px]')}>
+        <div className={cn('overflow-hidden rounded-xl border border-line bg-graphite shadow-[6px_6px_0_0_#2b0f3a] border-2', shot.frame === 'mobile' ? 'w-48' : 'w-[380px]')}>
           <img src={shot.src} alt="" className={cn('w-full object-cover object-top', shot.frame === 'mobile' ? 'aspect-[430/700]' : 'aspect-[16/10]')} />
         </div>
       )}

@@ -41,23 +41,6 @@ export const PROJECTS: Project[] = [
     link: 'https://riyan-cv-chatbot.vercel.app',
     repo: 'https://github.com/Deady31/riyan-cv-chatbot',
     shots: [shot('riyan-cv-chatbot', 'Écran d’accueil du chatbot Méca-Riyan')],
-    highlight: 'Projet à la une',
-  },
-  {
-    id: 'lifeos',
-    title: 'LifeOS',
-    tagline: 'Un tableau de bord de vie, avec un coach IA dedans.',
-    description:
-      'Score global, objectifs, fitness, nutrition, carrière, habitudes et journal réunis dans une seule app. Les données vivent dans Supabase et l’API Claude sert de coach.',
-    category: 'ia',
-    stack: ['Next.js', 'Claude API', 'Supabase', 'Tailwind'],
-    status: 'Prototype',
-    shots: [
-      shot('lifeos-desktop', 'Hub LifeOS avec score global et objectifs'),
-      shot('lifeos-fitness-desktop', 'Page fitness de LifeOS'),
-      shot('lifeos-career-desktop', 'Page carrière de LifeOS'),
-      shot('lifeos-goals-desktop', 'Page objectifs de LifeOS'),
-    ],
   },
   {
     id: 'departs',
@@ -83,6 +66,21 @@ export const PROJECTS: Project[] = [
     link: 'https://lio-ameliore.vercel.app',
     repo: 'https://github.com/Deady31/LIO-AMELIORE',
     shots: [shot('lio-ameliore-mobile', 'Assistant horaires LIO sur mobile', 'mobile')],
+  },
+  {
+    id: 'finger',
+    title: 'Atelier des mains',
+    tagline: 'Piloter une interface 3D avec ses mains, sans toucher le clavier.',
+    description:
+      'Cinq expériences pilotées à la webcam et un hologramme façon J.A.R.V.I.S. : on fait tourner une voiture 3D d’une main, on zoome à deux mains, on l’éclate en 50 pièces d’un poing tenu. Un seul moteur de gestes partagé, porté jusqu’en Python pour piloter la vraie souris de Windows et changer de diapo à la main. Tout tourne en local : aucune image ne quitte la machine.',
+    category: 'ia',
+    stack: ['MediaPipe', 'three.js', 'Python', 'Vision'],
+    status: 'Fonctionnel',
+    shots: [
+      shot('finger-jarvis-desktop', 'Hologramme d’une voiture éclatée en pièces, manipulée à deux mains'),
+      shot('finger-particules-desktop', 'Quatre mille particules repoussées par la paume'),
+    ],
+    highlight: 'Nouveau',
   },
   {
     id: 'rag-converteo',
@@ -135,6 +133,22 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    id: 'lifeos',
+    title: 'LifeOS',
+    tagline: 'Un tableau de bord de vie, avec un coach IA dedans.',
+    description:
+      'Score global, objectifs, fitness, nutrition, carrière, habitudes et journal réunis dans une seule app. Les données vivent dans Supabase et l’API Claude sert de coach.',
+    category: 'ia',
+    stack: ['Next.js', 'Claude API', 'Supabase', 'Tailwind'],
+    status: 'Prototype',
+    shots: [
+      shot('lifeos-desktop', 'Hub LifeOS avec score global et objectifs'),
+      shot('lifeos-fitness-desktop', 'Page fitness de LifeOS'),
+      shot('lifeos-career-desktop', 'Page carrière de LifeOS'),
+      shot('lifeos-goals-desktop', 'Page objectifs de LifeOS'),
+    ],
+  },
+  {
     id: 'wandr',
     title: 'WANDR',
     tagline: 'Transforme ta ville en terrain de jeu.',
@@ -148,16 +162,18 @@ export const PROJECTS: Project[] = [
   {
     id: 'fooder',
     title: 'FOODER',
-    tagline: 'On mange quoi ce soir ? Swipe.',
-    description: 'Le Tinder des restos : onboarding de goûts et de budget, swipe, wishlist et mode « surprends-moi ».',
+    tagline: 'On mange où ce soir ? Swipe. Mange. Répète.',
+    description:
+      'Mon produit le plus abouti, en route vers un vrai lancement. On swipe des restos comme des profils : tampons MIAM / BOF, fiche avec menu et itinéraire, carte aux couleurs de l’app, favoris. Autour, toute une boucle de rétention : Food DNA calculé depuis les likes, XP, niveaux, streaks, trophées, Wrapped, défis entre amis et vote de groupe. Modèle freemium à 20 swipes par jour, PWA installable, direction artistique « Bubbly Maximalism » faite maison.',
     category: 'consumer',
-    stack: ['Next.js', 'Tailwind'],
-    status: 'Prototype',
+    stack: ['Next.js', 'Framer Motion', 'MapLibre', 'Google Places', 'PWA'],
+    status: 'Bientôt lancé',
     shots: [
-      shot('fooder-swipe-mobile', 'Écran de swipe de FOODER', 'mobile'),
-      shot('fooder-onboarding-mobile', 'Onboarding de FOODER', 'mobile'),
-      shot('fooder-wishlist-mobile', 'Wishlist de FOODER', 'mobile'),
+      shot('fooder-v2-swipe-mobile', 'Deck de swipe de FOODER avec une carte restaurant', 'mobile'),
+      shot('fooder-v2-home-mobile', 'Accueil de FOODER : Swipe. Mange. Répète.', 'mobile'),
+      shot('fooder-v2-profile-mobile', 'Profil FOODER avec niveaux, streak et cadeaux', 'mobile'),
     ],
+    highlight: 'Projet à la une',
   },
   {
     id: 'tinder-voyages',
@@ -246,6 +262,18 @@ export const PROJECTS: Project[] = [
     status: 'Patch livré',
     shots: [shot('one-piece-traduction-fr', 'Menu Options du jeu traduit en français')],
     highlight: 'Rétro-ingénierie',
+  },
+  {
+    id: 'ps2-skater',
+    title: 'Skater PS2',
+    tagline: 'Un perso low-poly façon Jet Set Radio, généré par l’IA dans Blender.',
+    description:
+      'Personnage en cel-shading esprit Dreamcast et PS2, construit par script dans Blender piloté par un agent IA via MCP : modélisation, contours, poses et rendus.',
+    category: 'jeux',
+    stack: ['Blender', 'MCP', 'Python', '3D'],
+    status: 'Prototype',
+    shots: [shot('ps2-skater-desktop', 'Skater low-poly en cel-shading façon Jet Set Radio')],
+    highlight: 'Nouveau',
   },
   {
     id: 'overwatch-nexus',
@@ -370,6 +398,17 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    id: 'cv-factory',
+    title: 'Usine à CV',
+    tagline: 'Un CV par offre, sans jamais toucher à la mise en page.',
+    description:
+      'Tout mon contenu vit dans un JSON source de vérité, tagué et priorisé, avec une traduction anglaise en surcouche. Un script génère le HTML puis le PDF A4, un autre vérifie le nombre de pages et le remplissage. Six CV prêts sur trois familles de poste, en français et en anglais.',
+    category: 'outils',
+    stack: ['Python', 'JSON', 'Chrome headless'],
+    status: 'Fonctionnel',
+    shots: [],
+  },
+  {
     id: 'garage-dream',
     title: 'Garage Dream',
     tagline: 'Mon garage idéal, en une page.',
@@ -445,7 +484,7 @@ export const PROJECTS: Project[] = [
   },
 ]
 
-export const AI_SPOTLIGHT_ORDER = ['chatbot-cv', 'lifeos', 'departs', 'lio'] as const
+export const AI_SPOTLIGHT_ORDER = ['chatbot-cv', 'finger', 'departs', 'lio'] as const
 
 export const byCategory = (c: Category) => PROJECTS.filter((p) => p.category === c)
 export const byId = (id: string) => PROJECTS.find((p) => p.id === id)

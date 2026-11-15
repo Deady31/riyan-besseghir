@@ -1,37 +1,48 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-ink: #050505;
-  --color-graphite: #0e0e0e;
-  --color-graphite-2: #161616;
-  --color-line: #232323;
-  --color-paper: #ffffff;
-  --color-mist: #9b9b9b;
-  --color-signal: #8b5cff;
-  --color-signal-soft: #b9a1ff;
-  --color-vermilion: #8b5cff;
+  /* DA « pop » : les noms historiques gardent leur rôle (ink = fond, paper = texte). */
+  --color-ink: #fff6e5;
+  --color-graphite: #ffffff;
+  --color-graphite-2: #ffefd2;
+  --color-line: #2b0f3a;
+  --color-paper: #2b0f3a;
+  --color-mist: #5e4a66;
+  --color-signal: #6c2bff;
+  --color-signal-soft: #ff7ec8;
+  --color-vermilion: #ff3d8b;
+  --color-lemon: #ffd83d;
+  --color-bubblegum: #ff7ec8;
+  --color-mint: #3ddc97;
+  --color-tangerine: #ff8a1f;
+  --color-plum: #2b0f3a;
 
-  --font-display: 'Neue Montreal', 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Editorial New', 'Instrument Serif', 'Times New Roman', serif;
-  --font-mono: 'Neue Montreal', 'Inter Tight', ui-sans-serif, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', 'Times New Roman', serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+  --font-body: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
 
   --text-hero: clamp(4.5rem, 1rem + 15vw, 17rem);
   --text-mega: clamp(3rem, 1rem + 6.5vw, 8rem);
   --text-title: clamp(2.5rem, 1rem + 4.2vw, 5.5rem);
 
+  --shadow-hard-sm: 2px 2px 0 0 #2b0f3a;
+  --shadow-hard: 4px 4px 0 0 #2b0f3a;
+  --shadow-hard-lg: 8px 8px 0 0 #2b0f3a;
+
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --gutter: clamp(1.25rem, 0.5rem + 3vw, 3rem);
 }
 
 html {
   background: var(--color-ink);
   color: var(--color-paper);
-  font-family: var(--font-display);
-  font-feature-settings: 'ss01', 'ss02';
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -51,35 +62,74 @@ body {
 
 .display {
   font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: -0.045em;
-  line-height: 0.9;
+  font-weight: 800;
+  font-variation-settings: 'opsz' 96;
+  letter-spacing: -0.05em;
+  line-height: 0.88;
+}
+
+h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
 }
 
 .display em,
 .serif-em em {
   font-family: var(--font-serif);
   font-style: italic;
-  font-weight: 200;
-  letter-spacing: -0.03em;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--color-signal);
 }
 
 .serif {
   font-family: var(--font-serif);
   font-style: italic;
-  font-weight: 200;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 .label {
+  font-family: var(--font-mono);
   font-size: 0.75rem;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
+@layer components {
+/* Briques pop : contour épais + ombre dure, et un rebond au survol. */
+.pop {
+  border: 2.5px solid var(--color-plum);
+  box-shadow: var(--shadow-hard);
+  transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring);
+}
+.pop:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-hard-lg);
+}
+.pop:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-hard-sm);
+}
+
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  border: 2px solid var(--color-plum);
+  border-radius: 999px;
+  padding: 0.35em 0.9em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  box-shadow: var(--shadow-hard-sm);
+  white-space: nowrap;
+}
+}
+
 ::selection {
-  background: var(--color-signal);
-  color: var(--color-paper);
+  background: var(--color-lemon);
+  color: var(--color-plum);
 }
 
 :focus-visible {
@@ -89,11 +139,11 @@ body {
 }
 
 .rocker {
-  --face: #8b5cff;
-  --face-side: #5a35c9;
-  --off: #242424;
-  --off-side: #151515;
-  --frame: #2c2c2c;
+  --face: #6c2bff;
+  --face-side: #4a12c9;
+  --off: #ffd83d;
+  --off-side: #c9a300;
+  --frame: #2b0f3a;
   position: relative;
   display: inline-block;
   flex-shrink: 0;
@@ -113,7 +163,7 @@ body {
   content: '';
   position: absolute;
   inset: 0.5em 0 0 0;
-  background: #0c0c0c;
+  background: #2b0f3a;
   border: 0.5em solid var(--frame);
   border-bottom: 0;
 }
@@ -215,7 +265,7 @@ body {
 
 .redacted-bar {
   border-radius: 2px;
-  background: linear-gradient(90deg, #1f1f22 0%, #1f1f22 40%, rgb(139 92 255 / 0.55) 50%, #1f1f22 60%, #1f1f22 100%);
+  background: linear-gradient(90deg, #2b0f3a 0%, #2b0f3a 40%, rgb(255 126 200 / 0.9) 50%, #2b0f3a 60%, #2b0f3a 100%);
   background-size: 250% 100%;
   animation: redacted-scan 3.2s ease-in-out infinite;
 }
@@ -227,7 +277,7 @@ body {
 
 .classified {
   background-image:
-    repeating-linear-gradient(-45deg, rgb(139 92 255 / 0.05) 0 10px, transparent 10px 20px);
+    repeating-linear-gradient(-45deg, rgb(255 216 61 / 0.35) 0 12px, transparent 12px 24px);
 }
 
 .classified-stamp {
@@ -250,4 +300,23 @@ body {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+@layer components {
+/* Tampons MIAM / BOF du deck, révélés pendant le glissement. */
+.deck-stamp {
+  position: absolute;
+  top: 38%;
+  padding: 0.1em 0.35em;
+  border: 5px solid currentColor;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.9);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 1.6rem + 2vw, 3.2rem);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+}
 }

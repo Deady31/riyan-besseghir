@@ -6,6 +6,7 @@ import { useT } from './i18n/useT'
 import { Nav } from './components/layout/Nav'
 import { PortraitField } from './components/layout/PortraitField'
 import { Hero } from './components/hero/Hero'
+import { SwipeDeck } from './components/deck/SwipeDeck'
 import { Impact } from './components/sections/Impact'
 import { MorphMoment } from './components/sections/MorphMoment'
 import { Feats } from './components/sections/Feats'
@@ -38,6 +39,7 @@ function Site() {
       <main key={lang}>
         <Hero />
         <MorphMoment />
+        <SwipeDeck />
         <Impact />
         <Feats />
         <AiSpotlight />

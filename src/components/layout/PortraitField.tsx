@@ -56,14 +56,15 @@ void main() {
   float dist = length(gl_FragCoord.xy - c);
   float dotMask = 1.0 - smoothstep(radius - 0.8, radius + 0.6, dist);
 
-  vec3 white = vec3(1.0);
-  vec3 violet = vec3(0.545, 0.361, 1.0);
+  vec3 white = vec3(0.169, 0.059, 0.227);
+  vec3 violet = vec3(0.424, 0.169, 1.0);
   float isPortrait = step(0.001, portrait);
   float tint = clamp(lens * 1.3 + step(0.988, h) * 0.9 * (1.0 - isPortrait) + step(0.001, text) * step(0.82, h), 0.0, 1.0);
   vec3 dotCol = mix(white, violet, tint);
   float bright = mix(0.28 + lens * 0.5, 0.92, isPortrait);
 
-  vec3 col = vec3(0.0196) + dotCol * dotMask * bright;
+  vec3 cream = vec3(1.0, 0.965, 0.898);
+  vec3 col = mix(cream, dotCol, dotMask * bright);
   gl_FragColor = vec4(col, 1.0);
 }
 `
