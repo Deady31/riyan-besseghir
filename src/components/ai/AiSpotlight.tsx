@@ -23,16 +23,32 @@ function FeatureCard({ project, index, wide }: { project: Project; index: number
         aria-label={t.ai.open(project.title)}
         className="relative block w-full overflow-hidden rounded-[20px] bg-graphite"
       >
-        <div className={cn('grid place-items-center overflow-hidden', wide ? 'aspect-[16/9] p-[6%]' : 'aspect-[4/5] p-[10%]')}>
-          <div
-            className={cn(
-              'transition-transform duration-[900ms] ease-[var(--ease-expo)] group-hover:scale-[1.03]',
-              shot.frame === 'mobile' ? 'w-[52%]' : 'w-full',
-            )}
-          >
-            <ShotFrame shot={shot} />
+        {wide && shot.frame === 'mobile' ? (
+          <div className="flex aspect-[16/9] items-center justify-center gap-[4%] overflow-hidden bg-bubblegum px-[6%]">
+            {project.shots.slice(0, 3).map((s, i) => (
+              <div
+                key={s.src}
+                className={cn(
+                  'w-[24%] transition-transform duration-[900ms] ease-[var(--ease-expo)] group-hover:scale-[1.04]',
+                  i === 1 ? '-translate-y-[4%] group-hover:-rotate-2' : i === 0 ? 'translate-y-[5%] -rotate-3' : 'translate-y-[5%] rotate-3',
+                )}
+              >
+                <ShotFrame shot={s} />
+              </div>
+            ))}
           </div>
-        </div>
+        ) : (
+          <div className={cn('grid place-items-center overflow-hidden', wide ? 'aspect-[16/9] p-[6%]' : 'aspect-[4/5] p-[10%]')}>
+            <div
+              className={cn(
+                'transition-transform duration-[900ms] ease-[var(--ease-expo)] group-hover:scale-[1.03]',
+                shot.frame === 'mobile' ? 'w-[52%]' : 'w-full',
+              )}
+            >
+              <ShotFrame shot={shot} />
+            </div>
+          </div>
+        )}
       </button>
       <div className="mt-6 grid gap-x-8 gap-y-3 md:grid-cols-[auto_minmax(0,1fr)]">
         <p className="label pt-2 text-mist">({String(index).padStart(2, '0')})</p>
@@ -119,7 +135,7 @@ export function AiSpotlight() {
       </div>
 
       <div data-feats className="mt-24 grid gap-x-6 gap-y-20 px-[var(--gutter)] md:grid-cols-2">
-        <FeatureCard project={get('finger')} index={2} wide />
+        <FeatureCard project={get('fooder')} index={2} wide />
         <FeatureCard project={get('departs')} index={3} />
         <FeatureCard project={get('lio')} index={4} />
       </div>
