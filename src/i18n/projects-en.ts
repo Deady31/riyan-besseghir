@@ -16,6 +16,7 @@ export const STATUS_EN: Record<string, string> = {
   Archivé: 'Archived',
   Démarrage: 'Just started',
   'Bientôt lancé': 'Launching soon',
+  Bêta: 'Beta',
 }
 
 export const CATEGORIES_EN: Record<Category, { label: string; intro: string }> = {
@@ -69,12 +70,17 @@ export const PROJECTS_EN: Record<string, Override> = {
   },
   fooder: {
     tagline: 'Where are we eating tonight? Swipe. Eat. Repeat.',
-    description: 'My most complete product, on its way to a real launch. You swipe restaurants like profiles: YUM / MEH stamps, a detail sheet with menu and directions, a map in the app’s colours, favourites. Around it, a full retention loop: Food DNA computed from likes, XP, levels, streaks, trophies, Wrapped, friend challenges and group votes. Freemium at 20 swipes a day, installable PWA, home-made “Bubbly Maximalism” art direction.',
+    description: 'My most complete product, in open beta and on its way to a real launch. You swipe restaurants like profiles: YUM / MEH stamps, a detail sheet with menu and directions, a map in the app’s colours, favourites. Around it, a full retention loop: Food DNA computed from likes, XP, levels, streaks, trophies, Wrapped, friend challenges and group votes. Freemium at 20 swipes a day, installable PWA, home-made “Bubbly Maximalism” art direction.',
   },
   finger: {
     title: 'Hands workshop',
     tagline: 'Driving a 3D interface with your hands, no keyboard.',
     description: 'Five webcam-driven experiments and a J.A.R.V.I.S.-style hologram: spin a 3D car with one hand, zoom with two, explode it into 50 parts with a held fist. One shared gesture engine, ported to Python to drive the real Windows mouse and change slides by hand. Everything runs locally: no image leaves the machine.',
+  },
+  'qg-hermes': {
+    title: 'AI HQ',
+    tagline: 'All my AIs share one memory, and Hermes answers me on Telegram.',
+    description: 'Hermes Agent (Nous Research) runs at home with a Telegram bot, wired to Claude. Around it, a single memory read by all my AIs, Claude Code, Hermes, OpenCode and DeepSeek Harness: each has a ten-line pointer (AGENTS.md, CLAUDE.md, SOUL.md) to the same brief, and writes its decisions to an append-only journal. A script-generated cockpit page tracks my applications, and a script provisions a VPS to keep Hermes running.',
   },
   'ps2-skater': {
     title: 'PS2 skater',

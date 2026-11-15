@@ -67,9 +67,9 @@ export function Impact() {
 
   return (
     <section ref={root} id="impact" className="relative px-[var(--gutter)] py-32 md:py-48">
-      <SectionHeading index="01" label={t.impact.label} title={<TitleParts parts={t.impact.title} />} />
+      <SectionHeading index="01" align="right" label={t.impact.label} title={<TitleParts parts={t.impact.title} />} />
 
-      <div className="grid gap-10 md:ml-[25%] lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-14">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-16">
         <figure>
           <div data-product-shot className="overflow-hidden rounded-[20px] bg-[#dff6fb]">
             <img
@@ -111,14 +111,14 @@ export function Impact() {
         </div>
       </div>
 
-      <div data-stats className="mt-24 grid grid-cols-2 border-t border-line md:ml-[25%] lg:grid-cols-4">
+      <div data-stats className="mt-24 grid grid-cols-2 border-t-2 border-line lg:grid-cols-4">
         {IMPACT.stats.map((s) => (
           <div data-stat key={s.label} className="border-b border-line py-8 pr-6 lg:border-b-0">
             <Counter
               value={s.value}
               prefix={s.prefix}
               suffix={s.suffix}
-              className="display block text-[clamp(3.5rem,1rem+4.5vw,6.5rem)] whitespace-nowrap tabular-nums"
+              className="display block text-[clamp(2.4rem,1rem+3vw,4.75rem)] whitespace-nowrap tabular-nums"
             />
             <p className="mt-4 text-paper">{s.label}</p>
             <p className="mt-1 text-sm text-mist">{s.note}</p>
@@ -126,7 +126,7 @@ export function Impact() {
         ))}
       </div>
 
-      <div data-features className="mt-24 md:ml-[25%]">
+      <div data-features className="mt-24">
         <p className="label mb-6 text-mist">{t.impact.shipped}</p>
         <ul className="border-t border-line">
           {IMPACT.features.map((f, i) => (

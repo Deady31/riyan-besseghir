@@ -108,6 +108,7 @@ export function AiSpotlight() {
       <div className="px-[var(--gutter)]">
         <SectionHeading
           index="03"
+          align="right"
           label={t.ai.label}
           title={<TitleParts parts={t.ai.title} />}
           intro={t.ai.intro}
@@ -115,10 +116,10 @@ export function AiSpotlight() {
       </div>
 
       <div data-chat-pin className="relative flex min-h-[100svh] items-center px-[var(--gutter)] py-16">
-        <div className="grid w-full items-center gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
-          <p className="label hidden text-mist lg:block">{t.ai.featured}</p>
-          <div className="grid items-center gap-16 lg:grid-cols-[minmax(0,1.1fr)_auto]">
-            <div>
+        <div className="w-full">
+          <div className="grid items-center gap-16 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-24">
+            <div className="lg:order-2">
+              <p className="mb-6"><span className="sticker rotate-1 bg-signal text-ink">{t.ai.featured}</span></p>
               <h3 className="display text-[length:var(--text-mega)]">
                 Méca-<em>Riyan</em>
               </h3>

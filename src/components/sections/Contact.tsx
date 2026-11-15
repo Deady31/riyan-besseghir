@@ -28,10 +28,10 @@ export function Contact() {
 
   return (
     <section id="contact" className="relative px-[var(--gutter)] pt-32 pb-8 md:pt-48">
-      <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
-        <p className="label flex gap-3 pt-3 text-mist">
-          <span>(07)</span>
-          <span className="text-paper">{t.contact.label}</span>
+      <div className="flex flex-col gap-6">
+        <p className="flex items-center gap-3">
+          <span className="sticker -rotate-2 bg-lemon">{t.contact.label}</span>
+          <span className="label text-mist">(07)</span>
         </p>
         <div>
           <RevealText as="h2" className="display text-[length:var(--text-title)]">

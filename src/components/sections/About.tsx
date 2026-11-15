@@ -38,9 +38,8 @@ export function About() {
     <section ref={root} id="about" className="relative px-[var(--gutter)] py-32 md:py-48">
       <SectionHeading index="05" label={a.label} title={<TitleParts parts={a.title} />} />
 
-      <div className="grid gap-14 md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
-        <div className="hidden md:block" />
-        <div className="grid gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
+      <div>
+        <div className="grid gap-14 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-24">
           <figure data-about-photo className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-graphite">
             <img
               src="/media/about-portrait.webp"

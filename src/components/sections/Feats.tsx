@@ -76,8 +76,8 @@ export function Feats() {
         </figcaption>
       </figure>
 
-      <div className="mt-20 grid gap-14 px-[var(--gutter)] md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
-        <p className="label text-mist">{t.feats.brief}</p>
+      <div className="mt-20 grid gap-8 px-[var(--gutter)]">
+        <p><span className="sticker rotate-1 bg-mint">{t.feats.brief}</span></p>
         <div className="grid gap-16 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
           <RevealText className="text-[clamp(1.5rem,1rem+1.2vw,2.25rem)] leading-[1.15] tracking-[-0.02em]">
             <span className="serif">«</span> {hackathon.brief} <span className="serif">»</span>
@@ -97,8 +97,8 @@ export function Feats() {
         </div>
       </div>
 
-      <div className="mt-32 grid gap-14 px-[var(--gutter)] md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
-        <p className="label text-mist">{t.feats.soon}</p>
+      <div className="mt-32 grid gap-8 px-[var(--gutter)]">
+        <p><span className="sticker -rotate-1 bg-bubblegum">{t.feats.soon}</span></p>
         <ul data-teasers className="grid gap-4 md:grid-cols-2">
           {teasers.map((teaser, i) => (
             <li

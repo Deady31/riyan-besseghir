@@ -83,6 +83,18 @@ export const PROJECTS: Project[] = [
     highlight: 'Nouveau',
   },
   {
+    id: 'qg-hermes',
+    title: 'QG IA',
+    tagline: 'Toutes mes IA partagent la même mémoire, et Hermes me répond sur Telegram.',
+    description:
+      'Hermes Agent (Nous Research) tourne chez moi avec un bot Telegram, branché sur Claude. Autour, une mémoire unique lue par toutes mes IA, Claude Code, Hermes, OpenCode et DeepSeek Harness : chacune a un pointeur de dix lignes (AGENTS.md, CLAUDE.md, SOUL.md) vers le même brief, et écrit ses décisions dans un journal en ajout seul. Une page cockpit générée par script suit mes candidatures, et un script prépare un VPS pour faire tourner Hermes en continu.',
+    category: 'ia',
+    stack: ['Hermes Agent', 'Telegram', 'Claude Code', 'OpenCode', 'PowerShell'],
+    status: 'Fonctionnel',
+    shots: [],
+    highlight: 'Nouveau',
+  },
+  {
     id: 'rag-converteo',
     title: 'Copilote RAG Converteo',
     tagline: 'Retrouver une mission passée en une question.',
@@ -164,10 +176,11 @@ export const PROJECTS: Project[] = [
     title: 'FOODER',
     tagline: 'On mange où ce soir ? Swipe. Mange. Répète.',
     description:
-      'Mon produit le plus abouti, en route vers un vrai lancement. On swipe des restos comme des profils : tampons MIAM / BOF, fiche avec menu et itinéraire, carte aux couleurs de l’app, favoris. Autour, toute une boucle de rétention : Food DNA calculé depuis les likes, XP, niveaux, streaks, trophées, Wrapped, défis entre amis et vote de groupe. Modèle freemium à 20 swipes par jour, PWA installable, direction artistique « Bubbly Maximalism » faite maison.',
+      'Mon produit le plus abouti, en bêta ouverte et en route vers un vrai lancement. On swipe des restos comme des profils : tampons MIAM / BOF, fiche avec menu et itinéraire, carte aux couleurs de l’app, favoris. Autour, toute une boucle de rétention : Food DNA calculé depuis les likes, XP, niveaux, streaks, trophées, Wrapped, défis entre amis et vote de groupe. Modèle freemium à 20 swipes par jour, PWA installable, direction artistique « Bubbly Maximalism » faite maison.',
     category: 'consumer',
     stack: ['Next.js', 'Framer Motion', 'MapLibre', 'Google Places', 'PWA'],
-    status: 'Bientôt lancé',
+    status: 'Bêta',
+    link: 'https://fooder-tawny.vercel.app',
     shots: [
       shot('fooder-v2-swipe-mobile', 'Deck de swipe de FOODER avec une carte restaurant', 'mobile'),
       shot('fooder-v2-home-mobile', 'Accueil de FOODER : Swipe. Mange. Répète.', 'mobile'),
