@@ -17,7 +17,7 @@
   --color-tangerine: #ff8a1f;
   --color-plum: #2b0f3a;
 
-  --font-display: 'Bricolage Grotesque', 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Unbounded', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Instrument Serif', 'Times New Roman', serif;
   --font-mono: 'DM Mono', ui-monospace, monospace;
   --font-body: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
@@ -62,15 +62,15 @@ body {
 
 .display {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-variation-settings: 'opsz' 96;
-  letter-spacing: -0.05em;
-  line-height: 0.88;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
 }
 
 h2, h3 {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 500;
+  letter-spacing: -0.03em;
 }
 
 .display em,
@@ -120,8 +120,8 @@ h2, h3 {
   border-radius: 999px;
   padding: 0.35em 0.9em;
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.8rem;
+  font-weight: 500;
+  font-size: 0.75rem;
   box-shadow: var(--shadow-hard-sm);
   white-space: nowrap;
 }
@@ -312,11 +312,53 @@ h2, h3 {
   border-radius: 14px;
   background: rgb(255 255 255 / 0.9);
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 700;
   font-size: clamp(2.2rem, 1.6rem + 2vw, 3.2rem);
   letter-spacing: 0.02em;
   line-height: 1;
   opacity: 0;
   pointer-events: none;
 }
+}
+
+/* Cartes à collectionner de l'index : inclinaison 3D au survol, reflet, holo pour les plus rares. */
+@layer components {
+  .tcg {
+    --rx: 0deg;
+    --ry: 0deg;
+    --gx: 50%;
+    --gy: 50%;
+    --hover: 0;
+    perspective: 900px;
+    border-radius: 18px;
+  }
+  .tcg-inner {
+    transform: rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0);
+    box-shadow: 5px 5px 0 0 var(--color-plum);
+    transition: transform 0.5s var(--ease-spring), box-shadow 0.4s var(--ease-spring);
+  }
+  .tcg:hover .tcg-inner {
+    transition-duration: 0.12s;
+    box-shadow: 10px 12px 0 0 var(--color-plum);
+  }
+  .tcg-glare {
+    opacity: calc(var(--hover) * 0.9);
+    transform: rotateX(var(--rx)) rotateY(var(--ry));
+    background: radial-gradient(circle at var(--gx) var(--gy), rgb(255 255 255 / 0.55), transparent 45%);
+    mix-blend-mode: soft-light;
+    transition: opacity 0.3s ease;
+  }
+  .tcg-holo .tcg-glare {
+    opacity: calc(0.25 + var(--hover) * 0.6);
+    background:
+      radial-gradient(circle at var(--gx) var(--gy), rgb(255 255 255 / 0.6), transparent 40%),
+      linear-gradient(115deg, transparent 20%, rgb(255 126 200 / 0.45) 35%, rgb(255 216 61 / 0.45) 45%, rgb(61 220 151 / 0.45) 55%, rgb(108 43 255 / 0.4) 65%, transparent 80%);
+    background-size: 100% 100%, 250% 250%;
+    background-position: center, var(--gx) var(--gy);
+    mix-blend-mode: color-dodge;
+  }
+  .tcg:focus-visible .tcg-inner {
+    outline: 3px solid var(--color-signal);
+    outline-offset: 3px;
+  }
 }

@@ -122,7 +122,7 @@ export function PortraitField() {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img)
       gl.uniform1f(U.ready, 1)
     }
-    img.src = '/media/portrait-mask.png'
+    // Portrait retiré du hero (DA pop) : la texture reste vide, seul le −56 % et le fond vivant s'affichent.
 
     const textTex = gl.createTexture()
     gl.activeTexture(gl.TEXTURE1)
@@ -139,7 +139,7 @@ export function PortraitField() {
     const drawText = () => {
       const c2 = document.createElement('canvas')
       const ctx = c2.getContext('2d')!
-      const font = '500 420px "Neue Montreal", "Inter Tight", sans-serif'
+      const font = '600 420px "Unbounded", "Bricolage Grotesque", sans-serif'
       ctx.font = font
       const label = '−56%'
       const w = Math.ceil(ctx.measureText(label).width) + 40
@@ -157,9 +157,7 @@ export function PortraitField() {
       gl.uniform1f(U.morphOn, 1)
       resize()
     }
-    document.fonts.load('500 100px "Neue Montreal"').catch(() => {}).finally(() =>
-      document.fonts.load('500 100px "Inter Tight"').catch(() => {}).finally(drawText),
-    )
+    document.fonts.load('600 100px "Unbounded"').catch(() => {}).finally(drawText)
 
     const mobile = window.matchMedia('(max-width: 767px)').matches
     const scale = Math.min(window.devicePixelRatio || 1, mobile ? 2 : 1.5)

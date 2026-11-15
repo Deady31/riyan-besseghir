@@ -14,6 +14,7 @@ const fr = {
     statement: 'AI Product Manager. Je fais passer l’IA du slide à la prod : chez Shippingbo, en hackathon, et la nuit sur 35 projets.',
     tagline: 'Product · IA · Prototypes',
     scroll: '(Défiler)',
+    skaterHint: 'Glisse pour le faire tourner · clic = kickflip',
     stickers: ['AI Product Manager', 'FOODER · bientôt', 'Ex-Shippingbo', '35 projets'],
     aria: 'Introduction',
   },
@@ -73,9 +74,11 @@ const fr = {
   },
   index: {
     label: 'Index',
-    title: (n: number) => [`${n} projets construits, `, 'tous ici.'] as Title,
-    intro: 'Filtre par catégorie, survole pour voir l’écran, clique pour ouvrir la fiche.',
+    title: (n: number) => [`${n} projets construits, `, 'à collectionner.'] as Title,
+    intro: 'Chaque projet est une carte. Les étoiles disent sa rareté : trois étoiles, c’est en ligne ou mis en avant. Filtre, survole, ouvre, ou tire une carte au hasard.',
     all: 'Tout',
+    random: 'Tirer une carte',
+    more: (n: number) => `Voir les ${n} autres cartes`,
     toolbar: 'Filtrer les projets par catégorie',
   },
   about: {
@@ -130,6 +133,7 @@ const en: UI = {
     statement: 'AI Product Manager. I take AI from slide deck to production: at Shippingbo, at hackathons, and at night across 35 projects.',
     tagline: 'Product · AI · Prototypes',
     scroll: '(Scroll)',
+    skaterHint: 'Drag to spin him · click = kickflip',
     stickers: ['AI Product Manager', 'FOODER · soon', 'Ex-Shippingbo', '35 projects'],
     aria: 'Introduction',
   },
@@ -189,9 +193,11 @@ const en: UI = {
   },
   index: {
     label: 'Index',
-    title: (n: number) => [`${n} projects built, `, 'all right here.'],
-    intro: 'Filter by category, hover to preview, click to open the case.',
+    title: (n: number) => [`${n} projects built, `, 'collect them all.'],
+    intro: 'Every project is a card. Stars show its rarity: three stars means live or featured. Filter, hover, open, or draw a random card.',
     all: 'All',
+    random: 'Draw a card',
+    more: (n: number) => `Show ${n} more cards`,
     toolbar: 'Filter projects by category',
   },
   about: {

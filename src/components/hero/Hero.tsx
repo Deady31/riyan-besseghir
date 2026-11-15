@@ -1,9 +1,11 @@
-import { useRef } from 'react'
+import { lazy, Suspense, useRef } from 'react'
 import { gsap, SplitText, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { useContent } from '../../data/profile'
 import { useT } from '../../i18n/useT'
 import { LiveClock } from '../ui/LiveClock'
 import { HeroStickers } from './HeroStickers'
+
+const Skater3D = lazy(() => import('./Skater3D'))
 
 export function Hero() {
   const root = useRef<HTMLElement>(null)
@@ -40,6 +42,14 @@ export function Hero() {
         {PROFILE.name}, {PROFILE.role}
       </h1>
       <div data-hero-inner className="flex h-full flex-col px-[var(--gutter)] pt-28 pb-8 md:pt-32">
+        <div className="absolute inset-x-0 top-[17%] h-[42%] md:top-[8%] md:right-[3%] md:bottom-[4%] md:left-auto md:h-auto md:w-[46%]">
+          <Suspense fallback={null}>
+            <Skater3D className="size-full cursor-grab active:cursor-grabbing" />
+          </Suspense>
+          <p data-meta className="label pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 text-center whitespace-nowrap text-mist max-md:hidden">
+            {t.hero.skaterHint}
+          </p>
+        </div>
         <HeroStickers />
         <div className="label flex flex-col gap-2 text-mist">
           <p data-meta>
