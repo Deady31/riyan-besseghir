@@ -34,9 +34,9 @@ export const PROJECTS: Project[] = [
     title: 'Méca-Riyan',
     tagline: 'Mon CV ne répond plus, alors je l’ai remplacé par un agent.',
     description:
-      'Agent conversationnel en RAG qui connaît tout mon parcours et répond en citant ses sources. Base de connaissance vectorisée dans Supabase (pgvector), génération avec Gemini Flash, interface Next.js.',
+      'Agent conversationnel en RAG qui connaît tout mon parcours et répond à la première personne, sans rien inventer. Base de connaissance vectorisée dans Supabase (pgvector), génération sur Groq avec Gemini en secours et une cascade de modèles pour survivre aux quotas. Chaque question sans réponse m’alerte sur Discord, et un tableau de bord me montre les conversations pour enrichir la base.',
     category: 'ia',
-    stack: ['Next.js', 'Gemini Flash', 'Supabase pgvector', 'RAG'],
+    stack: ['Next.js', 'Groq', 'Gemini', 'Supabase pgvector', 'RAG'],
     status: 'En ligne',
     link: 'https://riyan-cv-chatbot.vercel.app',
     repo: 'https://github.com/Deady31/riyan-cv-chatbot',

@@ -30,7 +30,7 @@ export const CATEGORIES_EN: Record<Category, { label: string; intro: string }> =
 export const PROJECTS_EN: Record<string, Override> = {
   'chatbot-cv': {
     tagline: 'My résumé stopped answering, so I replaced it with an agent.',
-    description: 'A RAG conversational agent that knows my whole background and answers with its sources. Knowledge base vectorised in Supabase (pgvector), generation with Gemini Flash, Next.js interface.',
+    description: 'A RAG conversational agent that knows my whole background and answers in the first person, without making anything up. Knowledge base vectorised in Supabase (pgvector), generation on Groq with Gemini as a fallback and a model cascade to survive quotas. Every unanswered question pings me on Discord, and a dashboard shows me the conversations so I can enrich the base.',
   },
   lifeos: {
     tagline: 'A life dashboard with an AI coach inside.',
