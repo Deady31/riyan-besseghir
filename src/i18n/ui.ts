@@ -15,7 +15,7 @@ const fr = {
     tagline: 'Product · IA · Prototypes',
     scroll: '(Défiler)',
     skaterHint: 'Glisse pour le faire tourner · clic = kickflip',
-    stickers: ['AI Product Manager', 'FOODER · bientôt', 'Ex-Shippingbo', '35 projets'],
+    stickers: ['AI Product Manager', 'FOODER · bientôt', 'Ex-Shippingbo', '38 projets'],
     aria: 'Introduction',
   },
   deck: {
@@ -35,9 +35,9 @@ const fr = {
   },
   morph: {
     aria: 'Chiffre clé',
-    sr: 'Moins 56 % de tickets support N1.',
-    line1: 'de tickets support N1, en production.',
-    line2: 'Grâce à Naia, l’assistante IA sur l’API Claude que j’ai porté de la discovery à la prod chez Shippingbo.',
+    sr: '38 projets construits.',
+    line1: 'projets construits, de l’idée au truc qui tourne.',
+    line2: 'Agents IA, apps grand public, jeux, outils : chacun est une carte à collectionner, plus bas.',
   },
   impact: {
     label: 'Impact',
@@ -88,7 +88,7 @@ const fr = {
     lead: 'J’ai 25 ans et je suis Product Manager. Ce qui m’intéresse, c’est le moment où une idée devient un produit que quelqu’un utilise vraiment.',
     paragraphs: [
       'Chez Shippingbo, j’ai piloté jusqu’à trois feature teams en parallèle pendant dix mois : cadrer, prioriser, écrire les specs, et surtout faire passer l’IA de la démo à la prod.',
-      'Le soir, je continue avec Figma et Claude Code : 35 projets, des agents IA, un jeu vidéo, la traduction d’un jeu japonais. Comprendre la technique de l’intérieur me rend meilleur PM.',
+      'Le soir, je continue avec Figma et Claude Code : 38 projets, des agents IA, un jeu vidéo, la traduction d’un jeu japonais. Comprendre la technique de l’intérieur me rend meilleur PM.',
       'Prochaine étape : rejoindre une équipe produit qui construit l’IA de demain, et transmettre ce que j’apprends en chemin.',
     ],
     facts: [
@@ -134,7 +134,7 @@ const en: UI = {
     tagline: 'Product · AI · Prototypes',
     scroll: '(Scroll)',
     skaterHint: 'Drag to spin him · click = kickflip',
-    stickers: ['AI Product Manager', 'FOODER · soon', 'Ex-Shippingbo', '35 projects'],
+    stickers: ['AI Product Manager', 'FOODER · soon', 'Ex-Shippingbo', '38 projects'],
     aria: 'Introduction',
   },
   deck: {
@@ -154,9 +154,9 @@ const en: UI = {
   },
   morph: {
     aria: 'Key figure',
-    sr: 'Minus 56% level-1 support tickets.',
-    line1: 'level-1 support tickets, in production.',
-    line2: 'Thanks to Naia, the Claude API assistant I took from discovery to production at Shippingbo.',
+    sr: '38 projects built.',
+    line1: 'projects built, from idea to something that runs.',
+    line2: 'AI agents, consumer apps, games, tools: each one is a collectible card, further down.',
   },
   impact: {
     label: 'Impact',
@@ -207,7 +207,7 @@ const en: UI = {
     lead: 'I’m 25 and a Product Manager. What I care about is the moment an idea becomes a product someone actually uses.',
     paragraphs: [
       'At Shippingbo, I led up to three feature teams in parallel for ten months: scoping, prioritising, writing specs, and above all taking AI from demo to production.',
-      'At night I keep going with Figma and Claude Code: 35 projects, AI agents, a video game, a fan translation of a Japanese game. Understanding the tech from the inside makes me a better PM.',
+      'At night I keep going with Figma and Claude Code: 38 projects, AI agents, a video game, a fan translation of a Japanese game. Understanding the tech from the inside makes me a better PM.',
       'Next step: joining a product team building tomorrow’s AI, and passing on what I learn along the way.',
     ],
     facts: [
