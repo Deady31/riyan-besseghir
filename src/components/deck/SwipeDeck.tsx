@@ -7,6 +7,7 @@ import { TitleParts, useT } from '../../i18n/useT'
 import { SectionHeading } from '../ui/SectionHeading'
 import { useOpenProject } from '../lab/ProjectDialog'
 import { cn } from '../../lib/cn'
+import { AfkSkater } from './AfkSkater'
 
 const DECK_IDS = ['fooder', 'chatbot-cv', 'finger', 'departs', 'lio', 'one-piece', 'derniere-note', 'ps2-skater'] as const
 
@@ -169,9 +170,10 @@ export function SwipeDeck() {
           }}
         >
           {done ? (
-            <div className="absolute inset-0 grid place-items-center rounded-[28px] border-[3px] border-dashed border-line bg-lemon p-8 text-center">
+            <div className="absolute inset-0 grid place-items-center rounded-[28px] border-[3px] border-dashed border-line bg-lemon p-6 text-center">
               <div>
-                <p className="display text-5xl">{t.deck.done}</p>
+                <AfkSkater bubble={t.deck.afk} />
+                <p className="display mt-2 text-4xl">{t.deck.done}</p>
                 <p className="mt-4 text-lg">{t.deck.kept(kept.length)}</p>
                 <button type="button" onClick={restart} className="pop mt-8 inline-flex items-center gap-2 rounded-full bg-signal px-6 py-3 font-bold text-ink">
                   <RotateCcw className="size-4" aria-hidden="true" />
