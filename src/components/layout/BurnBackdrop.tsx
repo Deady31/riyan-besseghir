@@ -65,15 +65,15 @@ const ZONES: Record<string, Zone> = {
   default: zone(PAPER, IVORY, COBALT_SOFT, ACID),
   top: zone(PAPER, IVORY, COBALT_SOFT, ACID, false, { key: 'intro', veil: 0.68 }),
   morph: zone(LIQUID, '#050a3a', COBALT, IVORY, true),
-  deck: zone(HALFTONE, '#e9dfc7', VERMILION, ACID, false, { key: 'vague', veil: 0.58 }),
-  impact: zone(PAPER, IVORY, COBALT_SOFT, ACID, false, undefined, 'glass'),
-  'hauts-faits': zone(PAPER, '#e3e8f6', COBALT_SOFT, CHROME),
-  studio: zone(PAPER, '#eaefc9', ACID, COBALT_SOFT, false, undefined, 'glass'),
+  deck: zone(HALFTONE, '#e9dfc7', VERMILION, ACID, false, { key: 'deck', veil: 0.5 }),
+  impact: zone(PAPER, IVORY, COBALT_SOFT, ACID, false, { key: 'impact', veil: 0.58 }, 'glass'),
+  'hauts-faits': zone(PAPER, '#e3e8f6', COBALT_SOFT, CHROME, false, { key: 'hauts-faits', veil: 0.55 }),
+  studio: zone(PAPER, '#eaefc9', ACID, COBALT_SOFT, false, { key: 'studio', veil: 0.55 }, 'glass'),
   ia: zone(NIGHT, '#08090e', COBALT, VERMILION, true, { key: 'nuit', veil: 0.3 }),
-  lab: zone(PAPER, IVORY, VERMILION, ACID),
-  about: zone(HALFTONE, '#e9dfc7', COBALT, ACID),
-  passions: zone(HALFTONE, '#f3dccd', VERMILION, ACID, false, undefined, 'glass'),
-  contact: zone(NIGHT, '#08090e', COBALT, VERMILION, true),
+  lab: zone(PAPER, IVORY, VERMILION, ACID, false, { key: 'lab', veil: 0.58 }),
+  about: zone(HALFTONE, '#e9dfc7', COBALT, ACID, false, { key: 'about', veil: 0.62 }),
+  passions: zone(HALFTONE, '#f3dccd', VERMILION, ACID, false, { key: 'passions', veil: 0.56 }, 'glass'),
+  contact: zone(NIGHT, '#08090e', COBALT, VERMILION, true, { key: 'contact', veil: 0.25 }),
 }
 
 const N = 12
