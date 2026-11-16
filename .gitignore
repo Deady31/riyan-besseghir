@@ -27,7 +27,8 @@ dist-ssr
 docs/
 
 # Modèles 3D en attente de traitement (npm run models)
-tools/models/inbox/
+tools/models/inbox/*
+!tools/models/inbox/.gitkeep
 
 .vercel
 .env*
