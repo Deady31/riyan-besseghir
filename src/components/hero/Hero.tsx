@@ -74,8 +74,8 @@ export function Hero() {
       </div>
 
       {/* Points d'accroche des formes 3D du fond (voir SiteScene) : la sculpture se pose sur l'aplat cobalt. */}
-      <Anchor kind="knot" className="top-[13%] right-[8%] w-[min(35vw,58vh)] max-md:hidden" par={0.05} tilt={0.5} />
-      <Anchor kind="knot" className="top-[24%] left-1/2 w-[64vw] -translate-x-1/2 md:hidden" par={0.05} tilt={0.5} />
+      <Anchor kind="cat" className="top-[17%] right-[11%] w-[min(27vw,50vh)] max-md:hidden" par={0.05} tilt={0.7} />
+      <Anchor kind="cat" className="top-[26%] left-1/2 w-[52vw] -translate-x-1/2 md:hidden" par={0.05} tilt={0.7} />
       <Anchor kind="ring" className="top-[9%] left-[38%] w-[11vw] max-md:hidden" par={0.22} />
       <Anchor kind="robot" className="bottom-[4%] left-[50%] w-[10vw] max-md:hidden" par={0.3} tilt={0.6} />
       <Anchor kind="vinyl" className="bottom-[3%] right-[1.5%] w-[11vw] max-md:hidden" par={0.3} tilt={0.7} />

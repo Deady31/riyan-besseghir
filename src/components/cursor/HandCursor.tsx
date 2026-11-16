@@ -50,6 +50,7 @@ export function HandCursor() {
       tx = e.clientX
       ty = e.clientY
       target = e.target as Element | null
+      kick()
       if (!seen) {
         seen = true
         x = tx
@@ -59,19 +60,25 @@ export function HandCursor() {
     }
     const onDown = (e: PointerEvent) => {
       if (e.pointerType === 'mouse') pressed = true
+      kick()
     }
     const onUp = () => {
       pressed = false
+      kick()
     }
     const onLeave = () => {
       el.style.opacity = '0'
       seen = false
     }
     const onScroll = () => {
-      if (seen) target = document.elementFromPoint(tx, ty)
+      if (seen) {
+        target = document.elementFromPoint(tx, ty)
+        kick()
+      }
     }
 
     const frame = () => {
+      raf = 0
       const k = reduced ? 1 : 0.3
       const dx = tx - x
       x += dx * k
@@ -95,9 +102,14 @@ export function HandCursor() {
       scale += (squash - scale) * 0.3
       const s = scale * (1 + pop * 0.16)
       el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(${rot.toFixed(1)}deg) scale(${s.toFixed(3)})`
-      raf = requestAnimationFrame(frame)
+      // Tout est posé : on arrête la boucle jusqu'au prochain mouvement (aucune image inutile).
+      const settled = Math.abs(tx - x) < 0.1 && Math.abs(ty - y) < 0.1 && Math.abs(rot) < 0.1 && pop < 0.01 && Math.abs(scale - squash) < 0.003
+      if (!settled) raf = requestAnimationFrame(frame)
     }
-    raf = requestAnimationFrame(frame)
+    const kick = () => {
+      if (!raf) raf = requestAnimationFrame(frame)
+    }
+    kick()
 
     window.addEventListener('pointermove', onMove, { passive: true })
     window.addEventListener('pointerdown', onDown, { passive: true })

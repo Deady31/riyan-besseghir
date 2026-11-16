@@ -35,7 +35,6 @@ export function Contact() {
 
   return (
     <section id="contact" className="theme-dark relative px-[var(--gutter)] pt-32 pb-6 md:pt-44">
-      <Anchor kind="knot" className="top-[1.5%] right-[5%] w-[20vw] max-md:right-[4%] max-md:w-[36vw]" par={0.1} tilt={0.7} />
       <Anchor kind="robot" className="top-[8%] left-[6%] w-[11vw] max-md:hidden" par={0.25} tilt={0.7} />
       <Anchor kind="puffy" className="top-[3%] left-[32%] w-[8vw] max-md:hidden" par={0.25} tilt={0.7} />
       {/* Grand panneau cobalt arrondi : le seul aplat coloré plein du site, pour marquer la fin. */}

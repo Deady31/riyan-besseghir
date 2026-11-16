@@ -22,7 +22,7 @@ const CAM_Z = 9
 const PHONE_SCREEN = '/media/projets/fooder-v2-swipe-mobile.webp'
 
 type KindName =
-  | 'knot' | 'ring' | 'orb' | 'bubble' | 'slab'
+  | 'ring' | 'orb' | 'bubble' | 'slab'
   | 'form-cobalt' | 'form-vermilion' | 'form-chrome'
   | 'sat-red' | 'sat-chrome' | 'cube-chrome' | 'cube-cobalt'
   | 'star' | 'star-cobalt' | 'capsule' | 'top' | 'crystal' | 'torus' | 'mobius' | 'beads' | 'phone'
@@ -43,7 +43,7 @@ const LIFE_ROT: Partial<Record<LifeKind, [number, number, number]>> = { dumbbell
 const isLife = (k: string): k is LifeKind => (LIFE as readonly string[]).includes(k)
 
 type GeoKey =
-  | 'sculpture' | 'orb' | 'ring' | 'form' | 'slab' | 'sphereA' | 'sphereB' | 'cubeA' | 'cubeB'
+  | 'orb' | 'ring' | 'form' | 'slab' | 'sphereA' | 'sphereB' | 'cubeA' | 'cubeB'
   | 'star' | 'capsule' | 'top' | 'crystal' | 'torus' | 'mobius' | 'beads'
 type MatKey = 'chrome' | 'alu' | 'iridescent' | 'bubble' | 'cobalt' | 'vermilion' | 'acid'
 
@@ -55,7 +55,6 @@ const LIFE_DEF: Def = { rot: [0.12, -0.45, 0.04], spin: 0.5, scroll: 0.5 }
 const KINDS: Record<Exclude<KindName, LifeKind>, Def> & Partial<Record<LifeKind, Def>> = {
   ...Object.fromEntries(LIFE.map((k) => [k, LIFE_DEF])),
   model: LIFE_DEF,
-  knot: { geo: 'sculpture', mat: 'chrome', rot: [Math.PI / 2 - 0.15, 0.1, -0.5], spin: 0.28, scroll: 1.5 },
   ring: { geo: 'ring', mat: 'alu', rot: [1.1, 0.2, 0.5], spin: 0.5, scroll: 1.1 },
   orb: { geo: 'orb', mat: 'iridescent', rot: [0, 0, 0], spin: 0.3, scroll: 0.8 },
   bubble: { geo: 'orb', mat: 'bubble', rot: [0, 0, 0], spin: 0.2, scroll: 0.6 },
@@ -79,7 +78,6 @@ const KINDS: Record<Exclude<KindName, LifeKind>, Def> & Partial<Record<LifeKind,
 }
 
 const FILES: Record<GeoKey, [string, string?]> = {
-  sculpture: ['master-sculpture.glb'],
   orb: ['glass-orb.glb'],
   ring: ['brushed-ring.glb'],
   form: ['cobalt-form.glb'],
@@ -103,7 +101,6 @@ type Shared = {
   geos: Record<GeoKey, { geometry: THREE.BufferGeometry; size: number }>
   mats: Record<MatKey, THREE.Material>
   life: Record<string, THREE.Material>
-  pointer: React.RefObject<{ x: number; y: number }>
   reduced: boolean
 }
 const SharedCtx = createContext<Shared | null>(null)
@@ -304,8 +301,10 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
   const group = useRef<THREE.Group>(null)
   const born = useRef<number | null>(null)
   const stageT = useRef(0)
-  const hoverT = useRef(0)
   const body = useRef<Body | null>(null)
+  // Un objet n'existe (modèle chargé, maillage monté) que lorsque sa place est à moins d'un écran du cadre.
+  const [near, setNear] = useState(false)
+  const nearRef = useRef(false)
   const par = Number(el.dataset.par ?? 0.12)
   const tilt = Number(el.dataset.tilt ?? 1)
   const isPhone = kind === 'phone'
@@ -322,10 +321,29 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
     }
   }, [isPhone, front, seed, shared.reduced, el])
 
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      ([e]) => {
+        nearRef.current = e.isIntersecting
+        setNear(e.isIntersecting)
+      },
+      { rootMargin: '100% 0px 100% 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [el])
+
   useFrame((state, dt) => {
     const g = group.current
     if (!g) return
     const b = body.current
+    // Loin du cadre (et au repos) : aucune mesure de mise en page, rien à dessiner.
+    if (!isPhone && !nearRef.current && !(b && (b.held || Math.abs(b.dx) > 20 || Math.abs(b.dy) > 20))) {
+      g.visible = false
+      if (b) b.visible = false
+      born.current = null
+      return
+    }
     const vw = state.size.width
     const vh = state.size.height
     let r = el.getBoundingClientRect()
@@ -370,8 +388,9 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
     const cx = r.left + r.width / 2
     const cy = r.top + r.height / 2
     const off = (cy - vh / 2) / vh
-    const px = reduced ? 0 : shared.pointer.current!.x
-    const py = reduced ? 0 : shared.pointer.current!.y
+    // Rien ne dépend du curseur : un objet ne bouge que si on le touche, l'attrape ou défile la page.
+    const px = 0
+    const py = 0
     const bob = reduced ? 0 : Math.sin(t * (0.7 + seed * 0.13) + seed) * 0.08 * (1 - stageBlend)
     const free = 1 - stageBlend
 
@@ -467,14 +486,12 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
     const spinX = b ? b.spinX : 0
     if (isPhone) {
       // Au repos le téléphone se balance doucement pour montrer ses reflets ; en scène il vient de face.
-      // Il ne suit pas le curseur (c'était nerveux) ; au survol il se redresse de face et grossit un peu : il invite au clic.
-      hoverT.current = THREE.MathUtils.damp(hoverT.current, phoneStage.state.hover ? 1 : 0, 7, dt)
-      const calm = free * (1 - hoverT.current * 0.85)
+      // Il ne réagit pas au curseur ; il se redresse seulement quand on l'ouvre (stageBlend).
+      const calm = free
       const sway = reduced ? 0 : Math.sin(t * 0.55 + seed) * 0.3
       g.rotation.y = (sway + off * 0.7) * calm
       g.rotation.x = (off * 0.4 + 0.06) * calm
       g.rotation.z = (reduced ? 0 : Math.sin(t * 0.4 + seed) * 0.04) * calm
-      g.scale.multiplyScalar(1 + hoverT.current * 0.06 * free)
     } else if (life) {
       g.rotation.y = def.rot[1] + (reduced ? 0 : Math.sin(t * def.spin + seed * 1.7) * 0.36) + off * 0.45 * tilt + px * 0.2 + spinY
       g.rotation.x = def.rot[0] + (reduced ? 0 : Math.sin(t * 0.37 + seed) * 0.12) + off * 0.3 * tilt - py * 0.12 + spinX
@@ -487,7 +504,7 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
 
   return (
     <group ref={group} visible={false}>
-      {isPhone ? (
+      {!near && !isPhone ? null : isPhone ? (
         <PhoneModel screen={el.dataset.screen || PHONE_SCREEN} />
       ) : kind === 'model' ? (
         <Suspense fallback={null}>
@@ -533,12 +550,115 @@ function useAnchors(layer: 'back' | 'front', mobile: boolean) {
   return anchors
 }
 
+/**
+ * Pilote de rendu : le canvas ne dessine qu'à la demande. On redessine seulement quand au moins un objet est proche du
+ * cadre (ou en mouvement après un lancer), jamais onglet caché, à 30 images/s quand rien ne se passe, et la résolution
+ * s'abaisse d'elle-même si la machine ne tient pas la cadence (elle remonte quand elle suit).
+ */
+function FrameDriver({ reduced, anchors }: { reduced: boolean; anchors: AnchorRef[] }) {
+  const { invalidate, setDpr, gl } = useThree()
+  useEffect(() => {
+    if (reduced) {
+      // Mouvement réduit : image figée, redessinée seulement au défilement et au redimensionnement.
+      const redraw = () => invalidate()
+      redraw()
+      window.addEventListener('scroll', redraw, { passive: true })
+      window.addEventListener('resize', redraw)
+      return () => {
+        window.removeEventListener('scroll', redraw)
+        window.removeEventListener('resize', redraw)
+      }
+    }
+    const cap = window.matchMedia('(max-width: 767px)').matches ? 1.25 : 1.6
+    const base = Math.min(window.devicePixelRatio || 1, cap)
+    let scale = 1
+    const near = new Set<Element>()
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) near.add(e.target)
+          else near.delete(e.target)
+        }
+      },
+      { rootMargin: '30% 0px 30% 0px' },
+    )
+    anchors.forEach((a) => io.observe(a.el))
+    let lastActivity = performance.now()
+    const bump = () => {
+      lastActivity = performance.now()
+    }
+    window.addEventListener('scroll', bump, { passive: true })
+    window.addEventListener('pointerdown', bump, { passive: true })
+    window.addEventListener('touchstart', bump, { passive: true })
+    const moving = () => {
+      for (const b of bodies) {
+        if (b.held || Math.abs(b.vx) + Math.abs(b.vy) > 3 || Math.abs(b.dx) + Math.abs(b.dy) > 2 || Math.abs(b.sq) > 0.004) return true
+      }
+      return false
+    }
+    let raf = 0
+    let last = 0
+    let frameNo = 0
+    let ema = 16
+    let slowSince = 0
+    let fastSince = 0
+    const tick = (now: number) => {
+      raf = requestAnimationFrame(tick)
+      if (document.hidden) {
+        last = 0
+        return
+      }
+      const busy = moving()
+      if (near.size === 0 && !busy) {
+        last = 0
+        return
+      }
+      const idle = !busy && now - lastActivity > 3000
+      frameNo++
+      if (idle && frameNo % 2 === 1) return
+      invalidate()
+      if (last && !idle) {
+        ema = ema * 0.93 + (now - last) * 0.07
+        if (ema > 27 && scale > 0.6) {
+          slowSince = slowSince || now
+          if (now - slowSince > 1200) {
+            scale = Math.max(0.6, scale - 0.15)
+            setDpr(base * scale)
+            slowSince = 0
+            fastSince = 0
+            ema = 16
+          }
+        } else {
+          slowSince = 0
+          if (ema < 17.5 && scale < 1) {
+            fastSince = fastSince || now
+            if (now - fastSince > 6000) {
+              scale = Math.min(1, scale + 0.1)
+              setDpr(base * scale)
+              fastSince = 0
+            }
+          } else fastSince = 0
+        }
+      }
+      last = idle ? 0 : now
+    }
+    raf = requestAnimationFrame(tick)
+    return () => {
+      cancelAnimationFrame(raf)
+      io.disconnect()
+      window.removeEventListener('scroll', bump)
+      window.removeEventListener('pointerdown', bump)
+      window.removeEventListener('touchstart', bump)
+      gl.setPixelRatio(base)
+    }
+  }, [reduced, anchors, invalidate, setDpr, gl])
+  return null
+}
+
 function Scene({ reduced, layer, mobile }: { reduced: boolean; layer: 'back' | 'front'; mobile: boolean }) {
   const anchors = useAnchors(layer, mobile)
-  const { invalidate } = useThree()
-  const pointer = useRef({ x: 0, y: 0 })
   const geos = {
-    sculpture: useGeometry('sculpture'), orb: useGeometry('orb'), ring: useGeometry('ring'), form: useGeometry('form'),
+    orb: useGeometry('orb'), ring: useGeometry('ring'), form: useGeometry('form'),
     slab: useGeometry('slab'), sphereA: useGeometry('sphereA'), sphereB: useGeometry('sphereB'), cubeA: useGeometry('cubeA'),
     cubeB: useGeometry('cubeB'), star: useGeometry('star'), capsule: useGeometry('capsule'), top: useGeometry('top'),
     crystal: useGeometry('crystal'), torus: useGeometry('torus'), mobius: useGeometry('mobius'), beads: useGeometry('beads'),
@@ -549,26 +669,12 @@ function Scene({ reduced, layer, mobile }: { reduced: boolean; layer: 'back' | '
   // Les gestes (attraper, lancer) : une seule écoute pour toute la page, sauf en mouvement réduit.
   useEffect(() => (reduced ? undefined : useToysInput()), [reduced])
 
-  useEffect(() => {
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== 'mouse') return
-      pointer.current.x = (e.clientX / window.innerWidth - 0.5) * 2
-      pointer.current.y = (e.clientY / window.innerHeight - 0.5) * 2
-    }
-    const onScroll = () => invalidate()
-    if (!reduced) window.addEventListener('pointermove', onMove, { passive: true })
-    else window.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('scroll', onScroll)
-    }
-  }, [reduced, invalidate])
-
-  const shared = useMemo<Shared>(() => ({ geos, mats, life, pointer, reduced }), [geos.sculpture, mats, life, reduced]) // eslint-disable-line react-hooks/exhaustive-deps
+  const shared = useMemo<Shared>(() => ({ geos, mats, life, reduced }), [geos.orb, mats, life, reduced]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <SharedCtx.Provider value={shared}>
       <Studio />
+      <FrameDriver reduced={reduced} anchors={anchors} />
       {anchors.map((a, i) => (
         <Piece key={`${i}-${a.kind}`} el={a.el} kind={a.kind} seed={i + (layer === 'front' ? 5 : 0)} front={layer === 'front'} />
       ))}
@@ -585,8 +691,8 @@ export default function SiteScene({ layer = 'back' }: { layer?: 'back' | 'front'
       <Canvas
         flat
         dpr={[1, mobile ? 1.25 : 1.6]}
-        frameloop={reduced ? 'demand' : 'always'}
-        gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
+        frameloop="demand"
+        gl={{ alpha: true, antialias: true }}
         camera={{ fov: FOV, near: 0.1, far: 60, position: [0, 0, CAM_Z] }}
         style={{ pointerEvents: 'none' }}
         onCreated={({ gl }) => {
@@ -600,6 +706,6 @@ export default function SiteScene({ layer = 'back' }: { layer?: 'back' | 'front'
   )
 }
 
+// Seules les formes de base (petites, partagées par presque toutes les sections) sont préchargées ; les objets de vie, le
+// téléphone et les modèles fournis ne se chargent que lorsque leur place approche (voir `near` dans Piece).
 Object.values(FILES).forEach(([f]) => useGLTF.preload(BASE + f))
-useGLTF.preload(BASE + 'phone.glb')
-Object.values(LIFE_FILE).forEach((f) => useGLTF.preload(BASE + f))
