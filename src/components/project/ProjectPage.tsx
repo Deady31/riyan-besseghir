@@ -179,7 +179,7 @@ export function ProjectPage() {
               onPointerLeave={() => phoneStage.setHover(false)}
               onFocus={() => phoneStage.setHover(true)}
               onBlur={() => phoneStage.setHover(false)}
-              aria-label={t.project.play}
+              aria-label={`${t.project.tapPhone} : ${t.project.play}`}
               className="relative mx-auto block aspect-[4/5] w-full max-w-[520px] cursor-pointer rounded-[48px] lg:aspect-square"
             >
               <Anchor kind="phone" layer="front" screen={live.screen} className="inset-0 w-full" par={0} />

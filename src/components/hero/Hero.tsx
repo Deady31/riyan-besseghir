@@ -55,7 +55,7 @@ export function Hero() {
       </h1>
 
       {/* Aplat signature : un rectangle cobalt net, sans arrondi ni dégradé. */}
-      <div data-slab className="absolute top-[4.75rem] right-[7%] h-[calc(78%-4.75rem)] w-[34%] rounded-[56px] bg-signal max-md:top-20 max-md:right-3 max-md:left-[16%] max-md:h-[40%] max-md:w-auto max-md:rounded-[40px]" aria-hidden="true" />
+      <div data-slab className="absolute top-[4.75rem] right-[7%] h-[calc(78%-4.75rem)] w-[34%] rounded-[56px] bg-signal max-md:top-36 max-md:right-3 max-md:left-[16%] max-md:h-[36%] max-md:w-auto max-md:rounded-[40px]" aria-hidden="true" />
 
       {/* Couche 1 : le nom, derrière la sculpture. */}
       <div data-name-wrap className="absolute inset-x-0 bottom-0 z-10 px-[var(--gutter)] pb-[clamp(5.5rem,11vh,7.5rem)] max-md:pb-[5.25rem]">

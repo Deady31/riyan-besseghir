@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { X } from 'lucide-react'
 import { phoneStage, usePhoneOpen } from '../../lib/phoneStage'
 import { useLenis } from '../../lib/SmoothScroll'
@@ -16,12 +16,16 @@ export function PhoneStage({ url, title, closeLabel }: { url: string; title: str
   const open = usePhoneOpen()
   const lenis = useLenis()
   const [ready, setReady] = useState(false)
+  const closeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     if (!open) {
       setReady(false)
       return
     }
+    // Clavier : le focus va sur « Fermer » à l'ouverture et revient à l'élément d'origine à la fermeture.
+    const origin = document.activeElement as HTMLElement | null
+    closeRef.current?.focus()
     lenis?.stop()
     let raf = 0
     const poll = () => {
@@ -35,6 +39,7 @@ export function PhoneStage({ url, title, closeLabel }: { url: string; title: str
       cancelAnimationFrame(raf)
       window.removeEventListener('keydown', onKey)
       lenis?.start()
+      origin?.focus?.()
     }
   }, [open, lenis])
 
@@ -57,7 +62,9 @@ export function PhoneStage({ url, title, closeLabel }: { url: string; title: str
         style={{ width: side, height: side }}
       />
       {open && (
+        <div role="dialog" aria-modal="true" aria-label={title}>
         <button
+          ref={closeRef}
           type="button"
           onClick={() => phoneStage.setOpen(false)}
           className="pop fixed top-[4.9rem] right-5 z-[60] grid size-12 place-items-center bg-paper text-ink max-md:top-auto max-md:right-1/2 max-md:bottom-3 max-md:translate-x-1/2"
@@ -65,8 +72,7 @@ export function PhoneStage({ url, title, closeLabel }: { url: string; title: str
         >
           <X className="size-5" aria-hidden="true" />
         </button>
-      )}
-      {open && ready && (
+      {ready && (
         <div
           className="fixed top-1/2 left-1/2 z-[50] -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-white"
           style={{
@@ -76,6 +82,8 @@ export function PhoneStage({ url, title, closeLabel }: { url: string; title: str
           }}
         >
           <iframe src={url} title={title} allow="geolocation" referrerPolicy="strict-origin-when-cross-origin" className="size-full border-0" />
+        </div>
+      )}
         </div>
       )}
     </>

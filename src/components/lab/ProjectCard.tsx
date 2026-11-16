@@ -49,7 +49,6 @@ export function ProjectCard({ project, number, total, categoryLabel, onOpen }: P
           whileTap={{ scale: 0.94, rotate: -0.6 }}
           transition={{ type: 'spring', stiffness: 380, damping: 20 }}
           className="group block w-full rounded-[44px] text-left shadow-[var(--shadow-card)] focus-visible:outline-offset-4"
-          aria-label={project.title}
         >
           <MagicCard
             className="rounded-[44px]"
@@ -73,7 +72,7 @@ export function ProjectCard({ project, number, total, categoryLabel, onOpen }: P
                       )}
                     />
                   ) : (
-                    <span className="display grid size-full place-items-center text-6xl opacity-60">{project.title.slice(0, 2)}</span>
+                    <span aria-hidden="true" className="display grid size-full place-items-center text-6xl opacity-60">{project.title.slice(0, 2)}</span>
                   )}
                   {project.highlight && (
                     <span className="sticker absolute top-4 left-4 bg-lemon text-paper">{project.highlight}</span>

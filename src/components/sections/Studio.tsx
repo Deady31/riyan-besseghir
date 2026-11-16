@@ -132,7 +132,6 @@ export function Studio() {
                 <Link
                   to={`/projets/${p.id}`}
                   className="group flex items-center gap-5 rounded-[32px] bg-graphite px-6 py-4 transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-graphite-2 active:scale-[0.99] md:px-8 md:py-5"
-                  aria-label={`${s.open} : ${p.title}`}
                 >
                   <span className="label text-mist">{String(i + 1).padStart(2, '0')}</span>
                   <span className="min-w-0 flex-1">

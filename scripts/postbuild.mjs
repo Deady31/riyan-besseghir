@@ -14,6 +14,7 @@ for (const p of PROJECTS) {
   const title = `${p.title} · Riyan Besseghir`
   const desc = (story?.why ?? p.tagline).slice(0, 158)
   const url = `${SITE}/projets/${p.id}`
+  const image = `${SITE}/og/${p.id}.png`
   const body = [
     `<h1>${esc(p.title)}</h1>`,
     `<p>${esc(p.tagline)}</p>`,
@@ -27,7 +28,13 @@ for (const p of PROJECTS) {
     .replace(/<meta name="description"[^>]*>/, `<meta name="description" content="${esc(desc)}" />`)
     .replace(/<meta property="og:title"[^>]*>/, `<meta property="og:title" content="${esc(title)}" />`)
     .replace(/<meta property="og:description"[^>]*>/, `<meta property="og:description" content="${esc(desc)}" />`)
-    .replace('</head>', `<link rel="canonical" href="${url}" />\n<meta property="og:url" content="${url}" />\n</head>`)
+    .replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${url}" />`)
+    .replace(/<meta property="og:url"[^>]*>/, `<meta property="og:url" content="${url}" />`)
+    .replace(/<meta property="og:image" [^>]*>/, `<meta property="og:image" content="${image}" />`)
+    .replace(/<meta property="og:image:alt"[^>]*>/, `<meta property="og:image:alt" content="${esc(`${p.title} : ${p.tagline}`)}" />`)
+    .replace(/<meta name="twitter:title"[^>]*>/, `<meta name="twitter:title" content="${esc(title)}" />`)
+    .replace(/<meta name="twitter:description"[^>]*>/, `<meta name="twitter:description" content="${esc(desc)}" />`)
+    .replace(/<meta name="twitter:image"[^>]*>/, `<meta name="twitter:image" content="${image}" />`)
     .replace('<div id="root"></div>', `<div id="root"></div>\n<noscript>${body}</noscript>`)
   mkdirSync(new URL(`projets/${p.id}/`, dist), { recursive: true })
   writeFileSync(new URL(`projets/${p.id}/index.html`, dist), html)
