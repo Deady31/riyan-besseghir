@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { gsap, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { useT } from '../../i18n/useT'
 import { PROJECTS } from '../../data/projects'
+import { Anchor } from '../three/Anchor'
 
 /**
  * Le chiffre clé s'ouvre en fondu net, puis « se fait swiper » : chaque chiffre est une carte du deck,
@@ -66,6 +67,9 @@ export function MorphMoment() {
   return (
     <section ref={root} id="morph" className="relative -mb-[30vh] h-[190vh]" aria-label={t.morph.aria}>
       <div className="sticky top-0 flex h-[100svh] flex-col items-center justify-center px-[var(--gutter)]">
+        <Anchor kind="form-vermilion" className="top-[14%] left-[5%] w-[19vw] max-md:top-[8%] max-md:w-[30vw]" par={0.1} />
+        <Anchor kind="ring" className="right-[7%] bottom-[16%] w-[14vw] max-md:right-[4%] max-md:bottom-[10%] max-md:w-[26vw]" par={0.2} />
+        <Anchor kind="sat-chrome" className="top-[20%] right-[22%] w-[3vw] max-md:hidden" par={0.3} />
         <p className="sr-only">{t.morph.sr}</p>
         <p data-big aria-hidden="true" className="display mb-[6vh] flex text-[clamp(10rem,6rem+22vw,26rem)] leading-none">
           {digits.map((d, i) => (

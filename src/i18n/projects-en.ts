@@ -163,8 +163,8 @@ export const PROJECTS_EN: Record<string, Override> = {
   },
   'tiktok-shop': {
     title: 'TikTok Shop case study',
-    tagline: 'The TikTok Shop API inside Shippingbo’s OMS, from zero to production.',
-    description: 'At Shippingbo, integrating the TikTok Shop API as an official 3P partner to sync orders, stock and returns in real time. PM/PO role, 3 months from design to production: event-driven webhook architecture, end-to-end PRD, error handling (retries, dead letter queue). Results: 95% of orders synced, −60% processing errors, webhooks under 2 seconds.',
+    tagline: 'The TikTok Shop API inside Shippingbo’s OMS.',
+    description: 'At Shippingbo, integrating the TikTok Shop API as part of the official 3P partnership: multi-market flows, catalogue mapping and B2C orders.',
   },
   portfolios: {
     title: 'Portfolios v3 & v4',

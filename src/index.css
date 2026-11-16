@@ -393,3 +393,9 @@ h2, h3 {
     outline-offset: 3px;
   }
 }
+
+/* Empilement : papier < nom du hero < scène 3D (z 15) < contenu des sections (z 20) < boutons du hero. */
+main > section:not(#top) {
+  position: relative;
+  z-index: 20;
+}

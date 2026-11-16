@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { motion } from 'motion/react'
 import { ShimmerButton } from '../vendor/magicui/shimmer-button'
@@ -6,28 +6,14 @@ import { gsap, SplitText, useGSAP, prefersReducedMotion } from '../../lib/motion
 import { scrollToId, useLenis } from '../../lib/SmoothScroll'
 import { useContent } from '../../data/profile'
 import { useT } from '../../i18n/useT'
-import { useWebGLSupport } from '../../hooks/useWebGLSupport'
 import { LiveClock } from '../ui/LiveClock'
-
-const HeroScene = lazy(() => import('../three/HeroScene'))
+import { Anchor } from '../three/Anchor'
 
 export function Hero() {
   const root = useRef<HTMLElement>(null)
   const lenis = useLenis()
   const t = useT()
   const PROFILE = useContent().profile
-  const webgl = useWebGLSupport()
-  const [visible, setVisible] = useState(true)
-
-  // La scène ne tourne que lorsque le hero est à l'écran.
-  useEffect(() => {
-    const el = root.current
-    if (!el) return
-    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.01 })
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
-
   useGSAP(
     () => {
       if (prefersReducedMotion()) return
@@ -38,7 +24,6 @@ export function Hero() {
         .from(name.chars, { yPercent: 105, duration: 1.2, ease: 'expo.out', stagger: 0.03 }, 0.2)
         .from(lines.lines, { yPercent: 110, duration: 1, ease: 'expo.out', stagger: 0.08 }, 0.55)
         .from('[data-meta]', { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out', stagger: 0.07 }, 0.8)
-        .from('[data-canvas]', { opacity: 0, scale: 0.94, duration: 1.4, ease: 'expo.out' }, 0.5)
 
       gsap.to('[data-name-wrap]', {
         yPercent: -14,
@@ -88,14 +73,15 @@ export function Hero() {
         </p>
       </div>
 
-      {/* Couche 2 : la scène 3D, transparente, au-dessus du nom. */}
-      <div data-canvas className="pointer-events-none absolute inset-0 z-20" aria-hidden="true">
-        {webgl && (
-          <Suspense fallback={null}>
-            <HeroScene active={visible} />
-          </Suspense>
-        )}
-      </div>
+      {/* Points d'accroche des formes 3D du fond (voir SiteScene) : la sculpture se pose sur l'aplat cobalt. */}
+      <Anchor kind="knot" className="top-[15%] right-[9%] w-[min(31vw,52vh)] max-md:hidden" par={0.05} tilt={0.5} />
+      <Anchor kind="knot" className="top-[24%] left-1/2 w-[64vw] -translate-x-1/2 md:hidden" par={0.05} tilt={0.5} />
+      <Anchor kind="ring" className="top-[11%] left-[39%] w-[11vw] max-md:hidden" par={0.22} />
+      <Anchor kind="orb" className="bottom-[9%] left-[57%] w-[12vw] max-md:hidden" par={0.3} />
+      <Anchor kind="orb" className="top-[47%] right-[5%] w-[20vw] md:hidden" par={0.3} />
+      <Anchor kind="sat-red" className="bottom-[16%] left-[75%] w-[3vw] max-md:hidden" par={0.4} />
+      <Anchor kind="cube-chrome" className="top-[45%] right-[3%] w-[3.4vw] max-md:hidden" par={0.35} />
+      <Anchor kind="sat-chrome" className="top-[22%] right-[4%] w-[2.2vw] max-md:hidden" par={0.25} />
 
       {/* Couche 3 : informations et boutons, toujours lisibles. */}
       <div className="absolute inset-x-0 top-0 z-30 px-[var(--gutter)] pt-24 md:pt-28">

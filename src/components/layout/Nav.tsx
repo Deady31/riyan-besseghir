@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router'
 import { scrollToId, useLenis } from '../../lib/SmoothScroll'
 import { cn } from '../../lib/cn'
 import { useT } from '../../i18n/useT'
@@ -10,6 +11,8 @@ export function Nav() {
   const lenis = useLenis()
   const t = useT()
   const [scrolled, setScrolled] = useState(false)
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -20,6 +23,11 @@ export function Nav() {
 
   const go = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault()
+    if (pathname !== '/') {
+      sessionStorage.setItem('scrollTo', id)
+      navigate('/')
+      return
+    }
     scrollToId(lenis, id)
   }
 

@@ -1,8 +1,10 @@
-import { useEffect } from 'react'
-import { SmoothScroll } from './lib/SmoothScroll'
+import { lazy, Suspense, useEffect } from 'react'
+import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router'
+import { SmoothScroll, scrollToId, useLenis } from './lib/SmoothScroll'
 import { ScrollTrigger } from './lib/motion'
 import { LangProvider, useLang } from './i18n/LangProvider'
 import { useT } from './i18n/useT'
+import { usePageMeta } from './hooks/usePageMeta'
 import { Nav } from './components/layout/Nav'
 import { Hero } from './components/hero/Hero'
 import { SwipeDeck } from './components/deck/SwipeDeck'
@@ -14,22 +16,64 @@ import { ProjectIndex } from './components/lab/ProjectIndex'
 import { Passions } from './components/sections/Passions'
 import { About } from './components/sections/About'
 import { Contact } from './components/sections/Contact'
-import { ProjectDialogProvider } from './components/lab/ProjectDialog'
+import { ProjectPage } from './components/project/ProjectPage'
 import ClickSpark from './components/vendor/reactbits/ClickSpark'
 import { PaperBackground } from './components/layout/PaperBackground'
 import { ScrollFx } from './components/night/ScrollFx'
+import { useWebGLSupport } from './hooks/useWebGLSupport'
 
-function Site() {
+const SiteScene = lazy(() => import('./components/three/SiteScene'))
+
+/** Page d'accueil : au retour d'une carte projet, on retrouve la position quittée ou l'ancre demandée. */
+function Home() {
   const { lang } = useLang()
-  const t = useT()
+  const lenis = useLenis()
+  usePageMeta(null, null)
 
   useEffect(() => {
     const id = requestAnimationFrame(() => ScrollTrigger.refresh())
     return () => cancelAnimationFrame(id)
   }, [lang])
 
+  useEffect(() => {
+    const target = sessionStorage.getItem('scrollTo')
+    const y = sessionStorage.getItem('homeY')
+    sessionStorage.removeItem('scrollTo')
+    const timer = window.setTimeout(() => {
+      ScrollTrigger.refresh()
+      if (target) scrollToId(lenis, target)
+      else if (y !== null) {
+        if (lenis) lenis.scrollTo(Number(y), { immediate: true })
+        else window.scrollTo(0, Number(y))
+      }
+      sessionStorage.removeItem('homeY')
+    }, 350)
+    return () => window.clearTimeout(timer)
+  }, [lenis])
+
   return (
-    <ProjectDialogProvider>
+    <main key={lang}>
+      <Hero />
+      <MorphMoment />
+      <SwipeDeck />
+      <Impact />
+      <Feats />
+      <AiSpotlight />
+      <ProjectIndex />
+      <About />
+      <Passions />
+      <Contact />
+    </main>
+  )
+}
+
+function Shell() {
+  const { lang } = useLang()
+  const t = useT()
+  const { pathname } = useLocation()
+  const webgl = useWebGLSupport()
+  return (
+    <>
       <a
         href="#impact"
         className="sr-only z-[70] rounded-md bg-paper px-4 py-2 text-ink focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
@@ -37,7 +81,7 @@ function Site() {
         {t.nav.skip}
       </a>
       <PaperBackground />
-      <ScrollFx deps={lang} />
+      <ScrollFx deps={`${lang}${pathname}`} />
       <Nav />
       <ClickSpark
         sparkColor={['#254dff', '#f05235', '#d9f05a', '#20211f']}
@@ -48,20 +92,14 @@ function Site() {
         layer="front"
         className="!h-auto"
       >
-        <main key={lang}>
-          <Hero />
-          <MorphMoment />
-          <SwipeDeck />
-          <Impact />
-          <Feats />
-          <AiSpotlight />
-          <ProjectIndex />
-          <About />
-          <Passions />
-          <Contact />
-        </main>
+        {webgl && (
+          <Suspense fallback={null}>
+            <SiteScene />
+          </Suspense>
+        )}
+        <Outlet />
       </ClickSpark>
-    </ProjectDialogProvider>
+    </>
   )
 }
 
@@ -69,7 +107,13 @@ export default function App() {
   return (
     <LangProvider>
       <SmoothScroll>
-        <Site />
+        <Routes>
+          <Route element={<Shell />}>
+            <Route index element={<Home />} />
+            <Route path="projets/:slug" element={<ProjectPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
       </SmoothScroll>
     </LangProvider>
   )

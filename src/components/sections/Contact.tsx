@@ -7,6 +7,7 @@ import { useWebGLSupport } from '../../hooks/useWebGLSupport'
 import { RevealText } from '../ui/RevealText'
 import { LiveClock } from '../ui/LiveClock'
 import { ShimmerButton } from '../vendor/magicui/shimmer-button'
+import { Anchor } from '../three/Anchor'
 
 const ChromeFlow = lazy(() => import('../three/ChromeFlow'))
 
@@ -34,6 +35,8 @@ export function Contact() {
 
   return (
     <section id="contact" className="relative px-[var(--gutter)] pt-32 pb-6 md:pt-44">
+      <Anchor kind="knot" className="top-[3%] right-[8%] w-[15vw] max-md:right-[6%] max-md:w-[34vw]" par={0.1} tilt={0.7} />
+      <Anchor kind="orb" className="top-[10%] left-[10%] w-[8vw] max-md:hidden" par={0.25} />
       {/* Grand panneau cobalt arrondi : le seul aplat coloré plein du site, pour marquer la fin. */}
       <div className="relative isolate overflow-hidden rounded-[clamp(36px,5vw,72px)] bg-signal px-[clamp(1.5rem,5vw,5rem)] py-[clamp(3rem,8vw,7rem)] text-ink">
         {webgl && (

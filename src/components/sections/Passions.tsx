@@ -5,8 +5,9 @@ import type { Project } from '../../data/projects'
 import { useProjects } from '../../i18n/useProjects'
 import { TitleParts, useT } from '../../i18n/useT'
 import { SectionHeading } from '../ui/SectionHeading'
-import { useOpenProject } from '../lab/ProjectDialog'
+import { useOpenProject } from '../../lib/useOpenProject'
 import { cn } from '../../lib/cn'
+import { Anchor } from '../three/Anchor'
 import { motion } from 'motion/react'
 
 type Tile = { id: string; className: string; imgClass?: string; hoverShot?: number }
@@ -94,6 +95,9 @@ export function Passions() {
 
   return (
     <section ref={root} id="passions" className="relative overflow-hidden py-32 md:py-48">
+      <Anchor kind="ring" className="top-[2%] right-[6%] w-[12vw] max-md:w-[24vw]" par={0.2} />
+      <Anchor kind="slab" className="bottom-[3%] left-[3%] w-[9vw] max-md:hidden" par={0.15} />
+      <Anchor kind="sat-red" className="top-[34%] left-[3%] w-[3vw] max-md:hidden" par={0.3} />
       <div className="px-[var(--gutter)]">
         <SectionHeading
           index="06"

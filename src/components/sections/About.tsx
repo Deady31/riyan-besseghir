@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { gsap, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { SectionHeading } from '../ui/SectionHeading'
+import { Anchor } from '../three/Anchor'
 import { TitleParts, useT } from '../../i18n/useT'
 
 export function About() {
@@ -35,6 +36,9 @@ export function About() {
 
   return (
     <section ref={root} id="about" className="relative px-[var(--gutter)] py-32 md:py-48">
+      <Anchor kind="form-cobalt" className="top-[10%] right-[3%] w-[16vw] max-md:w-[30vw]" par={0.15} />
+      <Anchor kind="sat-chrome" className="bottom-[10%] left-[44%] w-[3vw] max-md:hidden" par={0.3} />
+      <Anchor kind="cube-chrome" className="top-[56%] left-[1.5%] w-[3.6vw] max-md:hidden" par={0.3} />
       <SectionHeading index="05" label={a.label} title={<TitleParts parts={a.title} />} />
 
       <div>

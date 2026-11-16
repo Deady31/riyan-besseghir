@@ -5,8 +5,9 @@ import type { Project } from '../../data/projects'
 import { useProjects } from '../../i18n/useProjects'
 import { TitleParts, useT } from '../../i18n/useT'
 import { SectionHeading } from '../ui/SectionHeading'
-import { useOpenProject } from '../lab/ProjectDialog'
+import { useOpenProject } from '../../lib/useOpenProject'
 import { cn } from '../../lib/cn'
+import { Anchor } from '../three/Anchor'
 import { AfkSkater } from './AfkSkater'
 
 const DECK_IDS = ['fooder', 'chatbot-cv', 'finger', 'departs', 'lio', 'one-piece', 'derniere-note', 'ps2-skater'] as const
@@ -154,6 +155,9 @@ export function SwipeDeck() {
 
   return (
     <section id="deck" className="relative overflow-hidden px-[var(--gutter)] py-28 md:py-40" aria-label={t.deck.label}>
+      <Anchor kind="form-cobalt" className="top-[6%] right-[5%] w-[17vw] max-md:w-[34vw]" par={0.15} />
+      <Anchor kind="cube-chrome" className="bottom-[10%] left-[3%] w-[5vw] max-md:hidden" par={0.3} />
+      <Anchor kind="sat-red" className="top-[44%] right-[9%] w-[3.2vw] max-md:hidden" par={0.35} />
       <SectionHeading index="00" label={t.deck.label} title={<TitleParts parts={t.deck.title} />} intro={t.deck.intro} />
 
       <div className="grid items-start gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">

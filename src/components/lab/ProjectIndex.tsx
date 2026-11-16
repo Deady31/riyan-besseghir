@@ -5,9 +5,10 @@ import type { Category } from '../../data/projects'
 import { useProjects } from '../../i18n/useProjects'
 import { TitleParts, useT } from '../../i18n/useT'
 import { SectionHeading } from '../ui/SectionHeading'
-import { useOpenProject } from './ProjectDialog'
+import { useOpenProject } from '../../lib/useOpenProject'
 import { CATEGORY_TINT, ProjectCard, rarity } from './ProjectCard'
 import { cn } from '../../lib/cn'
+import { Anchor } from '../three/Anchor'
 
 const ORDER: Category[] = ['consumer', 'ia', 'outils', 'jeux', 'pm', 'clients']
 const PAGE = 9
@@ -60,6 +61,9 @@ export function ProjectIndex() {
 
   return (
     <section ref={root} id="lab" className="relative px-[var(--gutter)] py-32 md:py-44">
+      <Anchor kind="orb" className="top-[3%] right-[4%] w-[12vw] max-md:w-[24vw]" par={0.2} />
+      <Anchor kind="form-vermilion" className="bottom-[2%] left-[2%] w-[12vw] max-md:hidden" par={0.15} />
+      <Anchor kind="slab" className="top-[40%] right-[1.5%] w-[7vw] max-md:hidden" par={0.25} />
       <SectionHeading
         index="04"
         label={t.index.label}

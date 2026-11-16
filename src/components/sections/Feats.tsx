@@ -4,6 +4,7 @@ import { gsap, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { useContent } from '../../data/profile'
 import { TitleParts, useT } from '../../i18n/useT'
 import { BigTile } from '../ui/BigTile'
+import { Anchor } from '../three/Anchor'
 import { SectionHeading } from '../ui/SectionHeading'
 import { RevealText } from '../ui/RevealText'
 
@@ -60,6 +61,9 @@ export function Feats() {
 
   return (
     <section ref={root} id="hauts-faits" className="relative py-32 md:py-48">
+      <Anchor kind="orb" className="top-[6%] right-[4%] w-[13vw] max-md:w-[26vw]" par={0.2} />
+      <Anchor kind="cube-cobalt" className="top-[52%] left-[2%] w-[4vw] max-md:hidden" par={0.3} />
+      <Anchor kind="form-vermilion" className="bottom-[4%] right-[3%] w-[13vw] max-md:hidden" par={0.15} />
       <div className="px-[var(--gutter)]">
         <SectionHeading index="02" label={t.feats.label} title={<TitleParts parts={t.feats.title} />} />
       </div>

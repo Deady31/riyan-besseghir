@@ -5,6 +5,7 @@ import { useContent } from '../../data/profile'
 import { TitleParts, useT } from '../../i18n/useT'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Counter } from '../ui/Counter'
+import { Anchor } from '../three/Anchor'
 import { BigTile, type Tone } from '../ui/BigTile'
 
 const STAT_TONES: Tone[] = ['paper', 'cobalt', 'vermilion', 'acid']
@@ -71,6 +72,10 @@ export function Impact() {
 
   return (
     <section ref={root} id="impact" className="relative px-[var(--gutter)] py-32 md:py-48">
+      <Anchor kind="slab" className="top-[7%] left-[3%] w-[11vw] max-md:hidden" par={0.12} />
+      <Anchor kind="ring" className="top-[34%] right-[3%] w-[9vw] max-md:hidden" par={0.25} />
+      <Anchor kind="form-chrome" className="bottom-[8%] left-[2%] w-[13vw] max-md:hidden" par={0.2} />
+      <Anchor kind="sat-red" className="top-[62%] right-[6%] w-[3vw] max-md:hidden" par={0.35} />
       <SectionHeading index="01" align="right" label={t.impact.label} title={<TitleParts parts={t.impact.title} />} />
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-16">

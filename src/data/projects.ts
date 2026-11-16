@@ -385,9 +385,9 @@ export const PROJECTS: Project[] = [
   {
     id: 'tiktok-shop',
     title: 'Case study TikTok Shop',
-    tagline: 'L’API TikTok Shop dans l’OMS de Shippingbo, de zéro à la prod.',
+    tagline: 'L’API TikTok Shop dans l’OMS de Shippingbo.',
     description:
-      'Chez Shippingbo, intégration de l’API TikTok Shop en tant que partenaire officiel 3P, pour synchroniser commandes, stock et retours en temps réel. Rôle PM/PO, 3 mois du design à la prod : architecture event-driven par webhooks, PRD de A à Z, gestion des erreurs (retries, dead letter queue). Résultats : 95 % de commandes synchronisées, −60 % d’erreurs de traitement, webhooks sous 2 secondes.',
+      'Chez Shippingbo, intégration de l’API TikTok Shop dans le cadre du partenariat officiel 3P : flux multi-marchés, mapping du catalogue et commandes B2C.',
     category: 'pm',
     stack: ['API REST', 'Webhooks', 'OMS', 'PRD'],
     status: 'Livré',

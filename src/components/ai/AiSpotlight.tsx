@@ -7,9 +7,10 @@ import { SectionHeading } from '../ui/SectionHeading'
 import { Tags } from '../ui/Tags'
 import { ProjectLinks } from '../ui/ProjectLinks'
 import { ShotFrame } from '../ui/ShotFrame'
-import { useOpenProject } from '../lab/ProjectDialog'
+import { useOpenProject } from '../../lib/useOpenProject'
 import { ChatDemo } from './ChatDemo'
 import { cn } from '../../lib/cn'
+import { Anchor } from '../three/Anchor'
 
 function FeatureCard({ project, index, wide }: { project: Project; index: number; wide?: boolean }) {
   const open = useOpenProject()
@@ -105,6 +106,8 @@ export function AiSpotlight() {
 
   return (
     <section ref={root} id="ia" className="relative py-32 md:py-48">
+      <Anchor kind="knot" className="top-[2%] left-[3%] w-[15vw] max-md:w-[34vw]" par={0.1} tilt={0.8} />
+      <Anchor kind="ring" className="bottom-[6%] right-[3%] w-[11vw] max-md:hidden" par={0.2} />
       <div className="px-[var(--gutter)]">
         <SectionHeading
           index="03"
