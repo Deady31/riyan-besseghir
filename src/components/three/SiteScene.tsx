@@ -391,7 +391,7 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
     // Rien ne dépend du curseur : un objet ne bouge que si on le touche, l'attrape ou défile la page.
     const px = 0
     const py = 0
-    const bob = reduced ? 0 : Math.sin(t * (0.7 + seed * 0.13) + seed) * 0.08 * (1 - stageBlend)
+    const bob = reduced ? 0 : Math.sin(t * (0.3 + seed * 0.02) + seed) * 0.06 * (1 - stageBlend)
     const free = 1 - stageBlend
 
     // Corps physique : dérive libre, ressort de retour, rebonds sur les bords, répulsion entre objets, écrasement.
@@ -399,8 +399,8 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
     let dispY = 0
     if (b) {
       const k = Math.min(dt, 0.033)
-      const wx = Math.sin(t * 0.23 + seed * 2.1) * r.width * 0.1
-      const wy = Math.cos(t * 0.19 + seed * 1.3) * r.width * 0.08
+      const wx = Math.sin(t * 0.12 + seed * 2.1) * r.width * 0.07
+      const wy = Math.cos(t * 0.1 + seed * 1.3) * r.width * 0.06
       const parX = (px * 0.22 * (1 + seed * 0.1)) / upp
       const parY = off * vh * par + (py * 0.14) / upp
       if (b.held) {
@@ -493,12 +493,13 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
       g.rotation.x = (off * 0.4 + 0.06) * calm
       g.rotation.z = (reduced ? 0 : Math.sin(t * 0.4 + seed) * 0.04) * calm
     } else if (life) {
-      g.rotation.y = def.rot[1] + (reduced ? 0 : Math.sin(t * def.spin + seed * 1.7) * 0.36) + off * 0.45 * tilt + px * 0.2 + spinY
-      g.rotation.x = def.rot[0] + (reduced ? 0 : Math.sin(t * 0.37 + seed) * 0.12) + off * 0.3 * tilt - py * 0.12 + spinX
-      g.rotation.z = def.rot[2] + (reduced ? 0 : Math.sin(t * 0.3 + seed * 2.3) * 0.1)
+      // Flottement lent : un léger balancement autour de la pose, rien qui tourne.
+      g.rotation.y = def.rot[1] + (reduced ? 0 : Math.sin(t * 0.16 + seed * 1.7) * 0.14) + off * 0.12 * tilt + spinY
+      g.rotation.x = def.rot[0] + (reduced ? 0 : Math.sin(t * 0.13 + seed) * 0.05) + spinX
+      g.rotation.z = def.rot[2] + (reduced ? 0 : Math.sin(t * 0.1 + seed * 2.3) * 0.04)
     } else {
-      g.rotation.y = (reduced ? 0 : t * def.spin * (seed % 2 ? 1 : -1)) + off * def.scroll * 2.2 * tilt + px * 0.25 + spinY
-      g.rotation.x = off * 0.6 * tilt - py * 0.15 + spinX
+      g.rotation.y = (reduced ? 0 : Math.sin(t * 0.14 + seed) * 0.35 * (seed % 2 ? 1 : -1)) + off * 0.2 * tilt + spinY
+      g.rotation.x = (reduced ? 0 : Math.sin(t * 0.11 + seed * 1.9) * 0.08) + spinX
     }
   })
 
@@ -569,7 +570,7 @@ function FrameDriver({ reduced, anchors }: { reduced: boolean; anchors: AnchorRe
         window.removeEventListener('resize', redraw)
       }
     }
-    const cap = window.matchMedia('(max-width: 767px)').matches ? 1.25 : 1.6
+    const cap = window.matchMedia('(max-width: 767px)').matches ? 1.1 : 1.3
     const base = Math.min(window.devicePixelRatio || 1, cap)
     let scale = 1
     const near = new Set<Element>()
@@ -613,7 +614,7 @@ function FrameDriver({ reduced, anchors }: { reduced: boolean; anchors: AnchorRe
         last = 0
         return
       }
-      const idle = !busy && now - lastActivity > 3000
+      const idle = !busy && now - lastActivity > 1200
       frameNo++
       if (idle && frameNo % 2 === 1) return
       invalidate()
@@ -690,7 +691,7 @@ export default function SiteScene({ layer = 'back' }: { layer?: 'back' | 'front'
     <div className={layer === 'front' ? 'pointer-events-none fixed inset-0 z-[40]' : 'pointer-events-none fixed inset-0 z-[15]'} aria-hidden="true">
       <Canvas
         flat
-        dpr={[1, mobile ? 1.25 : 1.6]}
+        dpr={[1, mobile ? 1.1 : 1.3]}
         frameloop="demand"
         gl={{ alpha: true, antialias: true }}
         camera={{ fov: FOV, near: 0.1, far: 60, position: [0, 0, CAM_Z] }}

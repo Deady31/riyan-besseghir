@@ -39,6 +39,8 @@ const SCENE = 4
 
 type SceneDef = { key: string; veil: number; flip?: boolean }
 type Zone = {
+  /** Transition à l'ENTRÉE de ce chapitre : 'plates' (impression par plaques, par défaut) ou 'glass' (verre cannelé). */
+  enter?: 'plates' | 'glass'
   kind: number
   dark: boolean
   tone: [number, number, number]
@@ -46,8 +48,8 @@ type Zone = {
   b: [number, number, number]
   scene?: SceneDef
 }
-const zone = (kind: number, tone: string, a: string, b: string, dark = false, scene?: SceneDef): Zone => ({
-  kind, dark, tone: rgb(tone), a: rgb(a), b: rgb(b), scene,
+const zone = (kind: number, tone: string, a: string, b: string, dark = false, scene?: SceneDef, enter?: Zone['enter']): Zone => ({
+  kind, dark, tone: rgb(tone), a: rgb(a), b: rgb(b), scene, enter,
 })
 
 const COBALT_SOFT = '#7f9bff'
@@ -64,13 +66,13 @@ const ZONES: Record<string, Zone> = {
   top: zone(PAPER, IVORY, COBALT_SOFT, ACID, false, { key: 'intro', veil: 0.68 }),
   morph: zone(LIQUID, '#050a3a', COBALT, IVORY, true),
   deck: zone(HALFTONE, '#e9dfc7', VERMILION, ACID, false, { key: 'vague', veil: 0.58 }),
-  impact: zone(PAPER, IVORY, COBALT_SOFT, ACID),
+  impact: zone(PAPER, IVORY, COBALT_SOFT, ACID, false, undefined, 'glass'),
   'hauts-faits': zone(PAPER, '#e3e8f6', COBALT_SOFT, CHROME),
-  studio: zone(PAPER, '#eaefc9', ACID, COBALT_SOFT),
+  studio: zone(PAPER, '#eaefc9', ACID, COBALT_SOFT, false, undefined, 'glass'),
   ia: zone(NIGHT, '#08090e', COBALT, VERMILION, true, { key: 'nuit', veil: 0.3 }),
   lab: zone(PAPER, IVORY, VERMILION, ACID),
   about: zone(HALFTONE, '#e9dfc7', COBALT, ACID),
-  passions: zone(HALFTONE, '#f3dccd', VERMILION, ACID),
+  passions: zone(HALFTONE, '#f3dccd', VERMILION, ACID, false, undefined, 'glass'),
   contact: zone(NIGHT, '#08090e', COBALT, VERMILION, true),
 }
 
@@ -95,6 +97,7 @@ uniform vec3 uA[N];
 uniform vec3 uB[N];
 uniform float uKind[N];
 uniform float uBurn[N];
+uniform float uTrans[N];
 uniform float uBound[N];
 uniform float uSlot[N];
 uniform float uVeil[N];
@@ -260,6 +263,7 @@ void main() {
 
   float jf = 0.0;
   float kk = 0.0;
+  float tg = 0.0;
   float burn = 0.0;
   float dB = 0.0;
   for (int i = 0; i < N - 1; i++) {
@@ -270,7 +274,7 @@ void main() {
     } else {
       float d = docY + warp - uBound[i];
       if (d > hw) jf += 1.0;
-      else if (d > -hw) kk = smoothstep(-hw, hw, d);
+      else if (d > -hw) { kk = smoothstep(-hw, hw, d); tg = uTrans[i]; }
     }
   }
 
@@ -293,12 +297,32 @@ void main() {
     }
   }
 
-  vec3 col = world(k0, p, docY, t, t0, a0, b0, s0, top0, bot0, f0, v0);
+  // Verre cannelé : l'image est vue à travers des cannelures verticales qui la déforment de plus en plus au cœur de la
+  // transition ; chaque cannelure bascule à son propre moment (le passage se fait en vagues), avec reflets sur les arêtes.
+  vec2 pw = p;
+  float flute = 0.0;
+  float glassAmp = 0.0;
+  float flutes = 0.0;
+  if (kk > 0.002 && tg > 0.5) {
+    float stripW = max(14.0, uView.x / 46.0);
+    float cell = floor(p.x / stripW);
+    flute = fract(p.x / stripW) - 0.5;
+    glassAmp = sin(clamp(kk, 0.0, 1.0) * 3.14159265);
+    pw.x = p.x + flute * stripW * 1.9 * glassAmp;
+    flutes = hash(vec2(cell, 3.7));
+  }
+  vec3 col = world(k0, pw, docY, t, t0, a0, b0, s0, top0, bot0, f0, v0);
   if (kk > 0.002) {
-    vec3 col1 = world(k1, p, docY, t, t1, a1, b1, s1, top1, bot1, f1, v1);
+    vec3 col1 = world(k1, pw, docY, t, t1, a1, b1, s1, top1, bot1, f1, v1);
     bool newScene = k1 > 3.5;
     bool oldScene = k0 > 3.5;
-    if (newScene || oldScene) {
+    if (tg > 0.5) {
+      float m = smoothstep(0.28 + flutes * 0.22, 0.58 + flutes * 0.22, kk);
+      col = mix(col, col1, m);
+      float lens = 1.0 - flute * flute * 4.0;
+      col *= 1.0 + 0.1 * glassAmp * (lens - 0.5);
+      col = mix(col, vec3(1.0), 0.2 * smoothstep(0.43, 0.5, abs(flute)) * glassAmp);
+    } else if (newScene || oldScene) {
       // L'estampe s'imprime plaque par plaque (ou se décolle dans l'ordre inverse), avec un bord irrégulier et de l'encre fraîche.
       float slot = newScene ? s1 : s0;
       vec2 uv = newScene ? sceneUv(s1, p, top1, bot1, f1) : sceneUv(s0, p, top0, bot0, f0);
@@ -375,6 +399,7 @@ export function BurnBackdrop({ deps }: { deps: string }) {
         uB: { value: flat((z) => z.b, [ZONES.default]) },
         uKind: { value: new Array(N).fill(0) },
         uBurn: { value: new Array(N).fill(0) },
+        uTrans: { value: new Array(N).fill(0) },
         uBound: { value: new Array(N).fill(1e9) },
         uSlot: { value: new Array(N).fill(-1) },
         uVeil: { value: new Array(N).fill(0.5) },
@@ -494,6 +519,7 @@ export function BurnBackdrop({ deps }: { deps: string }) {
       sectionZones = sections.map((s) => ZONES[s.id] ?? ZONES.default)
       const bounds = new Array(N).fill(1e9)
       const burn = new Array(N).fill(0)
+      const trans = new Array(N).fill(0)
       const tops = new Array(N).fill(0)
       const bots = new Array(N).fill(1)
       const veil = new Array(N).fill(0.5)
@@ -506,6 +532,7 @@ export function BurnBackdrop({ deps }: { deps: string }) {
         if (i > 0) {
           bounds[i - 1] = top
           burn[i - 1] = sectionZones[i - 1].dark !== sectionZones[i].dark ? 1 : 0
+          trans[i - 1] = sectionZones[i].enter === 'glass' ? 1 : 0
         }
         veil[i] = sectionZones[i].scene?.veil ?? 0.5
         flip[i] = sectionZones[i].scene?.flip ? 1 : 0
@@ -515,6 +542,7 @@ export function BurnBackdrop({ deps }: { deps: string }) {
       u.uA.value = flat((z) => z.a, sectionZones)
       u.uB.value = flat((z) => z.b, sectionZones)
       u.uBurn.value = burn
+      u.uTrans.value = trans
       u.uBound.value = bounds
       u.uTop.value = tops
       u.uBot.value = bots

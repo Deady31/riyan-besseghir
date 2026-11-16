@@ -9,7 +9,7 @@ import { prefersReducedMotion } from '../../lib/motion'
  *  - une impulsion d'entrée accélère tout quand le chapitre apparaît, puis le flux retombe en dérive lente ;
  *  - défiler la page donne une brève poussée vers l'avant ;
  *  - mouvement réduit : composition fixe, sans boucle.
- * Ressources : vignettes de 10 à 25 Ko (scripts/make-depth-thumbs.mjs), 26 cartes sur ordinateur et 14 sur mobile ;
+ * Ressources : vignettes de 10 à 25 Ko (scripts/make-depth-thumbs.mjs), 9 cartes sur ordinateur et 5 sur mobile ;
  * la boucle ne tourne que lorsque le chapitre est à l'écran et l'onglet visible ; seuls transform et opacity changent.
  */
 type Item = { id: string; w: number; h: number }
@@ -31,7 +31,7 @@ const spawn = (c: Card, z: number) => {
 export function DepthField({ className }: { className?: string }) {
   const root = useRef<HTMLDivElement>(null)
   const mobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
-  const count = Math.min(ITEMS.length, mobile ? 14 : 26)
+  const count = Math.min(ITEMS.length, mobile ? 5 : 9)
   const picked = useMemo(() => [...ITEMS].sort(() => Math.random() - 0.5).slice(0, count), [count])
 
   useEffect(() => {
@@ -40,7 +40,8 @@ export function DepthField({ className }: { className?: string }) {
     const nodes = [...el.children] as HTMLElement[]
     const cards: Card[] = nodes.map((_, i) => {
       const c = { angle: 0, radius: 0, z: 0, mul: 1 }
-      spawn(c, (i + Math.random() * 0.8) / nodes.length)
+      // la première carte est déjà en route ; les suivantes attendent leur tour, une toutes les 2 ou 3 secondes
+      spawn(c, 0.3 - (i / nodes.length) * 1.05)
       return c
     })
     const reduced = prefersReducedMotion()
@@ -66,11 +67,11 @@ export function DepthField({ className }: { className?: string }) {
       const cy = h / 2
       for (let i = 0; i < nodes.length; i++) {
         const c = cards[i]
-        const g = Math.pow(c.z, 1.8)
+        const g = Math.pow(Math.max(0, c.z), 1.8)
         const R = c.radius * vmin * (0.12 + 1.5 * g)
         const th = c.angle + rot
         const width = picked[i].w
-        const sc = (vmin * 0.2 * base(i) * (0.1 + 2.3 * g)) / width
+        const sc = (vmin * 0.15 * base(i) * (0.1 + 2.0 * g)) / width
         const x = cx + Math.cos(th) * R
         const y = cy + Math.sin(th) * R
         // le centre se dégage, les cartes naissent et s'éteignent en douceur
@@ -83,6 +84,8 @@ export function DepthField({ className }: { className?: string }) {
     }
 
     if (reduced) {
+      // composition fixe : quelques cartes posées à des profondeurs différentes
+      cards.forEach((c, i) => spawn(c, 0.35 + (i / nodes.length) * 0.5))
       draw(0)
       return () => ro.disconnect()
     }
@@ -102,12 +105,12 @@ export function DepthField({ className }: { className?: string }) {
       const dt = Math.min((now - (last || now)) / 1000, 0.05)
       last = now
       // impulsion d'entrée : forte au début, retombe en 2,8 s
-      const burst = entryAt < 0 ? 0 : 26 * Math.pow(Math.max(0, 1 - (now - entryAt) / 2800), 2)
+      const burst = entryAt < 0 ? 0 : 7 * Math.pow(Math.max(0, 1 - (now - entryAt) / 3600), 2)
       const sy = window.scrollY
-      boost += (Math.min(30, (Math.abs(sy - lastScroll) / Math.max(dt, 0.001)) * 0.012) - boost) * 0.12
+      boost += (Math.min(12, (Math.abs(sy - lastScroll) / Math.max(dt, 0.001)) * 0.006) - boost) * 0.1
       lastScroll = sy
-      const speed = 0.085 + (burst + boost) * 0.012
-      rot += ((11 * Math.PI) / 180) * dt * (1 + burst * 0.03)
+      const speed = 0.042 + (burst + boost) * 0.008
+      rot += ((5 * Math.PI) / 180) * dt * (1 + burst * 0.03)
       for (const c of cards) {
         c.z += speed * dt * c.mul
         if (c.z >= 1) spawn(c, c.z - 1)
