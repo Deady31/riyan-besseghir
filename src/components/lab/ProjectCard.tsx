@@ -60,15 +60,15 @@ export function ProjectCard({ project, number, total, categoryLabel, onOpen }: P
       onPointerLeave={onLeave}
       className={cn('tcg group relative block w-full text-left', level === 3 && 'tcg-holo')}
     >
-      <span className="tcg-inner flex h-full flex-col overflow-hidden rounded-[18px] border-[2.5px] border-line bg-graphite">
-        <span className={cn('flex items-center justify-between border-b-[2.5px] border-line px-3 py-2', CATEGORY_TINT[project.category])}>
+      <span className="tcg-inner flex h-full flex-col overflow-hidden rounded-[18px] border border-line bg-graphite">
+        <span className={cn('flex items-center justify-between border-b border-line px-3 py-2', CATEGORY_TINT[project.category])}>
           <span className="label truncate text-[10px]">{categoryLabel}</span>
           <span className="label shrink-0 text-[10px]" aria-label={`${level} / 3`}>
             {'★'.repeat(level)}
             <span className="opacity-30">{'★'.repeat(3 - level)}</span>
           </span>
         </span>
-        <span className="relative block aspect-[4/3] overflow-hidden border-b-[2.5px] border-line bg-graphite-2">
+        <span className="relative block aspect-[4/3] overflow-hidden border-b border-line bg-graphite-2">
           {shot ? (
             <img
               src={shot.src}

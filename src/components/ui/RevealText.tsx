@@ -1,9 +1,9 @@
-import { useRef, type ElementType, type ReactNode } from 'react'
+import { useRef, type ReactNode } from 'react'
 import { gsap, SplitText, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { cn } from '../../lib/cn'
 
 type Props = {
-  as?: ElementType
+  as?: 'p' | 'h2' | 'h3' | 'div' | 'span'
   children: ReactNode
   className?: string
   delay?: number
@@ -36,9 +36,11 @@ export function RevealText({ as: Tag = 'p', children, className, delay = 0, imme
     { scope: ref },
   )
 
+  // Typage volontairement large : les éléments JSX de React Three Fiber rendent `ElementType` inutilisable ici.
+  const El = Tag as unknown as 'div'
   return (
-    <Tag ref={ref} className={cn(className)}>
+    <El ref={ref as React.RefObject<HTMLDivElement>} className={cn(className)}>
       {children}
-    </Tag>
+    </El>
   )
 }

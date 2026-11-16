@@ -25,12 +25,12 @@ function DeckCard({ project, tint, depth }: { project: Project; tint: string; de
   const mobile = shot?.frame === 'mobile'
   return (
     <div
-      className="absolute inset-0 flex flex-col overflow-hidden rounded-[28px] border-[3px] border-line bg-graphite shadow-[8px_8px_0_0_#2b0f3a]"
+      className="absolute inset-0 flex flex-col overflow-hidden rounded-[28px] border border-line bg-graphite shadow-[var(--shadow-card)]"
       style={{
         transform: `translateY(${depth * 14}px) scale(${1 - depth * 0.05}) rotate(${depth === 0 ? 0 : depth % 2 ? 3 : -3}deg)`,
       }}
     >
-      <div className={cn('relative min-h-0 flex-1 overflow-hidden border-b-[3px] border-line', tint)}>
+      <div className={cn('relative min-h-0 flex-1 overflow-hidden border-b border-line', tint)}>
         {shot && (
           <img
             src={shot.src}
@@ -40,7 +40,7 @@ function DeckCard({ project, tint, depth }: { project: Project; tint: string; de
             className={cn(
               'pointer-events-none select-none',
               mobile
-                ? 'absolute top-6 left-1/2 w-[46%] -translate-x-1/2 rounded-[18px] border-[3px] border-line shadow-[5px_5px_0_0_#2b0f3a]'
+                ? 'absolute top-6 left-1/2 w-[46%] -translate-x-1/2 rounded-[18px] border border-line shadow-[var(--shadow-card)]'
                 : 'size-full object-cover object-top',
             )}
           />

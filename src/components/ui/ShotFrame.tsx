@@ -4,7 +4,7 @@ import { cn } from '../../lib/cn'
 export function ShotFrame({ shot, className, eager = false }: { shot: Shot; className?: string; eager?: boolean }) {
   if (shot.frame === 'mobile') {
     return (
-      <div className={cn('overflow-hidden rounded-[26px] border-2 border-line bg-graphite p-1.5 shadow-[4px_4px_0_0_#2b0f3a]', className)}>
+      <div className={cn('overflow-hidden rounded-[26px] border-2 border-line bg-graphite p-1.5 shadow-[var(--shadow-card)]', className)}>
         <img
           src={shot.src}
           alt={shot.alt}
@@ -18,7 +18,7 @@ export function ShotFrame({ shot, className, eager = false }: { shot: Shot; clas
     )
   }
   return (
-    <div className={cn('overflow-hidden rounded-xl border-2 border-line bg-graphite shadow-[4px_4px_0_0_#2b0f3a]', className)}>
+    <div className={cn('overflow-hidden rounded-xl border-2 border-line bg-graphite shadow-[var(--shadow-card)]', className)}>
       <div className="flex items-center gap-1.5 border-b-2 border-line bg-graphite-2 px-3 py-2" aria-hidden="true">
         <span className="size-2.5 rounded-full border border-line bg-bubblegum" />
         <span className="size-2.5 rounded-full border border-line bg-lemon" />

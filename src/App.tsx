@@ -4,7 +4,6 @@ import { ScrollTrigger } from './lib/motion'
 import { LangProvider, useLang } from './i18n/LangProvider'
 import { useT } from './i18n/useT'
 import { Nav } from './components/layout/Nav'
-import { PortraitField } from './components/layout/PortraitField'
 import { Hero } from './components/hero/Hero'
 import { SwipeDeck } from './components/deck/SwipeDeck'
 import { Impact } from './components/sections/Impact'
@@ -16,6 +15,8 @@ import { Passions } from './components/sections/Passions'
 import { About } from './components/sections/About'
 import { Contact } from './components/sections/Contact'
 import { ProjectDialogProvider } from './components/lab/ProjectDialog'
+import Aurora from './components/night/Aurora'
+import { ScrollFx } from './components/night/ScrollFx'
 
 function Site() {
   const { lang } = useLang()
@@ -34,7 +35,8 @@ function Site() {
       >
         {t.nav.skip}
       </a>
-      <PortraitField />
+      <Aurora />
+      <ScrollFx deps={lang} />
       <Nav />
       <main key={lang}>
         <Hero />

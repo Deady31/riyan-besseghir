@@ -71,7 +71,7 @@ export function Impact() {
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-16">
         <figure>
-          <div data-product-shot className="overflow-hidden rounded-[20px] bg-[#dff6fb]">
+          <div data-product-shot data-reveal-img className="overflow-hidden rounded-[20px] bg-[#dff6fb]">
             <img
               src="/media/shippingbo/shippingbo-intelligence.webp"
               alt={product.alt}

@@ -1,7 +1,6 @@
 import { useRef } from 'react'
 import { gsap, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { SectionHeading } from '../ui/SectionHeading'
-import { RevealText } from '../ui/RevealText'
 import { TitleParts, useT } from '../../i18n/useT'
 
 export function About() {
@@ -40,7 +39,7 @@ export function About() {
 
       <div>
         <div className="grid gap-14 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-24">
-          <figure data-about-photo className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-graphite">
+          <figure data-about-photo data-reveal-img className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-graphite">
             <img
               src="/media/about-portrait.webp"
               alt={a.photoAlt}
@@ -52,7 +51,7 @@ export function About() {
           </figure>
 
           <div>
-            <RevealText className="text-[clamp(1.35rem,1rem+0.9vw,2rem)] leading-[1.2] tracking-[-0.02em]">{a.lead}</RevealText>
+            <p data-light className="text-[clamp(1.35rem,1rem+0.9vw,2rem)] leading-[1.2] tracking-[-0.02em]">{a.lead}</p>
             <div className="mt-8 space-y-5 text-lg leading-relaxed text-mist">
               {a.paragraphs.map((p) => (
                 <p key={p}>{p}</p>

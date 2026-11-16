@@ -1,11 +1,9 @@
-import { lazy, Suspense, useRef } from 'react'
+import { useRef } from 'react'
 import { gsap, SplitText, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { useContent } from '../../data/profile'
 import { useT } from '../../i18n/useT'
+import { ArrowUpRight } from 'lucide-react'
 import { LiveClock } from '../ui/LiveClock'
-import { HeroStickers } from './HeroStickers'
-
-const Skater3D = lazy(() => import('./Skater3D'))
 
 export function Hero() {
   const root = useRef<HTMLElement>(null)
@@ -42,15 +40,6 @@ export function Hero() {
         {PROFILE.name}, {PROFILE.role}
       </h1>
       <div data-hero-inner className="flex h-full flex-col px-[var(--gutter)] pt-28 pb-8 md:pt-32">
-        <div className="absolute inset-x-0 top-[17%] h-[42%] md:top-[8%] md:right-[3%] md:bottom-[4%] md:left-auto md:h-auto md:w-[46%]">
-          <Suspense fallback={null}>
-            <Skater3D className="size-full cursor-grab active:cursor-grabbing" />
-          </Suspense>
-          <p data-meta className="label pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 text-center whitespace-nowrap text-mist max-md:hidden">
-            {t.hero.skaterHint}
-          </p>
-        </div>
-        <HeroStickers />
         <div className="label flex flex-col gap-2 text-mist">
           <p data-meta>
             Toulouse, FR <LiveClock className="ml-2 text-paper tabular-nums" />
@@ -78,6 +67,36 @@ export function Hero() {
             <span data-meta>{t.hero.scroll}</span>
           </div>
         </div>
+        <aside
+          data-meta
+          aria-label={t.hero.now.title}
+          className="absolute top-[30%] right-[var(--gutter)] hidden w-[min(380px,30vw)] rounded-2xl border border-line bg-graphite/55 p-5 shadow-[var(--shadow-card)] backdrop-blur-md lg:block"
+        >
+          <p className="label flex items-center gap-2 text-mist">
+            <span className="relative flex size-2">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-mint opacity-60" />
+              <span className="relative inline-flex size-2 rounded-full bg-mint" />
+            </span>
+            {t.hero.now.title}
+          </p>
+          <ul className="mt-4 divide-y divide-line">
+            {t.hero.now.items.map(([k, v, href]) => (
+              <li key={k}>
+                <a
+                  href={href}
+                  {...(href.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}
+                  className="group flex items-center justify-between gap-4 py-3"
+                >
+                  <span>
+                    <span className="label block text-[10px] text-mist">{k}</span>
+                    <span className="mt-1 block text-[15px] text-paper transition-colors group-hover:text-signal-soft">{v}</span>
+                  </span>
+                  <ArrowUpRight className="size-4 shrink-0 text-mist transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-signal-soft" aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
         <p data-meta className="label absolute right-[var(--gutter)] bottom-8 hidden text-mist md:block">
           {t.hero.scroll}
         </p>
