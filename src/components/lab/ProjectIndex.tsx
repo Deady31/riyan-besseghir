@@ -68,7 +68,7 @@ export function ProjectIndex() {
       <Anchor kind="camera" className="bottom-[12%] right-[2%] w-[11vw] max-md:hidden" par={0.25} tilt={0.7} />
       <Anchor kind="puffy" className="top-[60%] left-[0.5%] w-[7vw] max-md:hidden" par={0.3} tilt={0.7} />
       <SectionHeading
-        index="04"
+        index="05"
         label={t.index.label}
         title={<TitleParts parts={t.index.title(ALL.length)} />}
         intro={t.index.intro}

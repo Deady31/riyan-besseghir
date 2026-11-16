@@ -7,7 +7,7 @@ const fr = {
     aria: 'Navigation principale',
     skip: 'Aller au contenu',
     contact: 'Me contacter',
-    links: { impact: 'Impact', 'hauts-faits': 'Hauts faits', ia: 'IA', lab: 'Index', about: 'À propos', passions: 'Passions' },
+    links: { impact: 'Impact', 'hauts-faits': 'Hauts faits', studio: 'Builder', ia: 'IA', lab: 'Index', about: 'À propos', passions: 'Passions' },
   },
   clockAria: 'Heure locale à Toulouse',
   hero: {
@@ -54,6 +54,25 @@ const fr = {
     inPrep: 'En préparation',
     classified: 'Confidentiel',
     redactedAria: 'Détails confidentiels, annonce à venir',
+  },
+  studio: {
+    label: 'Builder',
+    title: ['Je construis. ', 'Je le raconte', ' tout haut.'] as Title,
+    intro: 'Tout ce que je construis mérite d’être expliqué : pourquoi ça existe, comment ça marche, ce que j’ai décidé. Mon cap : le startup building, passer d’une idée à un produit que des gens utilisent.',
+    pillars: {
+      build: { tag: 'Construire', title: (n: number) => `${n} projets`, text: 'de l’idée au truc qui tourne : IA, apps grand public, jeux, outils.' },
+      document: { tag: 'Documenter', title: (n: number) => `${n} fiches`, text: 'une page par projet : pourquoi, comment, décisions, preuves. Rien d’inventé : ce qui n’est pas trouvé n’est pas écrit.' },
+      share: { tag: 'Partager', title: 'En public', text: 'Le code et les démos sont ouverts quand c’est possible, pour qu’on juge sur pièces.' },
+    },
+    stats: { live: 'avec une démo ou un site à essayer', code: 'avec le code ouvert sur GitHub' },
+    ambition: {
+      tag: 'Cap',
+      title: 'Startup building',
+      lines: ['Vision produit : trouver le vrai besoin avant de coder.', 'IA appliquée : agents et assistants qui servent vraiment.', 'Exécution : du prototype à la prod, seul ou en équipe.'],
+    },
+    logTitle: 'Derniers builds',
+    open: 'Ouvrir la fiche',
+    cta: { follow: 'Suivre mes builds sur LinkedIn', code: 'Voir le code sur GitHub', talk: 'Parler d’un projet' },
   },
   ai: {
     label: 'Projets IA',
@@ -145,7 +164,7 @@ const en: UI = {
     aria: 'Main navigation',
     skip: 'Skip to content',
     contact: 'Get in touch',
-    links: { impact: 'Impact', 'hauts-faits': 'Highlights', ia: 'AI', lab: 'Index', about: 'About', passions: 'Passions' },
+    links: { impact: 'Impact', 'hauts-faits': 'Highlights', studio: 'Builder', ia: 'AI', lab: 'Index', about: 'About', passions: 'Passions' },
   },
   clockAria: 'Local time in Toulouse',
   hero: {
@@ -192,6 +211,25 @@ const en: UI = {
     inPrep: 'In the works',
     classified: 'Confidential',
     redactedAria: 'Confidential details, announcement coming soon',
+  },
+  studio: {
+    label: 'Builder',
+    title: ['I build. ', 'I say it', ' out loud.'] as Title,
+    intro: 'Everything I build deserves an explanation: why it exists, how it works, what I decided. My direction: startup building, taking an idea to a product people actually use.',
+    pillars: {
+      build: { tag: 'Build', title: (n: number) => `${n} projects`, text: 'from idea to something that runs: AI, consumer apps, games, tools.' },
+      document: { tag: 'Document', title: (n: number) => `${n} write-ups`, text: 'one page per project: why, how, decisions, proof. Nothing made up: what is not found is not written.' },
+      share: { tag: 'Share', title: 'In public', text: 'Code and demos are open when possible, so you can judge on the work itself.' },
+    },
+    stats: { live: 'with a demo or site to try', code: 'with open code on GitHub' },
+    ambition: {
+      tag: 'Direction',
+      title: 'Startup building',
+      lines: ['Product vision: find the real need before writing code.', 'Applied AI: agents and assistants that actually help.', 'Execution: prototype to production, alone or in a team.'],
+    },
+    logTitle: 'Latest builds',
+    open: 'Open the write-up',
+    cta: { follow: 'Follow my builds on LinkedIn', code: 'See the code on GitHub', talk: 'Talk about a project' },
   },
   ai: {
     label: 'AI projects',

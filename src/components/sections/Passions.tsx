@@ -103,7 +103,7 @@ export function Passions() {
       <Anchor kind="vinyl" className="top-[6%] left-[16%] w-[9vw] max-md:hidden" par={0.2} tilt={0.7} />
       <div className="px-[var(--gutter)]">
         <SectionHeading
-          index="06"
+          index="07"
           label={t.passions.label}
           title={<TitleParts parts={t.passions.title} />}
           intro={t.passions.intro}

@@ -11,6 +11,7 @@ import { SwipeDeck } from './components/deck/SwipeDeck'
 import { Impact } from './components/sections/Impact'
 import { MorphMoment } from './components/sections/MorphMoment'
 import { Feats } from './components/sections/Feats'
+import { Studio } from './components/sections/Studio'
 import { AiSpotlight } from './components/ai/AiSpotlight'
 import { ProjectIndex } from './components/lab/ProjectIndex'
 import { Passions } from './components/sections/Passions'
@@ -59,6 +60,7 @@ function Home() {
       <SwipeDeck />
       <Impact />
       <Feats />
+      <Studio />
       <AiSpotlight />
       <ProjectIndex />
       <About />

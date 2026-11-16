@@ -5,7 +5,7 @@ import { cn } from '../../lib/cn'
 import { useT } from '../../i18n/useT'
 import { LangSwitch } from '../ui/LangSwitch'
 
-const IDS = ['impact', 'hauts-faits', 'ia', 'lab', 'about', 'passions'] as const
+const IDS = ['impact', 'hauts-faits', 'studio', 'ia', 'lab', 'about', 'passions'] as const
 
 export function Nav() {
   const lenis = useLenis()

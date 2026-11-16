@@ -113,7 +113,7 @@ export function AiSpotlight() {
       <Anchor kind="capsule" className="bottom-[20%] left-[2%] w-[6vw] max-md:hidden" par={0.3} />
       <div className="px-[var(--gutter)]">
         <SectionHeading
-          index="03"
+          index="04"
           align="right"
           label={t.ai.label}
           title={<TitleParts parts={t.ai.title} />}
