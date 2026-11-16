@@ -1,0 +1,20 @@
+[
+  {
+    "name": "gym-dumbbell",
+    "file": "gym-dumbbell.glb",
+    "kb": 172,
+    "triangles": 9576
+  },
+  {
+    "name": "lucky-cat",
+    "file": "lucky-cat.glb",
+    "kb": 216,
+    "triangles": 26256
+  },
+  {
+    "name": "sony-psp",
+    "file": "sony-psp.glb",
+    "kb": 185,
+    "triangles": 58200
+  }
+]

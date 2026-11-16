@@ -21,6 +21,8 @@ const inbox = join(root, 'tools', 'models', 'inbox')
 const out = join(root, 'public', 'media', '3d', 'user')
 const MAX_BYTES = 2 * 1024 * 1024
 const MAX_TRIS = 50_000
+/** Au-delà de ce nombre de triangles, le maillage est simplifié jusqu'à cette cible (un jouet 3D n'a pas besoin de plus). */
+const TARGET_TRIS = 28_000
 
 mkdirSync(inbox, { recursive: true })
 mkdirSync(out, { recursive: true })
@@ -66,14 +68,21 @@ for (const file of files) {
   try {
     // Le recentrage se fait avant la compression : l'inverse décompresserait les maillages.
     const tmp = join(out, `${name}.centered.glb`)
-    gt('center', src, tmp, '--pivot', 'center')
-    gt('optimize', tmp, dst, '--compress', 'meshopt', '--texture-compress', 'webp', '--texture-size', '1024')
-    rmSync(tmp, { force: true })
-    const bytes = statSync(dst).size
     const tris = await countTriangles(src)
+    gt('center', src, tmp, '--pivot', 'center')
+    let from = tmp
+    if (tris && tris > TARGET_TRIS) {
+      const slim = join(out, `${name}.slim.glb`)
+      gt('simplify', tmp, slim, '--ratio', String((TARGET_TRIS / tris).toFixed(3)), '--error', '0.01')
+      from = slim
+    }
+    gt('optimize', from, dst, '--compress', 'meshopt', '--texture-compress', 'webp', '--texture-size', '1024')
+    rmSync(tmp, { force: true })
+    rmSync(join(out, `${name}.slim.glb`), { force: true })
+    const bytes = statSync(dst).size
     const warn = []
     if (bytes > MAX_BYTES) warn.push(`${(bytes / 1048576).toFixed(1)} Mo (> 2 Mo)`)
-    if (tris && tris > MAX_TRIS) warn.push(`${tris} triangles (> ${MAX_TRIS})`)
+    if (tris && tris > MAX_TRIS) warn.push(`${tris} triangles simplifiés vers ${TARGET_TRIS}`)
     console.log(`${(bytes / 1024).toFixed(0)} Ko${tris ? `, ${tris} triangles` : ''}${warn.length ? `  ⚠ ${warn.join(', ')}` : '  ✓'}`)
     index.push({ name, file: `${name}.glb`, kb: Math.round(bytes / 1024), triangles: tris })
   } catch (e) {

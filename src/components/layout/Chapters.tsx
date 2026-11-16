@@ -64,7 +64,7 @@ export function Chapters() {
           <p
             key={c.id}
             className={cn(
-              'editorial absolute bottom-[-0.12em] left-[-0.04em] text-[clamp(8rem,26vw,30rem)] leading-none whitespace-nowrap transition-[opacity,transform] duration-[900ms] ease-[var(--ease-expo)] motion-reduce:transition-none',
+              'editorial absolute bottom-[-0.12em] left-[-0.04em] text-[clamp(5rem,15vw,19rem)] leading-none whitespace-nowrap transition-[opacity,transform] duration-[900ms] ease-[var(--ease-expo)] motion-reduce:transition-none',
               i === active ? 'translate-y-0 opacity-100' : i < active ? '-translate-y-[18%] opacity-0' : 'translate-y-[18%] opacity-0',
             )}
           >

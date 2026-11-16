@@ -97,6 +97,7 @@ export function Passions() {
       <Anchor kind="reel" className="bottom-[2%] left-[1.5%] w-[13vw] max-md:hidden" par={0.15} tilt={0.7} />
       <Anchor kind="mp3" className="top-[36%] left-[1.5%] w-[7vw] max-md:hidden" par={0.3} tilt={0.7} />
       <Anchor kind="earphones" className="top-[44%] right-[0.5%] w-[10vw] max-md:hidden" par={0.3} tilt={0.7} />
+      <Anchor kind="psp" className="top-[18%] right-[27%] w-[11vw] max-md:hidden" par={0.25} tilt={0.7} />
       <Anchor kind="walkman" className="bottom-[6%] right-[14%] w-[8vw] max-md:hidden" par={0.3} tilt={0.7} />
       <Anchor kind="vinyl" className="top-[6%] left-[16%] w-[9vw] max-md:hidden" par={0.2} tilt={0.7} />
       <div className="px-[var(--gutter)]">

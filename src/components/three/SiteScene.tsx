@@ -29,13 +29,17 @@ type KindName =
   | LifeKind | 'model'
 
 /** Objets « ce que j'aime dans la vie » : modèles à plusieurs matières (tools/blender/build_life.py). */
-const LIFE = ['robot', 'earphones', 'mp3', 'vinyl', 'walkman', 'camera', 'reel', 'gamepad', 'cat', 'dumbbell', 'stopwatch', 'puffy'] as const
+const LIFE = ['robot', 'earphones', 'mp3', 'vinyl', 'walkman', 'camera', 'reel', 'gamepad', 'cat', 'dumbbell', 'stopwatch', 'puffy', 'psp'] as const
 type LifeKind = (typeof LIFE)[number]
 const LIFE_FILE: Record<LifeKind, string> = {
   robot: 'life-robot.glb', earphones: 'life-earphones.glb', mp3: 'life-mp3.glb', vinyl: 'life-vinyl.glb',
   walkman: 'life-walkman.glb', camera: 'life-camera.glb', reel: 'life-reel.glb', gamepad: 'life-gamepad.glb',
-  cat: 'life-cat.glb', dumbbell: 'life-dumbbell.glb', stopwatch: 'life-stopwatch.glb', puffy: 'life-star.glb',
+  // Chat, haltère et PSP : modèles fournis par Riyan (public/media/3d/user, voir tools/models) ; matières d'origine conservées.
+  cat: 'user/lucky-cat.glb', dumbbell: 'user/gym-dumbbell.glb', stopwatch: 'life-stopwatch.glb', puffy: 'life-star.glb',
+  psp: 'user/sony-psp.glb',
 }
+/** Rotation de mise en pose des modèles fournis (leur orientation d'origine n'est pas celle de nos objets). */
+const LIFE_ROT: Partial<Record<LifeKind, [number, number, number]>> = { dumbbell: [0, Math.PI / 2, 0] }
 const isLife = (k: string): k is LifeKind => (LIFE as readonly string[]).includes(k)
 
 type GeoKey =
@@ -267,7 +271,7 @@ function LifeModel({ kind }: { kind: LifeKind }) {
     return { object: clone, scale: 1 / Math.max(size.x, size.y, size.z) }
   }, [scene, shared.life])
   return (
-    <group scale={scale}>
+    <group scale={scale} rotation={LIFE_ROT[kind]}>
       <primitive object={object} />
     </group>
   )

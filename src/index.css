@@ -1,7 +1,6 @@
 @import '@fontsource-variable/sora';
 @import '@fontsource-variable/manrope';
-@import '@fontsource/instrument-serif/latin-400-italic.css';
-@import '@fontsource/instrument-serif/latin-ext-400-italic.css';
+@import '@fontsource-variable/unbounded';
 @import 'tailwindcss';
 
 @theme {
@@ -29,7 +28,7 @@
   --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
 
   --font-display: 'Sora Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-editorial: 'Instrument Serif', 'Times New Roman', serif;
+  --font-editorial: 'Unbounded Variable', 'Sora Variable', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Sora Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
   --font-body: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
@@ -183,25 +182,35 @@ h2, h3 {
 
 .display em,
 .serif-em em {
-  /* deuxième voix : serif italique, plus claire et plus grande pour garder le même poids optique */
+  /* deuxième voix : Unbounded, large et arrondie, en capitales. Aucun italique sur le site (décision de Riyan). */
   font-family: var(--font-editorial);
-  font-style: italic;
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: -0.02em;
-  font-size: 1.16em;
-  line-height: 0.8;
+  font-style: normal;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  font-size: 0.8em;
+  line-height: 1;
   color: var(--color-signal);
 }
 
-/* Mot de chapitre en grand : serif italique en contour, plus ou moins visible selon le fond. */
+/* Plus aucun italique nulle part : les balises qui l'imposent par défaut sont remises droites. */
+em,
+i,
+cite,
+address,
+dfn {
+  font-style: normal;
+}
+
+/* Mot de chapitre en grand : Unbounded en filigrane, plus ou moins visible selon le fond. */
 .editorial {
   font-family: var(--font-editorial);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  color: transparent;
-  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--color-paper) 21%, transparent);
+  font-style: normal;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  /* Remplissage très léger plutôt qu'un contour : les polices variables ont des contours qui se chevauchent, visibles en trait. */
+  color: color-mix(in srgb, var(--color-paper) 7%, transparent);
 }
 
 .serif {
