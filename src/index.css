@@ -1,42 +1,45 @@
+@import '@fontsource-variable/sora';
+@import '@fontsource-variable/manrope';
 @import 'tailwindcss';
 
 @theme {
-  /* DA « Midnight drive » : les noms historiques gardent leur rôle (ink = fond, paper = texte). */
-  --color-ink: #07040f;
-  --color-graphite: #120b24;
-  --color-graphite-2: #1b1233;
-  --color-line: #33275a;
-  --color-paper: #f1ecff;
-  --color-mist: #a69cc7;
-  --color-signal: #c13cff;
-  --color-signal-soft: #ff4fa3;
-  --color-vermilion: #ff2e63;
-  --color-lemon: #ffcf33;
-  --color-bubblegum: #ff2e88;
-  --color-mint: #00e0d1;
-  --color-tangerine: #ff7a1a;
-  --color-plum: #000000;
+  /* DA « Digital Art Studio » : les noms historiques gardent leur rôle (ink = fond, paper = texte). */
+  --color-ink: #f1ebdd;
+  --color-graphite: #ebe4d3;
+  --color-graphite-2: #e3dbc7;
+  --color-line: #c9c1ae;
+  --color-paper: #20211f;
+  --color-mist: #5b5a54;
+  --color-signal: #254dff;
+  --color-signal-soft: #254dff;
+  --color-vermilion: #f05235;
+  --color-lemon: #d9f05a;
+  --color-bubblegum: #f05235;
+  --color-mint: #d9dce0;
+  --color-tangerine: #f05235;
+  --color-plum: #20211f;
+  --color-chrome: #d9dce0;
 
-  --font-display: 'Big Shoulders Display', 'Unbounded', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Instrument Serif', 'Times New Roman', serif;
-  --font-mono: 'DM Mono', ui-monospace, monospace;
-  --font-body: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Sora Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Sora Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
 
   --text-hero: clamp(4.5rem, 1rem + 15vw, 17rem);
-  --text-mega: clamp(3.5rem, 1rem + 7.5vw, 9.5rem);
-  --text-title: clamp(3rem, 1rem + 5.4vw, 7rem);
+  --text-mega: clamp(3.25rem, 1rem + 7vw, 9rem);
+  --text-title: clamp(2.75rem, 1rem + 5vw, 6.5rem);
 
-  --shadow-hard-sm: 0 0 0 1px rgb(193 60 255 / 0.35), 0 0 14px -4px rgb(193 60 255 / 0.6);
-  --shadow-hard: 0 0 0 1px rgb(193 60 255 / 0.45), 0 0 24px -6px rgb(193 60 255 / 0.75);
-  --shadow-hard-lg: 0 0 0 1px rgb(255 79 163 / 0.7), 0 0 36px -4px rgb(255 79 163 / 0.8);
-  --shadow-card: 0 0 0 1px rgb(193 60 255 / 0.3), 0 18px 50px -20px rgb(193 60 255 / 0.55);
+  --shadow-hard-sm: none;
+  --shadow-hard: none;
+  --shadow-hard-lg: 0 24px 40px -28px rgb(32 33 31 / 0.55);
+  --shadow-card: 0 28px 44px -34px rgb(32 33 31 / 0.5);
 
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --gutter: clamp(1.25rem, 0.5rem + 3vw, 3rem);
 }
 
@@ -63,90 +66,84 @@ body {
 
 .display {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: -0.01em;
-  line-height: 0.86;
+  letter-spacing: -0.05em;
+  line-height: 0.88;
   color: var(--color-paper);
 }
 
 h2, h3 {
   font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: 0;
+  font-weight: 600;
+  letter-spacing: -0.03em;
 }
 
 .display em,
 .serif-em em {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: -0.02em;
-  color: var(--color-signal-soft);
-  padding-right: 0.06em;
+  font-style: normal;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: inherit;
+  color: var(--color-signal);
 }
 
 .serif {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.01em;
+  font-style: normal;
+  font-weight: 500;
 }
 
 .label {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  font-weight: 500;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 @layer components {
 /* Briques pop : contour épais + ombre dure, et un rebond au survol. */
 .pop {
-  border: 1px solid rgb(193 60 255 / 0.55);
-  box-shadow: var(--shadow-hard);
-  transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring);
+  border: 1px solid var(--color-paper);
+  border-radius: 2px !important;
+  box-shadow: none;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.3s var(--ease-expo);
 }
 .pop:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-hard-lg);
 }
 .pop:active {
-  transform: translateY(1px);
-  box-shadow: var(--shadow-hard-sm);
+  transform: translateY(0);
 }
 
 .sticker {
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
-  border: 1px solid rgb(193 60 255 / 0.55);
-  border-radius: 999px;
-  padding: 0.35em 0.9em;
+  border: 1px solid var(--color-paper);
+  border-radius: 2px;
+  padding: 0.3em 0.7em;
   font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  box-shadow: var(--shadow-hard-sm);
   white-space: nowrap;
 }
 }
 
 ::selection {
-  background: var(--color-bubblegum);
-  color: var(--color-ink);
+  background: var(--color-lemon);
+  color: var(--color-paper);
 }
 
-/* v6 : pas d'étiquettes penchées, rendu plus posé. */
-.sticker,
-.pop {
-  rotate: none !important;
-}
 
-/* Aplats néon clairs : texte sombre pour rester lisible. */
-:is(.bg-lemon, .bg-mint, .bg-tangerine, .bg-bubblegum, .bg-signal-soft):is(.sticker, .pop, button, a) {
+/* Texte sur aplat : encre sur jaune, vermillon, chrome ; ivoire sur cobalt. */
+:is(.bg-lemon, .bg-mint, .bg-tangerine, .bg-bubblegum, .bg-vermilion):is(.sticker, .pop, button, a) {
+  color: var(--color-paper);
+}
+:is(.bg-signal):is(.sticker, .pop, button, a) {
   color: var(--color-ink);
 }
 
@@ -157,11 +154,11 @@ h2, h3 {
 }
 
 .rocker {
-  --face: #c13cff;
-  --face-side: #7a1cb0;
-  --off: #1b1233;
-  --off-side: #0d0820;
-  --frame: #33275a;
+  --face: #254dff;
+  --face-side: #1636b3;
+  --off: #d9d2bf;
+  --off-side: #b8b09b;
+  --frame: #20211f;
   position: relative;
   display: inline-block;
   flex-shrink: 0;
@@ -181,7 +178,7 @@ h2, h3 {
   content: '';
   position: absolute;
   inset: 0.5em 0 0 0;
-  background: #07040f;
+  background: #20211f;
   border: 0.5em solid var(--frame);
   border-bottom: 0;
 }
@@ -283,7 +280,7 @@ h2, h3 {
 
 .redacted-bar {
   border-radius: 2px;
-  background: linear-gradient(90deg, #1b1233 0%, #1b1233 40%, rgb(255 79 163 / 0.9) 50%, #1b1233 60%, #1b1233 100%);
+  background: linear-gradient(90deg, #20211f 0%, #20211f 40%, rgb(240 82 53 / 0.9) 50%, #20211f 60%, #20211f 100%);
   background-size: 250% 100%;
   animation: redacted-scan 3.2s ease-in-out infinite;
 }
@@ -295,7 +292,7 @@ h2, h3 {
 
 .classified {
   background-image:
-    repeating-linear-gradient(-45deg, rgb(193 60 255 / 0.08) 0 12px, transparent 12px 24px);
+    repeating-linear-gradient(-45deg, rgb(32 33 31 / 0.05) 0 12px, transparent 12px 24px);
 }
 
 .classified-stamp {

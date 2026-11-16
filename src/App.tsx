@@ -15,7 +15,7 @@ import { Passions } from './components/sections/Passions'
 import { About } from './components/sections/About'
 import { Contact } from './components/sections/Contact'
 import { ProjectDialogProvider } from './components/lab/ProjectDialog'
-import Aurora from './components/night/Aurora'
+import { PaperBackground } from './components/layout/PaperBackground'
 import { ScrollFx } from './components/night/ScrollFx'
 
 function Site() {
@@ -35,7 +35,7 @@ function Site() {
       >
         {t.nav.skip}
       </a>
-      <Aurora />
+      <PaperBackground />
       <ScrollFx deps={lang} />
       <Nav />
       <main key={lang}>

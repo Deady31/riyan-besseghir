@@ -11,16 +11,8 @@ const fr = {
   },
   clockAria: 'Heure locale à Toulouse',
   hero: {
-    now: {
-      title: 'En ce moment',
-      items: [
-        ['Je lance', 'FOODER, en bêta ouverte', 'https://fooder-tawny.vercel.app'],
-        ['Dernière mise en prod', 'Naia, l’assistante IA de Shippingbo', '#impact'],
-        ['Je cherche', 'Un poste d’AI Product Manager', '#contact'],
-      ] as [string, string, string][],
-    },
     statement: 'AI Product Manager. Je fais passer l’IA du slide à la prod : chez Shippingbo, en hackathon, et la nuit sur 39 projets.',
-    tagline: 'Product · IA · Prototypes',
+    cta: { work: 'Voir mes projets', cv: 'Télécharger le CV' },
     scroll: '(Défiler)',
     aria: 'Introduction',
   },
@@ -137,16 +129,8 @@ const en: UI = {
   },
   clockAria: 'Local time in Toulouse',
   hero: {
-    now: {
-      title: 'Right now',
-      items: [
-        ['Launching', 'FOODER, in open beta', 'https://fooder-tawny.vercel.app'],
-        ['Last shipped', 'Naia, Shippingbo’s AI assistant', '#impact'],
-        ['Looking for', 'An AI Product Manager role', '#contact'],
-      ] as [string, string, string][],
-    },
     statement: 'AI Product Manager. I take AI from slide deck to production: at Shippingbo, at hackathons, and at night across 39 projects.',
-    tagline: 'Product · AI · Prototypes',
+    cta: { work: 'See my work', cv: 'Download CV' },
     scroll: '(Scroll)',
     aria: 'Introduction',
   },
