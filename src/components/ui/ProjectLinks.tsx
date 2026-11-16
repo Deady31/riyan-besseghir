@@ -13,7 +13,7 @@ export function ProjectLinks({ project }: { project: Project }) {
           href={project.link}
           target="_blank"
           rel="noreferrer"
-          className="group inline-flex items-center gap-2 rounded-full bg-paper px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-signal hover:text-paper"
+          className="tap group inline-flex items-center gap-2 rounded-full bg-paper px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-signal hover:text-paper"
         >
           {t.links.try}
           <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
@@ -27,7 +27,7 @@ export function ProjectLinks({ project }: { project: Project }) {
           href={project.repo}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-paper transition-colors hover:border-paper"
+          className="tap inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-paper transition-colors hover:border-paper"
         >
           <GithubIcon className="size-4" />
           Code

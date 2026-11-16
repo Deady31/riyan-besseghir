@@ -78,7 +78,7 @@ export function Impact() {
       <Anchor kind="crystal" className="top-[55%] right-[1.5%] w-[6vw] max-md:hidden" par={0.3} />
       <Anchor kind="puffy" className="top-[52%] left-[0.5%] w-[8vw] max-md:hidden" par={0.3} tilt={0.7} />
       <Anchor kind="mobius" className="bottom-[4%] right-[4%] w-[12vw] max-md:hidden" par={0.25} />
-      <Anchor kind="stopwatch" className="top-[6%] right-[4%] w-[26vw] md:hidden" par={0.2} tilt={0.7} />
+      <Anchor kind="stopwatch" className="top-[0.5%] right-[4%] w-[22vw] md:hidden" par={0.2} tilt={0.7} />
       <SectionHeading index="01" align="right" label={t.impact.label} title={<TitleParts parts={t.impact.title} />} />
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-16">

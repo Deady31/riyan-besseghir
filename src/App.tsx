@@ -54,7 +54,7 @@ function Home() {
   }, [lenis])
 
   return (
-    <main key={lang}>
+    <main key={lang} className="[overflow-x:clip]">
       <Hero />
       <MorphMoment />
       <SwipeDeck />

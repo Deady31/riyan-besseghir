@@ -60,7 +60,7 @@ export function Contact() {
 
         <a
           href={`mailto:${PROFILE.email}`}
-          className="group display mt-14 flex items-center justify-between gap-6 !text-ink text-[clamp(1.5rem,0.4rem+4.3vw,6rem)] break-all"
+          className="group display mt-14 flex items-center justify-between gap-6 !text-ink text-[clamp(0.8rem,3.3vw+0.1rem,1.6rem)] whitespace-nowrap md:text-[clamp(1.5rem,0.4rem+4.3vw,6rem)] md:break-all md:whitespace-normal"
         >
           <span className="transition-transform duration-500 group-hover:translate-x-2">{PROFILE.email}</span>
           <ArrowUpRight className="size-[0.6em] shrink-0 transition-transform duration-500 group-hover:translate-x-2 group-hover:-translate-y-2" aria-hidden="true" />

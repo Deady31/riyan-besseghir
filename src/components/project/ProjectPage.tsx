@@ -83,7 +83,7 @@ export function ProjectPage() {
   const titleFit = (Math.max(longest, 5) * 0.86).toFixed(2)
 
   return (
-    <main className="relative px-[var(--gutter)] pt-24 pb-28 md:pt-28">
+    <main className="relative px-[var(--gutter)] pt-24 pb-28 [overflow-x:clip] md:pt-28">
       {live && <PhoneStage url={live.url} title={project.title} closeLabel={t.project.closePhone} />}
       <Anchor kind="orb" className="top-[62%] right-[2%] w-[10vw] max-md:w-[22vw]" par={0.2} />
       <Anchor kind="form-cobalt" className="top-[38%] left-[1.5%] w-[9vw] max-md:hidden" par={0.15} />
