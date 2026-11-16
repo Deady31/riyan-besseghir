@@ -87,7 +87,7 @@ export function ToyHint() {
       className="pointer-events-none fixed top-0 left-0 z-[44] opacity-0 transition-opacity duration-300"
       style={{ transform: 'translate3d(-200px,-200px,0)' }}
     >
-      <span className="toy-hint relative block rounded-full border-2 border-paper bg-[#fff6e0] px-3.5 py-1.5 text-[13px] leading-none font-bold whitespace-nowrap text-paper shadow-[0_3px_0_rgb(32_33_31/0.9)]">
+      <span className="toy-hint relative block rounded-full border-2 border-paper bg-[#FFF6E5] px-3.5 py-1.5 text-[13px] leading-none font-bold whitespace-nowrap text-paper shadow-[0_3px_0_rgb(32_33_31/0.9)]">
         {lang === 'en' ? 'Catch me' : 'Attrape-moi'}
       </span>
     </div>

@@ -15,8 +15,8 @@ import { bodies, createBody, useToysInput, type Body } from '../../lib/toys'
  */
 
 const BASE = '/media/3d/'
-const COBALT = '#254dff'
-const VERMILION = '#f05235'
+const COBALT = '#6C2BFF'
+const VERMILION = '#FF7EC8'
 const FOV = 32
 const CAM_Z = 9
 const PHONE_SCREEN = '/media/projets/fooder-v2-swipe-mobile.webp'
@@ -129,7 +129,7 @@ export function Studio() {
       <Lightformer form="rect" intensity={5} position={[0, 6, -1]} scale={[10, 2, 1]} rotation={[Math.PI / 2, 0, 0]} color="#ffffff" />
       <Lightformer form="rect" intensity={3.2} position={[6, 0.5, 2]} scale={[1.6, 7, 1]} rotation={[0, -1.2, 0]} color="#f4f1ff" />
       <Lightformer form="rect" intensity={4.5} position={[-3, -1, 8]} scale={[8, 5, 1]} color="#fff8ee" />
-      <Lightformer form="rect" intensity={2.2} position={[0, -6, 0]} scale={[16, 16, 1]} rotation={[-Math.PI / 2, 0, 0]} color="#f1ebdd" />
+      <Lightformer form="rect" intensity={2.2} position={[0, -6, 0]} scale={[16, 16, 1]} rotation={[-Math.PI / 2, 0, 0]} color="#FFF6E5" />
       <Lightformer form="circle" intensity={2.4} position={[3, -1.5, 4]} scale={1.6} color={COBALT} />
     </Environment>
   )
@@ -167,7 +167,7 @@ function useMaterials(): Record<MatKey, THREE.Material> {
       }),
       cobalt: new THREE.MeshPhysicalMaterial({ color: COBALT, roughness: 0.14, clearcoat: 1, clearcoatRoughness: 0.03, envMapIntensity: 1.1 }),
       vermilion: new THREE.MeshPhysicalMaterial({ color: VERMILION, roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.05 }),
-      acid: new THREE.MeshPhysicalMaterial({ color: '#d9f05a', roughness: 0.2, clearcoat: 1, clearcoatRoughness: 0.05 }),
+      acid: new THREE.MeshPhysicalMaterial({ color: '#FFD83D', roughness: 0.2, clearcoat: 1, clearcoatRoughness: 0.05 }),
     }),
     [],
   )
@@ -243,7 +243,7 @@ function useLifeMaterials(base: Record<MatKey, THREE.Material>): Record<string, 
       black: new THREE.MeshPhysicalMaterial({ color: '#141513', roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.08 }),
       gold: new THREE.MeshStandardMaterial({ color: '#e9b949', metalness: 1, roughness: 0.2 }),
       amber: glass('#f39a1d', 0.78),
-      blueglass: glass('#3466ff', 0.66),
+      blueglass: glass('#8A5CFF', 0.66),
       orangeglass: glass('#ff6a1f', 0.6),
     }
   }, [base])

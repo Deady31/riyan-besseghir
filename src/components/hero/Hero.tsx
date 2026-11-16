@@ -68,7 +68,7 @@ export function Hero() {
         <p
           data-name
           aria-hidden="true"
-          className="display mt-6 text-[clamp(2.4rem,13.4vw,4rem)] md:mt-8 md:text-[clamp(3.6rem,1rem+12.2vw,14rem)]"
+          className="display brand-name mt-6 text-[clamp(2.4rem,13.4vw,4rem)] md:mt-8 md:text-[clamp(3.6rem,1rem+12.2vw,14rem)]"
         >
           Riyan
           <br />
@@ -97,8 +97,8 @@ export function Hero() {
         <div data-meta className="absolute left-[var(--gutter)] z-30 flex flex-wrap gap-3 max-md:right-[var(--gutter)] max-md:bottom-6 max-md:grid max-md:grid-cols-2 md:top-[11.25rem]">
           <ShimmerButton
             onClick={go('lab')}
-            background="#20211f"
-            shimmerColor="#d9f05a"
+            background="#2B0F3A"
+            shimmerColor="#FFD83D"
             shimmerDuration="3.2s"
             className="gap-2 px-7 py-3.5 text-sm font-semibold text-ink max-md:px-3 max-md:text-[13px]"
           >

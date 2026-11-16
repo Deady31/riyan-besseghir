@@ -32,9 +32,8 @@ const rgb = (hex: string): [number, number, number] => {
 }
 
 const PAPER = 0
-const LIQUID = 1
+// 1 (liquide) et 3 (trame) : mondes retirés de la charte, gardés dans le shader pour l'instant.
 const NIGHT = 2
-const HALFTONE = 3
 const SCENE = 4
 
 type SceneDef = { key: string; veil: number; flip?: boolean }
@@ -52,28 +51,18 @@ const zone = (kind: number, tone: string, a: string, b: string, dark = false, sc
   kind, dark, tone: rgb(tone), a: rgb(a), b: rgb(b), scene, enter,
 })
 
-const COBALT_SOFT = '#7f9bff'
-const COBALT = '#254dff'
-const VERMILION = '#f05235'
-const ACID = '#d9f05a'
-const CHROME = '#c3c8d0'
-const IVORY = '#f1ebdd'
 
 // `scene` : estampe affichée quand elle est chargée ; en attendant, le monde `kind` sert de repli. Le voile calme
 // l'image sous le texte (0 = image pure, 1 = papier uni).
+// Deux mondes seulement : le papier crème (calme) et la nuit prune (rythme). Plus d'images de fond.
+const CREAM = '#FFF6E5'
+const PLUM = '#2B0F3A'
 const ZONES: Record<string, Zone> = {
-  default: zone(PAPER, IVORY, COBALT_SOFT, ACID),
-  top: zone(PAPER, IVORY, COBALT_SOFT, ACID, false, { key: 'intro', veil: 0.68 }),
-  morph: zone(LIQUID, '#050a3a', COBALT, IVORY, true),
-  deck: zone(HALFTONE, '#e9dfc7', VERMILION, ACID, false, { key: 'deck', veil: 0.5 }),
-  impact: zone(PAPER, IVORY, COBALT_SOFT, ACID, false, { key: 'impact', veil: 0.58 }, 'glass'),
-  'hauts-faits': zone(PAPER, '#e3e8f6', COBALT_SOFT, CHROME, false, { key: 'hauts-faits', veil: 0.55 }),
-  studio: zone(PAPER, '#eaefc9', ACID, COBALT_SOFT, false, { key: 'studio', veil: 0.55 }, 'glass'),
-  ia: zone(NIGHT, '#08090e', COBALT, VERMILION, true, { key: 'nuit', veil: 0.3 }),
-  lab: zone(PAPER, IVORY, VERMILION, ACID, false, { key: 'lab', veil: 0.58 }),
-  about: zone(HALFTONE, '#e9dfc7', COBALT, ACID, false, { key: 'about', veil: 0.62 }),
-  passions: zone(HALFTONE, '#f3dccd', VERMILION, ACID, false, { key: 'passions', veil: 0.56 }, 'glass'),
-  contact: zone(NIGHT, '#08090e', COBALT, VERMILION, true, { key: 'contact', veil: 0.25 }),
+  default: zone(PAPER, CREAM, CREAM, CREAM),
+  top: zone(PAPER, CREAM, CREAM, CREAM),
+  morph: zone(NIGHT, PLUM, PLUM, PLUM, true),
+  ia: zone(NIGHT, PLUM, PLUM, PLUM, true),
+  contact: zone(NIGHT, PLUM, PLUM, PLUM, true),
 }
 
 const N = 12
@@ -129,6 +118,7 @@ float fbm(vec2 p) {
 
 // ---------------------------------------------------------------- papier
 vec3 paperW(vec2 p, float docY, float t, vec3 tone, vec3 a, vec3 b) {
+  return tone;
   vec3 col = tone;
   vec2 q = vec2(p.x / (0.8 * uView.x + 420.0), docY * 0.35 / (0.95 * uView.y + 300.0));
   float f1 = fbm(q * 1.5 + vec2(t * 0.018, -t * 0.012));
@@ -191,6 +181,7 @@ float starLayer(vec2 p, float docY, float cell, float par, float t, float thresh
   return (core + cross * 0.9) * step(thresh, h) * tw;
 }
 vec3 nightW(vec2 p, float docY, float t, vec3 tone, vec3 a, vec3 b) {
+  return tone;
   vec3 col = tone;
   vec2 q = vec2(p.x / (0.9 * uView.x + 300.0), docY * 0.14 / (0.9 * uView.y + 300.0));
   float n1 = fbm(q * 1.6 + vec2(t * 0.01, 4.0));

@@ -147,7 +147,7 @@ export function DepthField({ className }: { className?: string }) {
       {picked.map((it) => (
         <div
           key={it.id}
-          className="absolute top-0 left-0 overflow-hidden rounded-[16px] border-[3px] border-[#fff6e0] bg-[#fff6e0] opacity-0 shadow-[0_8px_0_rgb(5_10_58/0.4)] will-change-transform"
+          className="absolute top-0 left-0 overflow-hidden rounded-[16px] border-[3px] border-[#FFF6E5] bg-[#FFF6E5] opacity-0 shadow-[0_8px_0_rgb(5_10_58/0.4)] will-change-transform"
           style={{ width: it.w, height: it.h, transformOrigin: 'center' }}
         >
           <img src={`/media/depth/${it.id}.webp`} alt="" width={it.w} height={it.h} loading="lazy" decoding="async" draggable={false} className="size-full object-cover" />

@@ -58,21 +58,6 @@ export function Chapters() {
 
   return (
     <>
-      {/* Mot du chapitre : sous les sections (z-20) et la 3D (z-15), au-dessus du fond. */}
-      <div className="theme-follow pointer-events-none fixed inset-0 z-[10] overflow-hidden" aria-hidden="true">
-        {CHAPTERS.map((c, i) => (
-          <p
-            key={c.id}
-            className={cn(
-              'editorial absolute bottom-[-0.12em] left-[-0.04em] text-[clamp(5rem,15vw,19rem)] leading-none whitespace-nowrap transition-[opacity,transform] duration-[900ms] ease-[var(--ease-expo)] motion-reduce:transition-none',
-              i === active ? 'translate-y-0 opacity-100' : i < active ? '-translate-y-[18%] opacity-0' : 'translate-y-[18%] opacity-0',
-            )}
-          >
-            {lang === 'en' ? c.en : c.fr}
-          </p>
-        ))}
-      </div>
-
       <nav
         aria-label={lang === 'en' ? 'Chapters' : 'Chapitres'}
         className="theme-follow fixed top-1/2 left-3 z-[45] hidden -translate-y-1/2 flex-col gap-0.5 xl:flex"
@@ -88,7 +73,7 @@ export function Chapters() {
             <span
               className={cn(
                 'tabular-nums text-[10px] font-semibold tracking-[0.06em] transition-[opacity,transform] duration-300',
-                i === active ? 'translate-x-0.5 text-paper opacity-100' : 'text-mist opacity-70 group-hover:opacity-100',
+                i === active ? 'translate-x-0.5 text-signal opacity-100' : 'text-mist opacity-70 group-hover:opacity-100',
               )}
             >
               {String(i + 1).padStart(2, '0')}
@@ -96,7 +81,7 @@ export function Chapters() {
             <span
               className={cn(
                 'rounded-full bg-paper px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap text-ink transition-[opacity,transform] duration-300',
-                i === active ? 'translate-x-0 opacity-100' : '-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100',
+                '-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100',
               )}
             >
               {lang === 'en' ? c.en : c.fr}

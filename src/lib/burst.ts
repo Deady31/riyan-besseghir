@@ -26,8 +26,8 @@ type Particle = {
   color: string
 }
 
-const COLORS = ['#254dff', '#f05235', '#d9f05a', '#fff6e0', '#20211f', '#f05235', '#254dff']
-const INK = '#20211f'
+const COLORS = ['#6C2BFF', '#FF7EC8', '#FFD83D', '#FFF6E5', '#2B0F3A', '#FF7EC8', '#6C2BFF']
+const INK = '#2B0F3A'
 const particles: Particle[] = []
 let wake: (() => void) | null = null
 let enabled = true

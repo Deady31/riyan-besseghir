@@ -1,20 +1,16 @@
-import { lazy, Suspense, useState } from 'react'
+import { useState } from 'react'
 import { ArrowUpRight, Check, Copy } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useContent } from '../../data/profile'
 import { TitleParts, useT } from '../../i18n/useT'
-import { useWebGLSupport } from '../../hooks/useWebGLSupport'
 import { RevealText } from '../ui/RevealText'
 import { LiveClock } from '../ui/LiveClock'
 import { ShimmerButton } from '../vendor/magicui/shimmer-button'
 import { Anchor } from '../three/Anchor'
 
-const ChromeFlow = lazy(() => import('../three/ChromeFlow'))
-
 export function Contact() {
   const t = useT()
   const PROFILE = useContent().profile
-  const webgl = useWebGLSupport()
   const [copied, setCopied] = useState(false)
 
   const copy = async () => {
@@ -38,18 +34,13 @@ export function Contact() {
       <Anchor kind="robot" className="top-[8%] left-[6%] w-[11vw] max-md:hidden" par={0.25} tilt={0.7} />
       {/* Grand panneau cobalt arrondi : le seul aplat coloré plein du site, pour marquer la fin. */}
       <div className="theme-light relative isolate overflow-hidden rounded-[clamp(36px,5vw,72px)] bg-signal px-[clamp(1.5rem,5vw,5rem)] py-[clamp(3rem,8vw,7rem)] text-ink">
-        {webgl && (
-          <Suspense fallback={null}>
-            <ChromeFlow className="absolute inset-0 -z-10 opacity-90" />
-          </Suspense>
-        )}
 
         <p className="flex items-center gap-3">
           <span className="sticker bg-lemon text-paper">{t.contact.label}</span>
           <span className="label text-ink/80">(07)</span>
         </p>
 
-        <RevealText as="h2" className="display mt-8 max-w-5xl !text-ink text-[length:var(--text-title)] [&_em]:!text-lemon">
+        <RevealText as="h2" className="display mt-8 max-w-5xl !text-ink text-[length:var(--text-title)] [&_em]:!text-[#D8C8FF]">
           <TitleParts parts={t.contact.title} />
         </RevealText>
         <p className="mt-6 max-w-xl text-lg text-ink/85">
@@ -65,7 +56,7 @@ export function Contact() {
         </a>
 
         <div className="mt-10 flex flex-wrap items-center gap-3">
-          <ShimmerButton onClick={copy} background="#20211f" shimmerColor="#d9f05a" className="gap-2 px-7 py-3.5 text-sm font-semibold text-ink">
+          <ShimmerButton onClick={copy} background="#2B0F3A" shimmerColor="#FFD83D" className="gap-2 px-7 py-3.5 text-sm font-semibold text-ink">
             {copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
             <span aria-live="polite">{copied ? t.contact.copied : t.contact.copy}</span>
           </ShimmerButton>

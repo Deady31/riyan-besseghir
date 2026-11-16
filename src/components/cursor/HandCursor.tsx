@@ -145,7 +145,7 @@ export function HandPreview() {
   const states: HandState[] = ['idle', 'point', 'grab', 'fist', 'tap']
   return (
     <main className="grid min-h-svh place-items-center gap-10 p-10">
-      {[ 'bg-ink', 'bg-[#08090e]' ].map((bg) => (
+      {[ 'bg-ink', 'bg-[#2B0F3A]' ].map((bg) => (
         <div key={bg} className={`${bg} flex flex-wrap items-center justify-center gap-10 rounded-[40px] p-10`}>
           {states.map((s) => (
             <div key={s} className="grid justify-items-center gap-3">

@@ -4,10 +4,10 @@
  * Contour par superposition : les formes sont dessinées une fois en encre épaisse, une fois en ivoire, ce qui fait un
  * contour unique autour de l'ensemble (les doigts fusionnent avec la paume).
  */
-const INK = '#20211f'
-const IVORY = '#fff6e0'
-const COBALT = '#254dff'
-const VERMILION = '#f05235'
+const INK = '#2B0F3A'
+const IVORY = '#FFF6E5'
+const COBALT = '#6C2BFF'
+const VERMILION = '#FF7EC8'
 
 function Outlined({ id, fill = IVORY }: { id: string; fill?: string }) {
   return (
@@ -34,7 +34,7 @@ function Lift({ id }: { id: string }) {
 function Sparkle({ x, y, s = 1, rot = 0 }: { x: number; y: number; s?: number; rot?: number }) {
   return (
     <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${s})`} className="hand-spark">
-      <path d="M0 -9 C1.5 -3 3 -1.5 9 0 C3 1.5 1.5 3 0 9 C-1.5 3 -3 1.5 -9 0 C-3 -1.5 -1.5 -3 0 -9 Z" fill="#d9f05a" stroke={INK} strokeWidth="2.6" strokeLinejoin="round" />
+      <path d="M0 -9 C1.5 -3 3 -1.5 9 0 C3 1.5 1.5 3 0 9 C-1.5 3 -3 1.5 -9 0 C-3 -1.5 -1.5 -3 0 -9 Z" fill="#FFD83D" stroke={INK} strokeWidth="2.6" strokeLinejoin="round" />
     </g>
   )
 }

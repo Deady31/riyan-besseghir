@@ -13,7 +13,8 @@ import { AfkSkater } from './AfkSkater'
 const DECK_IDS = ['fooder', 'chatbot-cv', 'finger', 'departs', 'lio', 'one-piece', 'derniere-note', 'ps2-skater'] as const
 
 /** Fond de carte par projet : la palette pop tourne pour que chaque carte ait sa couleur. */
-const CARD_TINTS = ['bg-bubblegum', 'bg-lemon', 'bg-mint', 'bg-signal-soft', 'bg-tangerine'] as const
+// pas de citron en grand aplat (illisible) : il reste sur les stickers et petits boutons
+const CARD_TINTS = ['bg-bubblegum', 'bg-mint', 'bg-signal-soft', 'bg-tangerine'] as const
 
 const THRESHOLD = 110
 const TAP_TOLERANCE = 6
@@ -173,7 +174,7 @@ export function SwipeDeck() {
           }}
         >
           {done ? (
-            <div className="absolute inset-0 grid place-items-center rounded-[44px] border-2 border-dashed border-line bg-lemon p-6 text-center">
+            <div className="absolute inset-0 grid place-items-center rounded-[44px] border-2 border-dashed border-line bg-graphite p-6 text-center">
               <div>
                 <AfkSkater bubble={t.deck.afk} />
                 <p className="display mt-2 text-4xl">{t.deck.done}</p>

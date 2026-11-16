@@ -9,7 +9,7 @@ export const CATEGORY_TINT: Record<Category, string> = {
   consumer: 'bg-vermilion text-paper',
   ia: 'bg-signal text-ink',
   outils: 'bg-chrome text-paper',
-  jeux: 'bg-lemon text-paper',
+  jeux: 'bg-chrome text-paper',
   pm: 'bg-paper text-ink',
   clients: 'bg-graphite-2 text-paper',
 }
@@ -52,9 +52,9 @@ export function ProjectCard({ project, number, total, categoryLabel, onOpen }: P
         >
           <MagicCard
             className="rounded-[44px]"
-            gradientFrom="#254dff"
-            gradientTo="#f05235"
-            gradientColor="rgb(37 77 255 / 0.14)"
+            gradientFrom="#6C2BFF"
+            gradientTo="#FF7EC8"
+            gradientColor="rgb(108 43 255 / 0.14)"
             gradientSize={320}
           >
             <span className="block p-3.5 md:p-4">

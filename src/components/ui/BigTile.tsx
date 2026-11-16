@@ -10,12 +10,13 @@ import { cn } from '../../lib/cn'
  * Le conteneur extérieur reste libre pour GSAP (révélations au scroll) : Motion n'anime que l'intérieur.
  */
 const TONES = {
-  paper: { bg: '#f8f4ea', fg: 'text-paper', glow: 'rgb(37 77 255 / 0.12)', from: '#254dff', to: '#f05235' },
-  cobalt: { bg: '#254dff', fg: 'text-ink', glow: 'rgb(255 255 255 / 0.22)', from: '#d9f05a', to: '#f1ebdd' },
-  vermilion: { bg: '#f05235', fg: 'text-paper', glow: 'rgb(255 255 255 / 0.28)', from: '#f1ebdd', to: '#d9f05a' },
-  acid: { bg: '#d9f05a', fg: 'text-paper', glow: 'rgb(255 255 255 / 0.5)', from: '#254dff', to: '#f05235' },
-  ink: { bg: '#20211f', fg: 'text-ink', glow: 'rgb(255 255 255 / 0.12)', from: '#254dff', to: '#d9f05a' },
-  chrome: { bg: '#d9dce0', fg: 'text-paper', glow: 'rgb(255 255 255 / 0.6)', from: '#254dff', to: '#f05235' },
+  paper: { bg: '#FFFBF3', fg: 'text-paper', glow: 'rgb(108 43 255 / 0.12)', from: '#6C2BFF', to: '#FF7EC8' },
+  cobalt: { bg: '#6C2BFF', fg: 'text-ink', glow: 'rgb(255 255 255 / 0.22)', from: '#FF7EC8', to: '#FFF6E5' },
+  vermilion: { bg: '#FF7EC8', fg: 'text-paper', glow: 'rgb(255 255 255 / 0.28)', from: '#FFF6E5', to: '#6C2BFF' },
+  // « acid » : nom historique, désormais lilas (le citron est réservé aux petits éléments, illisible en grand aplat)
+  acid: { bg: '#EADFFF', fg: 'text-paper', glow: 'rgb(255 255 255 / 0.5)', from: '#6C2BFF', to: '#FF7EC8' },
+  ink: { bg: '#2B0F3A', fg: 'text-ink', glow: 'rgb(255 255 255 / 0.12)', from: '#6C2BFF', to: '#FF7EC8' },
+  chrome: { bg: '#EADFFF', fg: 'text-paper', glow: 'rgb(255 255 255 / 0.6)', from: '#6C2BFF', to: '#FF7EC8' },
 } as const
 
 export type Tone = keyof typeof TONES
@@ -34,7 +35,7 @@ export function BigTile({ tone = 'paper', children, className, inner, ...rest }:
         whileHover={{ y: -8 }}
         whileTap={{ scale: 0.955 }}
         transition={{ type: 'spring', stiffness: 380, damping: 20 }}
-        className="theme-light h-full rounded-[44px] shadow-[var(--shadow-card)]"
+        className="theme-light h-full rounded-[44px] border-[3px] border-[#2B0F3A] shadow-[var(--shadow-card)]"
         style={{ '--color-background': t.bg } as CSSProperties}
       >
         <MagicCard className="h-full rounded-[44px]" gradientFrom={t.from} gradientTo={t.to} gradientColor={t.glow} gradientSize={300}>

@@ -103,7 +103,7 @@ function Shell() {
       <ScrollFx deps={`${lang}${pathname}`} />
       <Nav />
       <ClickSpark
-        sparkColor={['#254dff', '#f05235', '#d9f05a', '#20211f']}
+        sparkColor={['#6C2BFF', '#FF7EC8', '#FFD83D', '#2B0F3A']}
         sparkCount={10}
         sparkSize={11}
         sparkRadius={34}

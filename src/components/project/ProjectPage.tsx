@@ -133,8 +133,8 @@ export function ProjectPage() {
               {project.link && (
                 <ShimmerButton
                   onClick={() => window.open(project.link, '_blank', 'noreferrer')}
-                  background="#20211f"
-                  shimmerColor="#d9f05a"
+                  background="#2B0F3A"
+                  shimmerColor="#FFD83D"
                   className="gap-2 px-7 py-3.5 text-sm font-semibold text-ink"
                 >
                   {t.links.try}

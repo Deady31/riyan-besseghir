@@ -1,37 +1,38 @@
-@import '@fontsource-variable/sora';
-@import '@fontsource-variable/manrope';
-@import '@fontsource-variable/unbounded';
+@import '@fontsource-variable/rubik';
+@import '@fontsource/bungee';
 @import 'tailwindcss';
 
 @theme {
-  /* DA « Digital Art Studio » : les noms historiques gardent leur rôle (ink = fond, paper = texte). */
-  --color-ink: #f1ebdd;
-  --color-graphite: #ebe4d3;
-  --color-graphite-2: #e3dbc7;
-  --color-line: #c9c1ae;
-  --color-paper: #20211f;
-  --color-mist: #5b5a54;
-  --color-signal: #254dff;
-  --color-signal-soft: #254dff;
-  --color-vermilion: #f05235;
-  --color-lemon: #d9f05a;
-  --color-bubblegum: #f05235;
-  --color-mint: #d9dce0;
-  --color-tangerine: #f05235;
-  --color-plum: #20211f;
-  --color-chrome: #d9dce0;
+  /* Charte FOODER × Jet Set Radio : fond crème, violet dominant, prune pour le texte et les contours, rose et citron
+     en petites touches. Les noms historiques gardent leur rôle (ink = fond, paper = texte, signal = couleur forte). */
+  --color-ink: #FFF6E5;
+  --color-graphite: #F6EAD3;
+  --color-graphite-2: #EFDDBF;
+  --color-line: #E2CBA8;
+  --color-paper: #2B0F3A;
+  --color-mist: #6B5774;
+  --color-signal: #6C2BFF;
+  --color-signal-soft: #6C2BFF;
+  --color-vermilion: #FF7EC8;
+  --color-lemon: #FFD83D;
+  --color-bubblegum: #FF7EC8;
+  --color-mint: #EADFFF;
+  --color-tangerine: #FF7EC8;
+  --color-plum: #2B0F3A;
+  --color-chrome: #EADFFF;
   /* alias attendus par les composants Magic UI */
-  --color-background: #f8f4ea;
-  --color-border: #d4ccb8;
+  --color-background: #FFFBF3;
+  --color-border: #E2CBA8;
 
   --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
   --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
 
-  --font-display: 'Sora Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-editorial: 'Unbounded Variable', 'Sora Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Sora Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-body: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-brand: 'Bungee', 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-editorial: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
 
   --text-hero: clamp(4.5rem, 1rem + 15vw, 17rem);
   --text-mega: clamp(3.25rem, 1rem + 7vw, 9rem);
@@ -39,8 +40,9 @@
 
   --shadow-hard-sm: none;
   --shadow-hard: none;
-  --shadow-hard-lg: 0 24px 40px -28px rgb(32 33 31 / 0.55);
-  --shadow-card: 0 28px 44px -34px rgb(32 33 31 / 0.5);
+  /* ombres dures décalées, façon cel-shading */
+  --shadow-hard-lg: 4px 5px 0 rgb(43 15 58);
+  --shadow-card: 6px 7px 0 rgb(43 15 58);
 
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
@@ -55,27 +57,30 @@
    avec .theme-light, et le menu suit le monde qui passe dessous (html[data-theme], posé par BurnBackdrop). */
 .theme-dark,
 html[data-theme='dark'] .theme-follow {
-  --color-ink: #0a0b0f;
-  --color-paper: #f1ebdd;
-  --color-graphite: #14161d;
-  --color-graphite-2: #1c1f28;
-  --color-line: #2d313d;
-  --color-mist: #bfbdb0;
-  --color-signal: #7d97ff;
-  --color-signal-soft: #7d97ff;
-  --color-background: #15171e;
-  --color-border: #2d313d;
+  --color-ink: #2B0F3A;
+  --color-paper: #FFF6E5;
+  --color-graphite: #3A1752;
+  --color-graphite-2: #47205F;
+  --color-line: #6A4785;
+  --color-mist: #D5C6E0;
+  /* sur la nuit prune, l'accent passe au lilas clair (le violet n'y serait pas lisible, le citron est réservé aux petits éléments) */
+  --color-signal: #B79CFF;
+  --color-signal-soft: #B79CFF;
+  --color-background: #351447;
+  --color-border: #6A4785;
   color: var(--color-paper);
 }
 .theme-light {
-  --color-ink: #f1ebdd;
-  --color-paper: #20211f;
-  --color-graphite: #ebe4d3;
-  --color-graphite-2: #e3dbc7;
-  --color-line: #c9c1ae;
-  --color-mist: #5b5a54;
-  --color-background: #f8f4ea;
-  --color-border: #d4ccb8;
+  --color-ink: #FFF6E5;
+  --color-paper: #2B0F3A;
+  --color-graphite: #F6EAD3;
+  --color-graphite-2: #EFDDBF;
+  --color-line: #E2CBA8;
+  --color-mist: #6B5774;
+  --color-background: #FFFBF3;
+  --color-border: #E2CBA8;
+  --color-signal: #6C2BFF;
+  --color-signal-soft: #6C2BFF;
 }
 
 /* Portrait : les plaques s'impriment l'une après l'autre, chacune d'abord décalée, puis calée. */
@@ -103,7 +108,7 @@ html[data-theme='dark'] .theme-follow {
   bottom: -7px;
   width: 10px;
   height: 10px;
-  background: #fff6e0;
+  background: #FFF6E5;
   border-right: 2px solid var(--color-paper);
   border-bottom: 2px solid var(--color-paper);
   transform: translateX(-50%) rotate(45deg);
@@ -202,10 +207,10 @@ body {
 
 .display {
   font-family: var(--font-display);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: -0.05em;
-  line-height: 0.88;
+  font-weight: 900;
+  text-transform: none;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
   color: var(--color-paper);
 }
 
@@ -217,15 +222,21 @@ h2, h3 {
 
 .display em,
 .serif-em em {
-  /* deuxième voix : Unbounded, large et arrondie, en capitales. Aucun italique sur le site (décision de Riyan). */
-  font-family: var(--font-editorial);
+  /* l'accent des titres : même police, couleur forte (violet, ou citron sur la nuit). Jamais d'italique. */
+  font-family: inherit;
   font-style: normal;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: -0.03em;
-  font-size: 0.8em;
-  line-height: 1;
+  font-weight: inherit;
+  text-transform: none;
   color: var(--color-signal);
+}
+
+/* Le nom en lettrage d'enseigne de rue (Bungee), comme les tags de Jet Set Radio. */
+.brand-name {
+  font-family: var(--font-brand);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.92;
+  text-transform: uppercase;
 }
 
 /* Plus aucun italique nulle part : les balises qui l'imposent par défaut sont remises droites. */
@@ -274,28 +285,30 @@ dfn {
 }
 
 .pop {
-  border: 1px solid var(--color-paper);
+  border: 2.5px solid var(--color-paper);
   border-radius: 999px;
-  box-shadow: none;
+  box-shadow: 3px 3px 0 var(--color-paper);
   transition: background-color 0.25s ease, color 0.25s ease, transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
 }
 .pop:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hard-lg);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--color-paper);
 }
 .pop:active {
-  transform: translateY(1px) scale(0.96);
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--color-paper);
 }
 
 .sticker {
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
-  border: 1px solid var(--color-paper);
+  border: 2px solid var(--color-paper);
   border-radius: 999px;
   padding: 0.38em 0.95em;
-  font-family: var(--font-mono);
-  font-weight: 600;
+  font-family: var(--font-body);
+  font-weight: 700;
+  box-shadow: 2px 2px 0 var(--color-paper);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -324,11 +337,11 @@ dfn {
 }
 
 .rocker {
-  --face: #254dff;
+  --face: #6C2BFF;
   --face-side: #1636b3;
   --off: #d9d2bf;
   --off-side: #b8b09b;
-  --frame: #20211f;
+  --frame: #2B0F3A;
   position: relative;
   display: inline-block;
   flex-shrink: 0;
@@ -348,7 +361,7 @@ dfn {
   content: '';
   position: absolute;
   inset: 0.5em 0 0 0;
-  background: #20211f;
+  background: #2B0F3A;
   border: 0.5em solid var(--frame);
   border-bottom: 0;
 }
@@ -450,7 +463,7 @@ dfn {
 
 .redacted-bar {
   border-radius: 2px;
-  background: linear-gradient(90deg, #20211f 0%, #20211f 40%, rgb(240 82 53 / 0.9) 50%, #20211f 60%, #20211f 100%);
+  background: linear-gradient(90deg, #2B0F3A 0%, #2B0F3A 40%, rgb(255 126 200 / 0.9) 50%, #2B0F3A 60%, #2B0F3A 100%);
   background-size: 250% 100%;
   animation: redacted-scan 3.2s ease-in-out infinite;
 }
@@ -462,7 +475,7 @@ dfn {
 
 .classified {
   background-image:
-    repeating-linear-gradient(-45deg, rgb(32 33 31 / 0.05) 0 12px, transparent 12px 24px);
+    repeating-linear-gradient(-45deg, rgb(43 15 58 / 0.05) 0 12px, transparent 12px 24px);
 }
 
 .classified-stamp {
