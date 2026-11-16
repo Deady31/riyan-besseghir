@@ -94,7 +94,8 @@ function Shell() {
       >
         {webgl && (
           <Suspense fallback={null}>
-            <SiteScene />
+            <SiteScene layer="back" />
+            <SiteScene layer="front" />
           </Suspense>
         )}
         <Outlet />

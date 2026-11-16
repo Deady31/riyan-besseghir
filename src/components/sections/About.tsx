@@ -36,9 +36,13 @@ export function About() {
 
   return (
     <section ref={root} id="about" className="relative px-[var(--gutter)] py-32 md:py-48">
-      <Anchor kind="form-cobalt" className="top-[10%] right-[3%] w-[16vw] max-md:w-[30vw]" par={0.15} />
-      <Anchor kind="sat-chrome" className="bottom-[10%] left-[44%] w-[3vw] max-md:hidden" par={0.3} />
-      <Anchor kind="cube-chrome" className="top-[56%] left-[1.5%] w-[3.6vw] max-md:hidden" par={0.3} />
+      <Anchor kind="form-cobalt" className="top-[6%] right-[1.5%] w-[22vw] max-md:w-[32vw]" par={0.15} />
+      <Anchor kind="sat-chrome" className="bottom-[10%] left-[44%] w-[3.2vw] max-md:hidden" par={0.3} />
+      <Anchor kind="cube-chrome" className="top-[56%] left-[1.5%] w-[3.8vw] max-md:hidden" par={0.3} />
+      <Anchor kind="mobius" className="bottom-[4%] right-[7%] w-[15vw] max-md:hidden" par={0.25} />
+      <Anchor kind="crystal" className="top-[38%] left-[0.5%] w-[6.5vw] max-md:hidden" par={0.3} />
+      <Anchor kind="torus" className="top-[1%] left-[40%] w-[7.5vw] max-md:hidden" par={0.25} />
+      <Anchor kind="capsule" className="bottom-[18%] right-[2%] w-[4.2vw] max-md:hidden" par={0.75} layer="front" />
       <SectionHeading index="05" label={a.label} title={<TitleParts parts={a.title} />} />
 
       <div>

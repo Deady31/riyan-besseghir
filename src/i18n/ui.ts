@@ -130,6 +130,9 @@ const fr = {
     status: 'Statut',
     category: 'Catégorie',
     notFound: 'Ce projet n’existe pas.',
+    play: 'Jouer dans le téléphone',
+    closePhone: 'Fermer le téléphone',
+    playHint: 'L’appli réelle, dans l’écran du téléphone.',
   },
   dialog: { close: 'Fermer la fiche projet' },
 }
@@ -264,6 +267,9 @@ const en: UI = {
     status: 'Status',
     category: 'Category',
     notFound: 'This project doesn’t exist.',
+    play: 'Play inside the phone',
+    closePhone: 'Close the phone',
+    playHint: 'The real app, inside the phone screen.',
   },
   dialog: { close: 'Close project' },
 }

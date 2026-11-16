@@ -61,9 +61,13 @@ export function Feats() {
 
   return (
     <section ref={root} id="hauts-faits" className="relative py-32 md:py-48">
-      <Anchor kind="orb" className="top-[6%] right-[4%] w-[13vw] max-md:w-[26vw]" par={0.2} />
-      <Anchor kind="cube-cobalt" className="top-[52%] left-[2%] w-[4vw] max-md:hidden" par={0.3} />
-      <Anchor kind="form-vermilion" className="bottom-[4%] right-[3%] w-[13vw] max-md:hidden" par={0.15} />
+      <Anchor kind="orb" className="top-[3%] right-[2%] w-[19vw] max-md:w-[28vw]" par={0.2} />
+      <Anchor kind="cube-cobalt" className="top-[50%] left-[1.5%] w-[4.5vw] max-md:hidden" par={0.3} />
+      <Anchor kind="form-vermilion" className="bottom-[3%] right-[1%] w-[19vw] max-md:hidden" par={0.15} />
+      <Anchor kind="mobius" className="top-[38%] left-[0.5%] w-[13vw] max-md:hidden" par={0.25} />
+      <Anchor kind="top" className="bottom-[26%] left-[3%] w-[8.5vw] max-md:hidden" par={0.2} />
+      <Anchor kind="bubble" className="top-[20%] left-[3%] w-[9vw] max-md:hidden" par={0.3} />
+      <Anchor kind="star-cobalt" className="top-[72%] right-[14%] w-[10vw] max-md:hidden" par={0.25} tilt={0.9} />
       <div className="px-[var(--gutter)]">
         <SectionHeading index="02" label={t.feats.label} title={<TitleParts parts={t.feats.title} />} />
       </div>

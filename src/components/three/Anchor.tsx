@@ -5,12 +5,28 @@ import { cn } from '../../lib/cn'
  * l'emplacement et la taille de la forme (voir SiteScene). Les classes responsives décident où elle vit.
  * `par` : décalage de parallaxe (plus c'est grand, plus la forme défile lentement), `tilt` : amplitude de rotation au scroll.
  */
-export function Anchor({ kind, className, par, tilt }: { kind: string; className?: string; par?: number; tilt?: number }) {
+export function Anchor({
+  kind,
+  className,
+  par,
+  tilt,
+  layer,
+  screen,
+}: {
+  kind: string
+  className?: string
+  par?: number
+  tilt?: number
+  layer?: 'front'
+  screen?: string
+}) {
   return (
     <span
       data-anchor={kind}
       data-par={par}
       data-tilt={tilt}
+      data-layer={layer}
+      data-screen={screen}
       aria-hidden="true"
       className={cn('pointer-events-none absolute block aspect-square', className)}
     />

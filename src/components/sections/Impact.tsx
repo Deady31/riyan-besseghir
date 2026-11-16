@@ -72,10 +72,16 @@ export function Impact() {
 
   return (
     <section ref={root} id="impact" className="relative px-[var(--gutter)] py-32 md:py-48">
-      <Anchor kind="slab" className="top-[7%] left-[3%] w-[11vw] max-md:hidden" par={0.12} />
-      <Anchor kind="ring" className="top-[34%] right-[3%] w-[9vw] max-md:hidden" par={0.25} />
-      <Anchor kind="form-chrome" className="bottom-[8%] left-[2%] w-[13vw] max-md:hidden" par={0.2} />
-      <Anchor kind="sat-red" className="top-[62%] right-[6%] w-[3vw] max-md:hidden" par={0.35} />
+      <Anchor kind="slab" className="top-[4%] left-[1.5%] w-[15vw] max-md:hidden" par={0.12} />
+      <Anchor kind="ring" className="top-[26%] right-[0.5%] w-[13vw] max-md:hidden" par={0.25} />
+      <Anchor kind="form-chrome" className="bottom-[5%] left-[0.5%] w-[19vw] max-md:hidden" par={0.2} />
+      <Anchor kind="sat-red" className="top-[58%] right-[5%] w-[3.4vw] max-md:hidden" par={0.35} />
+      <Anchor kind="star" className="top-[56%] left-[0.5%] w-[12vw] max-md:hidden" par={0.3} tilt={0.9} />
+      <Anchor kind="capsule" className="top-[13%] right-[17%] w-[6.5vw] max-md:hidden" par={0.3} />
+      <Anchor kind="crystal" className="bottom-[26%] right-[1%] w-[7.5vw] max-md:hidden" par={0.3} />
+      <Anchor kind="mobius" className="top-[80%] right-[8%] w-[14vw] max-md:hidden" par={0.25} />
+      <Anchor kind="orb" className="top-[7%] right-[4%] w-[26vw] md:hidden" par={0.2} />
+      <Anchor kind="crystal" className="top-[46%] right-[2%] w-[4.5vw] max-md:hidden" par={0.7} layer="front" />
       <SectionHeading index="01" align="right" label={t.impact.label} title={<TitleParts parts={t.impact.title} />} />
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-16">

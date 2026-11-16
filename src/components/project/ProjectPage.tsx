@@ -15,6 +15,13 @@ import { CATEGORY_TINT } from '../lab/ProjectCard'
 import { ShotFrame } from '../ui/ShotFrame'
 import { cn } from '../../lib/cn'
 import { Anchor } from '../three/Anchor'
+import { PhoneStage } from './PhoneStage'
+import { phoneStage } from '../../lib/phoneStage'
+
+// Projets dont l'appli réelle s'ouvre dans le téléphone 3D (l'appli doit autoriser l'affichage depuis ce site).
+const LIVE: Record<string, { url: string; screen: string }> = {
+  fooder: { url: import.meta.env.VITE_FOODER_URL ?? 'https://fooder-tawny.vercel.app', screen: '/media/projets/fooder-v2-swipe-mobile.webp' },
+}
 
 const CAT_TONE: Record<string, Tone> = { consumer: 'vermilion', ia: 'cobalt', outils: 'chrome', jeux: 'acid', pm: 'ink', clients: 'chrome' }
 const STEP_TONES: Tone[] = ['paper', 'chrome', 'paper', 'chrome']
@@ -70,9 +77,11 @@ export function ProjectPage() {
   const desktopShots = project.shots.filter((s) => s.frame !== 'mobile')
 
   const back = () => navigate('/', { state: { restore: true } })
+  const live = LIVE[project.id]
 
   return (
     <main className="relative px-[var(--gutter)] pt-24 pb-28 md:pt-28">
+      {live && <PhoneStage url={live.url} title={project.title} closeLabel={t.project.closePhone} />}
       <Anchor kind="orb" className="top-[62%] right-[2%] w-[10vw] max-md:w-[22vw]" par={0.2} />
       <Anchor kind="form-cobalt" className="top-[38%] left-[1.5%] w-[9vw] max-md:hidden" par={0.15} />
       <Anchor kind="ring" className="bottom-[14%] right-[3%] w-[11vw] max-md:hidden" par={0.2} />
@@ -125,6 +134,18 @@ export function ProjectPage() {
                   <span className="sr-only">{t.links.newTab}</span>
                 </ShimmerButton>
               )}
+              {live && (
+                <motion.button
+                  type="button"
+                  onClick={() => phoneStage.setOpen(true)}
+                  whileHover={{ y: -3 }}
+                  whileTap={{ scale: 0.94 }}
+                  transition={{ type: 'spring', stiffness: 420, damping: 18 }}
+                  className="inline-flex items-center gap-2 rounded-full bg-lemon px-7 py-3.5 text-sm font-bold text-paper"
+                >
+                  {t.project.play}
+                </motion.button>
+              )}
               {project.repo && (
                 <motion.a
                   href={project.repo}
@@ -142,10 +163,16 @@ export function ProjectPage() {
               )}
             </div>
           </div>
-          {project.shots[0] && (
-            <div className={cn('mx-auto w-full', project.shots[0].frame === 'mobile' ? 'max-w-[300px]' : 'max-w-2xl')}>
-              <ShotFrame shot={project.shots[0]} eager />
+          {live ? (
+            <div className="relative mx-auto aspect-[4/5] w-full max-w-[520px] lg:aspect-square">
+              <Anchor kind="phone" layer="front" screen={live.screen} className="inset-0 w-full" par={0} />
             </div>
+          ) : (
+            project.shots[0] && (
+              <div className={cn('mx-auto w-full', project.shots[0].frame === 'mobile' ? 'max-w-[300px]' : 'max-w-2xl')}>
+                <ShotFrame shot={project.shots[0]} eager />
+              </div>
+            )
           )}
         </div>
       </motion.section>

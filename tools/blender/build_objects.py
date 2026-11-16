@@ -13,7 +13,7 @@ import sys
 
 import bmesh
 import bpy
-from mathutils import Vector
+from mathutils import Matrix, Vector
 
 ARGS = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
 OUT = ARGS[0] if ARGS else os.path.abspath("out/objects")
@@ -227,6 +227,258 @@ def glass_slab():
     return mesh_object("GlassSlab", bm, base_material("GLASS", (0.75, 0.8, 1.0, 1), 0.0, 0.03))
 
 
+# ---------------------------------------------------------------- formes supplémentaires du fond
+
+
+def _smooth(ob, smooth=True):
+    for p in ob.data.polygons:
+        p.use_smooth = smooth
+    return ob
+
+
+def revolve(profile, seg):
+    """Révolution d'un profil [(rayon, hauteur), …] autour de l'axe Z. Les points de rayon 0 deviennent des pôles."""
+    bm = bmesh.new()
+    rows = []
+    for r, z in profile:
+        if r < 1e-6:
+            rows.append(bm.verts.new((0, 0, z)))
+        else:
+            rows.append([bm.verts.new((r * math.cos(2 * math.pi * i / seg), r * math.sin(2 * math.pi * i / seg), z)) for i in range(seg)])
+    for k in range(len(rows) - 1):
+        a, b = rows[k], rows[k + 1]
+        for i in range(seg):
+            j = (i + 1) % seg
+            if isinstance(a, list) and isinstance(b, list):
+                bm.faces.new((a[i], a[j], b[j], b[i]))
+            elif isinstance(a, list):
+                bm.faces.new((a[i], a[j], b))
+            elif isinstance(b, list):
+                bm.faces.new((a, b[j], b[i]))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return bm
+
+
+def star4():
+    """Étoile à 4 branches aux côtés concaves, gonflée comme un coussin et légèrement vrillée."""
+    ang, rad, thick = 96, 22, 0.34
+    bm = bmesh.new()
+    ctop = bm.verts.new((0, 0, thick))
+    cbot = bm.verts.new((0, 0, -thick))
+    top, bot = [], []
+    for j in range(1, rad + 1):
+        s = j / rad
+        rt, rb = [], []
+        for i in range(ang):
+            th0 = 2 * math.pi * i / ang
+            R = 0.24 + 1.12 * abs(math.cos(2 * th0)) ** 3.4
+            th = th0 + 0.85 * s * s
+            x, y = s * R * math.cos(th), s * R * math.sin(th)
+            z = thick * (1 - s * s) ** 0.5
+            vt = bm.verts.new((x, y, z))
+            rt.append(vt)
+            rb.append(vt if j == rad else bm.verts.new((x, y, -z)))
+        top.append(rt)
+        bot.append(rb)
+    for i in range(ang):
+        j = (i + 1) % ang
+        bm.faces.new((ctop, top[0][i], top[0][j]))
+        bm.faces.new((cbot, bot[0][j], bot[0][i]))
+    for k in range(rad - 1):
+        for i in range(ang):
+            j = (i + 1) % ang
+            bm.faces.new((top[k][i], top[k + 1][i], top[k + 1][j], top[k][j]))
+            if k + 1 < rad:
+                bm.faces.new((bot[k][j], bot[k + 1][j], bot[k + 1][i], bot[k][i]))
+            else:
+                bm.faces.new((bot[k][j], bot[k + 1][j], bot[k + 1][i], bot[k][i]))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return _smooth(mesh_object("Star4", bm, base_material("CHROME", (0.82, 0.83, 0.86, 1), 1.0, 0.06)))
+
+
+def capsule():
+    prof = [(0.0, -1.15)]
+    for a in range(1, 13):
+        t = -math.pi / 2 + (math.pi / 2) * a / 12
+        prof.append((0.5 * math.cos(t), -0.65 + 0.5 * math.sin(t)))
+    prof += [(0.5, 0.65)]
+    for a in range(1, 13):
+        t = (math.pi / 2) * a / 12
+        prof.append((0.5 * math.cos(t), 0.65 + 0.5 * math.sin(t)))
+    return _smooth(mesh_object("Capsule", revolve(prof, 48), base_material("CHROME", (0.82, 0.83, 0.86, 1), 1.0, 0.06)))
+
+
+def spinning_top():
+    prof = [(0.0, -1.0)]
+    n = 40
+    for k in range(1, n + 1):
+        t = k / n
+        z = -1.0 + 1.75 * t
+        r = 0.7 * (math.sin(math.pi * t ** 0.72)) ** 0.9
+        prof.append((max(r, 0.0), z))
+    prof[-1] = (0.0, prof[-1][1])
+    return _smooth(mesh_object("SpinningTop", revolve(prof, 56), base_material("COBALT_GLOSS", COBALT, 0.0, 0.12)))
+
+
+def crystal():
+    """Cristal hexagonal à facettes franches (ombrage plat)."""
+    bm = bmesh.new()
+    n = 6
+    top_tip = bm.verts.new((0, 0, 1.55))
+    bot_tip = bm.verts.new((0, 0, -0.95))
+    ring_a = [bm.verts.new((0.5 * math.cos(2 * math.pi * i / n), 0.5 * math.sin(2 * math.pi * i / n), 0.55)) for i in range(n)]
+    ring_b = [bm.verts.new((0.5 * math.cos(2 * math.pi * i / n), 0.5 * math.sin(2 * math.pi * i / n), -0.2)) for i in range(n)]
+    for i in range(n):
+        j = (i + 1) % n
+        bm.faces.new((top_tip, ring_a[i], ring_a[j]))
+        bm.faces.new((ring_a[i], ring_b[i], ring_b[j], ring_a[j]))
+        bm.faces.new((bot_tip, ring_b[j], ring_b[i]))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return _smooth(mesh_object("Crystal", bm, base_material("GLASS", (0.75, 0.8, 1.0, 1), 0.0, 0.03)), False)
+
+
+def fat_torus():
+    bm = bmesh.new()
+    major, minor = 0.7, 0.36
+    seg, tube = 72, 28
+    verts = []
+    for i in range(seg):
+        a = 2 * math.pi * i / seg
+        ring = []
+        for j in range(tube):
+            b = 2 * math.pi * j / tube
+            r = major + minor * math.cos(b)
+            ring.append(bm.verts.new((r * math.cos(a), r * math.sin(a), minor * math.sin(b))))
+        verts.append(ring)
+    for i in range(seg):
+        for j in range(tube):
+            bm.faces.new((verts[i][j], verts[(i + 1) % seg][j], verts[(i + 1) % seg][(j + 1) % tube], verts[i][(j + 1) % tube]))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return _smooth(mesh_object("FatTorus", bm, base_material("VERMILION_GLOSS", VERMILION, 0.0, 0.16)))
+
+
+def mobius():
+    """Ruban de Möbius épais (demi-torsion), section rectangulaire."""
+    seg = 160
+    w, t = 0.34, 0.05
+    bm = bmesh.new()
+    rings = []
+    for i in range(seg):
+        phi = 2 * math.pi * i / seg
+        radial = Vector((math.cos(phi), math.sin(phi), 0))
+        tangent = Vector((-math.sin(phi), math.cos(phi), 0))
+        up = Vector((0, 0, 1))
+        u = radial * math.cos(phi / 2) + up * math.sin(phi / 2)
+        v = tangent.cross(u).normalized()
+        c = radial * 1.0
+        rings.append(
+            [
+                bm.verts.new(c + u * w + v * t),
+                bm.verts.new(c - u * w + v * t),
+                bm.verts.new(c - u * w - v * t),
+                bm.verts.new(c + u * w - v * t),
+            ]
+        )
+    for i in range(seg):
+        a = rings[i]
+        last = i == seg - 1
+        b = rings[0] if last else rings[i + 1]
+        shift = 2 if last else 0
+        for k in range(4):
+            k2 = (k + 1) % 4
+            bm.faces.new((a[k], a[k2], b[(k2 + shift) % 4], b[(k + shift) % 4]))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return _smooth(mesh_object("Mobius", bm, base_material("CHROME", (0.82, 0.83, 0.86, 1), 1.0, 0.06)))
+
+
+def beads():
+    """Chaîne de 7 sphères qui grossissent le long d'une courbe en S."""
+    bm = bmesh.new()
+    for k in range(7):
+        t = k / 6
+        r = 0.16 + 0.2 * t
+        pos = Vector((-1.5 + 3.0 * t, 0.55 * math.sin(t * math.pi * 1.6), 0.2 * math.cos(t * math.pi * 2.2)))
+        mat = Matrix.Translation(pos)
+        try:
+            bmesh.ops.create_uvsphere(bm, u_segments=28, v_segments=14, radius=r, matrix=mat)
+        except TypeError:
+            bmesh.ops.create_uvsphere(bm, u_segments=28, v_segments=14, diameter=r, matrix=mat)
+    return _smooth(mesh_object("Beads", bm, base_material("CHROME", (0.82, 0.83, 0.86, 1), 1.0, 0.06)))
+
+
+# ---------------------------------------------------------------- téléphone
+
+
+def _rounded_rect(w, h, r, step=7):
+    pts = []
+    corners = [(w / 2 - r, h / 2 - r, 0), (-w / 2 + r, h / 2 - r, 90), (-w / 2 + r, -h / 2 + r, 180), (w / 2 - r, -h / 2 + r, 270)]
+    for cx, cy, a0 in corners:
+        for s in range(step + 1):
+            a = math.radians(a0 + 90 * s / step)
+            pts.append((cx + r * math.cos(a), cy + r * math.sin(a)))
+    return pts
+
+
+def _to_blender(x, y, z):
+    """Repère local (x droite, y haut, z vers le spectateur) → repère Blender (le devant regarde -Y)."""
+    return Vector((x, -z, y))
+
+
+def _plate(name, w, h, r, z, material, uv=False):
+    pts = _rounded_rect(w, h, r)
+    bm = bmesh.new()
+    vs = [bm.verts.new(_to_blender(x, y, z)) for x, y in pts]
+    face = bm.faces.new(vs)
+    del face
+    if uv:
+        layer = bm.loops.layers.uv.new("UVMap")
+        for f in bm.faces:
+            for loop in f.loops:
+                co = loop.vert.co
+                loop[layer].uv = (co.x / w + 0.5, co.z / h + 0.5)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    ob = mesh_object(name, bm, material)
+    return ob
+
+
+def phone():
+    W, H, D, R = 1.0, 2.05, 0.11, 0.16
+    # châssis : plaque arrondie extrudée en épaisseur, bords adoucis
+    pts = _rounded_rect(W, H, R)
+    bm = bmesh.new()
+    vs = [bm.verts.new(_to_blender(x, y, D / 2)) for x, y in pts]
+    face = bm.faces.new(vs)
+    res = bmesh.ops.extrude_face_region(bm, geom=[face])
+    for v in [g for g in res["geom"] if isinstance(g, bmesh.types.BMVert)]:
+        v.co += _to_blender(0, 0, -D) - _to_blender(0, 0, 0)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    bmesh.ops.bevel(bm, geom=list(bm.edges), offset=0.022, segments=3, affect="EDGES")
+    body = mesh_object("PhoneBody", bm, base_material("TITANIUM", (0.7, 0.71, 0.74, 1), 1.0, 0.28))
+    # lunette noire et écran
+    bezel = _plate("PhoneBezel", W - 0.03, H - 0.03, R - 0.015, D / 2 + 0.0012, base_material("BEZEL", INK, 0.0, 0.2))
+    screen = _plate("PhoneScreen", W - 0.085, H - 0.085, R - 0.045, D / 2 + 0.0026, base_material("SCREEN", (1, 1, 1, 1), 0.0, 0.3), uv=True)
+    # bloc caméra au dos
+    cam_bm = bmesh.new()
+    plate = bmesh.ops.create_cube(cam_bm, size=1.0)
+    for v in cam_bm.verts:
+        v.co = Vector((v.co.x * 0.42, v.co.y * 0.03, v.co.z * 0.42)) + _to_blender(-0.2, 0.77, -D / 2 - 0.012)
+    bmesh.ops.bevel(cam_bm, geom=list(cam_bm.edges), offset=0.012, segments=3, affect="EDGES")
+    for (lx, ly) in ((-0.31, 0.88), (-0.11, 0.88), (-0.21, 0.69)):
+        mat = Matrix.Translation(_to_blender(lx, ly, -D / 2 - 0.03)) @ Matrix.Rotation(math.pi / 2, 4, "X")
+        try:
+            bmesh.ops.create_cone(cam_bm, cap_ends=True, segments=24, radius1=0.075, radius2=0.075, depth=0.03, matrix=mat)
+        except TypeError:
+            bmesh.ops.create_cone(cam_bm, cap_ends=True, segments=24, diameter1=0.15, diameter2=0.15, depth=0.03, matrix=mat)
+    cam = mesh_object("PhoneCamera", cam_bm, base_material("CAMERA", INK, 0.0, 0.15))
+    # Dynamic Island : pastille noire sur l'écran
+    isle = _plate("PhoneIsland", 0.30, 0.085, 0.042, D / 2 + 0.0034, base_material("ISLAND", INK, 0.0, 0.1))
+    for ob in (bezel, screen, isle, cam):
+        _smooth(ob)
+    _smooth(body)
+    return [body, bezel, screen, isle, cam]
+
+
+
 BUILDERS = {
     "master-sculpture": master_sculpture,
     "glass-orb": glass_orb,
@@ -234,6 +486,14 @@ BUILDERS = {
     "cobalt-form": cobalt_form,
     "satellites": satellites,
     "glass-slab": glass_slab,
+    "star": star4,
+    "capsule": capsule,
+    "top": spinning_top,
+    "crystal": crystal,
+    "fat-torus": fat_torus,
+    "mobius": mobius,
+    "beads": beads,
+    "phone": phone,
 }
 
 
@@ -392,7 +652,7 @@ for key, fn in BUILDERS.items():
     res = fn()
     objs = res if isinstance(res, list) else [res]
     for o in objs:
-        recenter(o) if key != "satellites" else None
+        recenter(o) if key not in ("satellites", "phone") else None
     built[key] = objs
     export(key, objs)
 

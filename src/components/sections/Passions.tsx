@@ -95,9 +95,13 @@ export function Passions() {
 
   return (
     <section ref={root} id="passions" className="relative overflow-hidden py-32 md:py-48">
-      <Anchor kind="ring" className="top-[2%] right-[6%] w-[12vw] max-md:w-[24vw]" par={0.2} />
-      <Anchor kind="slab" className="bottom-[3%] left-[3%] w-[9vw] max-md:hidden" par={0.15} />
-      <Anchor kind="sat-red" className="top-[34%] left-[3%] w-[3vw] max-md:hidden" par={0.3} />
+      <Anchor kind="ring" className="top-[1%] right-[3%] w-[16vw] max-md:w-[26vw]" par={0.2} />
+      <Anchor kind="slab" className="bottom-[2%] left-[1.5%] w-[13vw] max-md:hidden" par={0.15} />
+      <Anchor kind="sat-red" className="top-[34%] left-[2%] w-[3.4vw] max-md:hidden" par={0.3} />
+      <Anchor kind="star" className="top-[42%] right-[0.5%] w-[11vw] max-md:hidden" par={0.3} tilt={0.9} />
+      <Anchor kind="capsule" className="bottom-[9%] right-[18%] w-[6.5vw] max-md:hidden" par={0.3} />
+      <Anchor kind="top" className="top-[8%] left-[18%] w-[7.5vw] max-md:hidden" par={0.2} />
+      <Anchor kind="cube-chrome" className="top-[26%] left-[0.8%] w-[3.8vw] max-md:hidden" par={0.7} layer="front" />
       <div className="px-[var(--gutter)]">
         <SectionHeading
           index="06"

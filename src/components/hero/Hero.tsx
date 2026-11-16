@@ -74,14 +74,19 @@ export function Hero() {
       </div>
 
       {/* Points d'accroche des formes 3D du fond (voir SiteScene) : la sculpture se pose sur l'aplat cobalt. */}
-      <Anchor kind="knot" className="top-[15%] right-[9%] w-[min(31vw,52vh)] max-md:hidden" par={0.05} tilt={0.5} />
+      <Anchor kind="knot" className="top-[13%] right-[8%] w-[min(35vw,58vh)] max-md:hidden" par={0.05} tilt={0.5} />
       <Anchor kind="knot" className="top-[24%] left-1/2 w-[64vw] -translate-x-1/2 md:hidden" par={0.05} tilt={0.5} />
-      <Anchor kind="ring" className="top-[11%] left-[39%] w-[11vw] max-md:hidden" par={0.22} />
-      <Anchor kind="orb" className="bottom-[9%] left-[57%] w-[12vw] max-md:hidden" par={0.3} />
+      <Anchor kind="ring" className="top-[9%] left-[38%] w-[13vw] max-md:hidden" par={0.22} />
+      <Anchor kind="orb" className="bottom-[6%] left-[55%] w-[14vw] max-md:hidden" par={0.3} />
       <Anchor kind="orb" className="top-[47%] right-[5%] w-[20vw] md:hidden" par={0.3} />
-      <Anchor kind="sat-red" className="bottom-[16%] left-[75%] w-[3vw] max-md:hidden" par={0.4} />
-      <Anchor kind="cube-chrome" className="top-[45%] right-[3%] w-[3.4vw] max-md:hidden" par={0.35} />
-      <Anchor kind="sat-chrome" className="top-[22%] right-[4%] w-[2.2vw] max-md:hidden" par={0.25} />
+      <Anchor kind="star" className="bottom-[3%] right-[1%] w-[14vw] max-md:hidden" par={0.35} tilt={0.8} />
+      <Anchor kind="star-cobalt" className="top-[7%] left-[3%] w-[24vw] md:hidden" par={0.2} tilt={0.8} />
+      <Anchor kind="crystal" className="top-[34%] left-[32%] w-[6vw] max-md:hidden" par={0.3} />
+      <Anchor kind="capsule" className="top-[1%] right-[23%] w-[8vw] max-md:hidden" par={0.25} />
+      <Anchor kind="sat-red" className="bottom-[16%] left-[75%] w-[3.4vw] max-md:hidden" par={0.4} />
+      <Anchor kind="cube-chrome" className="top-[47%] right-[2%] w-[4vw] max-md:hidden" par={0.35} />
+      <Anchor kind="sat-chrome" className="top-[21%] right-[3%] w-[2.6vw] max-md:hidden" par={0.25} />
+      <Anchor kind="bubble" className="bottom-[27%] left-[46%] w-[5vw] max-md:hidden" par={0.3} />
 
       {/* Couche 3 : informations et boutons, toujours lisibles. */}
       <div className="absolute inset-x-0 top-0 z-30 px-[var(--gutter)] pt-24 md:pt-28">
