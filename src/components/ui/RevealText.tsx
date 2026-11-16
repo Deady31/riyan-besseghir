@@ -20,6 +20,7 @@ export function RevealText({ as: Tag = 'p', children, className, delay = 0, imme
       const split = SplitText.create(el, {
         type: 'lines',
         mask: 'lines',
+        aria: 'none',
         autoSplit: true,
         onSplit: (self) =>
           gsap.from(self.lines, {

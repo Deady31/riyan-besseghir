@@ -21,7 +21,7 @@ export function ScrollFx({ deps }: { deps: unknown }) {
       if (prefersReducedMotion()) return
 
       const splits = gsap.utils.toArray<HTMLElement>('[data-light]').map((el) => {
-        const split = SplitText.create(el, { type: 'words' })
+        const split = SplitText.create(el, { type: 'words', aria: 'none' })
         gsap.fromTo(
           split.words,
           { opacity: 0.14 },

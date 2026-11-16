@@ -54,7 +54,7 @@ function Home() {
   }, [lenis])
 
   return (
-    <main key={lang}>
+    <main key={lang} className="[overflow-x:clip]">
       <Hero />
       <MorphMoment />
       <SwipeDeck />
@@ -77,12 +77,14 @@ function Shell() {
   const webgl = useWebGLSupport()
   return (
     <>
-      <a
-        href="#impact"
-        className="sr-only z-[70] rounded-md bg-paper px-4 py-2 text-ink focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
-      >
-        {t.nav.skip}
-      </a>
+      <div role="navigation" aria-label={t.nav.skip}>
+        <a
+          href="#impact"
+          className="sr-only z-[70] rounded-md bg-paper px-4 py-2 text-ink focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+        >
+          {t.nav.skip}
+        </a>
+      </div>
       <PaperBackground />
       {webgl && <BurnBackdrop deps={`${lang}${pathname}`} />}
       <ScrollFx deps={`${lang}${pathname}`} />

@@ -83,7 +83,7 @@ export function ProjectPage() {
   const titleFit = (Math.max(longest, 5) * 0.86).toFixed(2)
 
   return (
-    <main className="relative px-[var(--gutter)] pt-24 pb-28 md:pt-28">
+    <main className="relative px-[var(--gutter)] pt-24 pb-28 [overflow-x:clip] md:pt-28">
       {live && <PhoneStage url={live.url} title={project.title} closeLabel={t.project.closePhone} />}
       <Anchor kind="orb" className="top-[62%] right-[2%] w-[10vw] max-md:w-[22vw]" par={0.2} />
       <Anchor kind="form-cobalt" className="top-[38%] left-[1.5%] w-[9vw] max-md:hidden" par={0.15} />
@@ -179,7 +179,7 @@ export function ProjectPage() {
               onPointerLeave={() => phoneStage.setHover(false)}
               onFocus={() => phoneStage.setHover(true)}
               onBlur={() => phoneStage.setHover(false)}
-              aria-label={t.project.play}
+              aria-label={`${t.project.tapPhone} : ${t.project.play}`}
               className="relative mx-auto block aspect-[4/5] w-full max-w-[520px] cursor-pointer rounded-[48px] lg:aspect-square"
             >
               <Anchor kind="phone" layer="front" screen={live.screen} className="inset-0 w-full" par={0} />

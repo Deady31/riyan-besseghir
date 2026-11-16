@@ -105,7 +105,7 @@ void main() {
   col = mix(col, b, smoothstep(0.54, 0.86, f2) * 0.26);
 
   // Grille de points, par plaques, façon calque de construction.
-  vec2 g = vec2(p.x, docY * 0.7) / 26.0;
+  vec2 g = vec2(p.x, p.y + uScroll * 0.7) / 26.0;
   float dotMask = smoothstep(0.52, 0.74, fbm(q * 2.2 + 21.0));
   float dotShape = smoothstep(0.17, 0.1, length(fract(g) - 0.5));
   col = mix(col, vec3(0.125, 0.13, 0.12), dotShape * dotMask * 0.2);

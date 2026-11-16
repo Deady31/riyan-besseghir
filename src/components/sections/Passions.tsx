@@ -21,7 +21,6 @@ const TILES: Tile[] = [
 
 function PassionTile({ tile, project }: { tile: Tile; project: Project }) {
   const open = useOpenProject()
-  const t = useT()
   const main = project.shots[0]
   const alt = tile.hoverShot !== undefined ? project.shots[tile.hoverShot] : undefined
 
@@ -30,7 +29,6 @@ function PassionTile({ tile, project }: { tile: Tile; project: Project }) {
       type="button"
       data-tile
       onClick={() => open(project)}
-      aria-label={t.ai.open(project.title)}
       whileHover={{ y: -8 }}
       whileTap={{ scale: 0.95, rotate: -0.5 }}
       transition={{ type: 'spring', stiffness: 380, damping: 20 }}

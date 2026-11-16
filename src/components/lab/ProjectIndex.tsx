@@ -90,7 +90,7 @@ export function ProjectIndex() {
                 )}
               >
                 {c === 'all' ? t.index.all : label(c)}
-                <sup className="text-[10px] opacity-60">{counts(c)}</sup>
+                <sup className="text-xs opacity-60">{counts(c)}</sup>
               </button>
             )
           })}

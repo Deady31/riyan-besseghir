@@ -86,7 +86,7 @@ export function Studio() {
         </li>
       </motion.ul>
 
-      <div className="mt-6 grid gap-4 md:mt-8 md:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+      <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-4 md:mt-8 md:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
         <motion.div {...rise}>
           <BigTile tone="ink" inner="flex h-full flex-col gap-8 md:!p-10">
             <span className="label opacity-80">{s.ambition.tag}</span>
@@ -126,13 +126,12 @@ export function Studio() {
 
         <motion.div {...rise}>
           <h3 className="label mb-4 text-mist">{s.logTitle}</h3>
-          <ol className="grid gap-3">
+          <ol className="grid grid-cols-[minmax(0,1fr)] gap-3">
             {log.map((p, i) => (
               <li key={p.id}>
                 <Link
                   to={`/projets/${p.id}`}
-                  className="group flex items-center gap-5 rounded-[32px] bg-graphite px-6 py-4 transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-graphite-2 active:scale-[0.99] md:px-8 md:py-5"
-                  aria-label={`${s.open} : ${p.title}`}
+                  className="group flex min-w-0 items-center gap-5 rounded-[32px] bg-graphite px-6 py-4 transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-graphite-2 active:scale-[0.99] md:px-8 md:py-5"
                 >
                   <span className="label text-mist">{String(i + 1).padStart(2, '0')}</span>
                   <span className="min-w-0 flex-1">
