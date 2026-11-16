@@ -3,6 +3,7 @@ import { gsap, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { useT } from '../../i18n/useT'
 import { PROJECTS } from '../../data/projects'
 import { Anchor } from '../three/Anchor'
+import { DepthField } from '../fx/DepthField'
 
 /**
  * Le chiffre clé s'ouvre en fondu net, puis « se fait swiper » : chaque chiffre est une carte du deck,
@@ -71,8 +72,9 @@ export function MorphMoment() {
         <Anchor kind="camera" className="right-[5%] bottom-[10%] w-[17vw] max-md:right-[2%] max-md:bottom-[8%] max-md:w-[32vw]" par={0.2} tilt={0.7} />
         <Anchor kind="mobius" className="bottom-[5%] left-[24%] w-[12vw] max-md:hidden" par={0.25} />
         <Anchor kind="crystal" className="top-[6%] right-[24%] w-[5.5vw] max-md:hidden" par={0.3} />
+        <DepthField />
         <p className="sr-only">{t.morph.sr}</p>
-        <p data-big aria-hidden="true" className="display mb-[6vh] flex text-[clamp(10rem,6rem+22vw,26rem)] leading-none">
+        <p data-big aria-hidden="true" className="display relative z-10 mb-[6vh] flex text-[clamp(10rem,6rem+22vw,26rem)] leading-none">
           {digits.map((d, i) => (
             <span key={i} data-digit className="relative inline-block will-change-transform">
               <span data-glyph className="inline-block">
@@ -87,7 +89,7 @@ export function MorphMoment() {
             </span>
           ))}
         </p>
-        <div data-caption className="max-w-xl text-center">
+        <div data-caption className="relative z-10 max-w-xl text-center [text-shadow:0_2px_14px_rgb(5_10_58/0.85)]">
           <p className="text-[clamp(1.2rem,0.9rem+0.9vw,1.75rem)] leading-snug tracking-[-0.02em]">{t.morph.line1}</p>
           <p className="mt-3 text-mist">{t.morph.line2}</p>
         </div>
