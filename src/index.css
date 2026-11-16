@@ -79,6 +79,72 @@ html[data-theme='dark'] .theme-follow {
   --color-border: #d4ccb8;
 }
 
+/* Curseur main : le curseur natif n'est masqué que si la main est active (souris + composant monté). */
+html.hand-cursor,
+html.hand-cursor * {
+  cursor: none !important;
+}
+html.hand-cursor input,
+html.hand-cursor textarea,
+html.hand-cursor select,
+html.hand-cursor iframe {
+  cursor: auto !important;
+}
+.hand g[data-s],
+.hand-static g[data-s] {
+  display: none;
+}
+.hand[data-state='idle'] g[data-s='idle'],
+.hand[data-state='point'] g[data-s='point'],
+.hand[data-state='grab'] g[data-s='grab'],
+.hand[data-state='fist'] g[data-s='fist'],
+.hand[data-state='tap'] g[data-s='tap'],
+.hand-static[data-state='idle'] g[data-s='idle'],
+.hand-static[data-state='point'] g[data-s='point'],
+.hand-static[data-state='grab'] g[data-s='grab'],
+.hand-static[data-state='fist'] g[data-s='fist'],
+.hand-static[data-state='tap'] g[data-s='tap'] {
+  display: inline;
+}
+.hand[data-state='hidden'] {
+  display: none;
+}
+/* Le bout du doigt ou le centre de la main est posé sur la pointe réelle du curseur. */
+.hand svg {
+  transform: translate(-50%, -34%);
+  transition: transform 0.16s var(--ease-spring);
+}
+.hand[data-state='point'] svg,
+.hand[data-state='tap'] svg {
+  transform: translate(-41%, -8%);
+}
+.hand[data-state='fist'] svg {
+  transform: translate(-50%, -46%);
+}
+.hand-spark {
+  animation: hand-spark 1.6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes hand-spark {
+  0%, 100% { opacity: 1; scale: 1; }
+  50% { opacity: 0.7; scale: 0.7; }
+}
+.hand-ring {
+  transform-origin: 41.5px 8px;
+  animation: hand-ring 1.1s ease-out infinite;
+}
+.hand-ring-2 {
+  animation-delay: 0.45s;
+}
+@keyframes hand-ring {
+  from { transform: scale(0.4); opacity: 0.9; }
+  to { transform: scale(2.1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hand-ring { animation: none; opacity: 0.5; }
+}
+
 html {
   background: var(--color-ink);
   color: var(--color-paper);

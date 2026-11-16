@@ -22,6 +22,8 @@ import ClickSpark from './components/vendor/reactbits/ClickSpark'
 import { PaperBackground } from './components/layout/PaperBackground'
 import { BurnBackdrop } from './components/layout/BurnBackdrop'
 import { Chapters } from './components/layout/Chapters'
+import { HandCursor, HandPreview } from './components/cursor/HandCursor'
+import { BurstCanvas } from './components/fx/BurstCanvas'
 import { ScrollFx } from './components/night/ScrollFx'
 import { useWebGLSupport } from './hooks/useWebGLSupport'
 
@@ -90,6 +92,8 @@ function Shell() {
         </a>
       </div>
       <PaperBackground />
+      <HandCursor />
+      <BurstCanvas />
       {webgl && <BurnBackdrop deps={`${lang}${pathname}`} />}
       <ScrollFx deps={`${lang}${pathname}`} />
       <Nav />
@@ -122,6 +126,7 @@ export default function App() {
           <Route element={<Shell />}>
             <Route index element={<Home />} />
             <Route path="projets/:slug" element={<ProjectPage />} />
+            {import.meta.env.DEV && <Route path="hand-preview" element={<HandPreview />} />}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>

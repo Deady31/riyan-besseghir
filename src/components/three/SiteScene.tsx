@@ -4,6 +4,7 @@ import { Environment, Lightformer, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import { prefersReducedMotion } from '../../lib/motion'
 import { phoneStage } from '../../lib/phoneStage'
+import { bodies, createBody, useToysInput, type Body } from '../../lib/toys'
 
 /**
  * Le décor 3D de tout le site. Deux canvas fixes :
@@ -271,8 +272,8 @@ function LifeModel({ kind }: { kind: LifeKind }) {
   )
 }
 
-/** Une forme accrochée à un élément du DOM. */
-function Piece({ el, kind, seed }: { el: HTMLElement; kind: KindName; seed: number }) {
+/** Une forme accrochée à un élément du DOM, avec un corps physique : on peut l'attraper, la lancer, la pousser (lib/toys.ts). */
+function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; seed: number; front: boolean }) {
   const shared = useContext(SharedCtx)!
   const def = KINDS[kind]!
   const geo = def.geo ? shared.geos[def.geo] : null
@@ -282,17 +283,36 @@ function Piece({ el, kind, seed }: { el: HTMLElement; kind: KindName; seed: numb
   const born = useRef<number | null>(null)
   const stageT = useRef(0)
   const hoverT = useRef(0)
+  const body = useRef<Body | null>(null)
   const par = Number(el.dataset.par ?? 0.12)
   const tilt = Number(el.dataset.tilt ?? 1)
   const isPhone = kind === 'phone'
 
+  useEffect(() => {
+    if (isPhone || shared.reduced) return
+    const b = createBody(front, seed)
+    body.current = b
+    bodies.add(b)
+    return () => {
+      bodies.delete(b)
+      body.current = null
+    }
+  }, [isPhone, front, seed, shared.reduced])
+
   useFrame((state, dt) => {
     const g = group.current
     if (!g) return
+    const b = body.current
     const vw = state.size.width
     const vh = state.size.height
     let r = el.getBoundingClientRect()
-    const on = r.width > 4 && r.bottom > -260 && r.top < vh + 260
+    let on = r.width > 4 && r.bottom > -260 && r.top < vh + 260
+    // Un objet lancé reste visible même si sa place d'origine est sortie de l'écran.
+    if (!on && b && r.width > 4 && (Math.abs(b.dx) > 20 || Math.abs(b.dy) > 20)) {
+      const sx = r.left + r.width / 2 + b.dx
+      const sy = r.top + r.height / 2 + b.dy
+      on = sx > -r.width && sx < vw + r.width && sy > -r.width && sy < vh + r.width
+    }
     const reduced = shared.reduced
 
     // Téléphone : transition vers la scène plein écran (cible = élément #phone-stage).
@@ -316,6 +336,7 @@ function Piece({ el, kind, seed }: { el: HTMLElement; kind: KindName; seed: numb
       }
     }
     g.visible = on || stageBlend > 0
+    if (b) b.visible = g.visible
     if (!g.visible) {
       born.current = null
       return
@@ -331,14 +352,96 @@ function Piece({ el, kind, seed }: { el: HTMLElement; kind: KindName; seed: numb
     const bob = reduced ? 0 : Math.sin(t * (0.7 + seed * 0.13) + seed) * 0.08 * (1 - stageBlend)
     const free = 1 - stageBlend
 
+    // Corps physique : dérive libre, ressort de retour, rebonds sur les bords, répulsion entre objets, écrasement.
+    let dispX = 0
+    let dispY = 0
+    if (b) {
+      const k = Math.min(dt, 0.033)
+      const wx = Math.sin(t * 0.23 + seed * 2.1) * r.width * 0.1
+      const wy = Math.cos(t * 0.19 + seed * 1.3) * r.width * 0.08
+      const parX = (px * 0.22 * (1 + seed * 0.1)) / upp
+      const parY = off * vh * par + (py * 0.14) / upp
+      if (b.held) {
+        const f = Math.min(1, k * 26)
+        b.dx += (b.tx - cx - wx - parX - b.dx) * f
+        b.dy += (b.ty - cy - wy - parY - b.dy) * f
+        b.vx = 0
+        b.vy = 0
+        b.idle = 0
+      } else {
+        b.idle += k
+        const home = b.idle > 1.6
+        const spring = home ? 0.3 : 0
+        const damp = home ? 1.5 : 0.95
+        b.vx += (-b.dx * spring - b.vx * damp) * k
+        b.vy += (-b.dy * spring - b.vy * damp) * k
+        b.dx += b.vx * k
+        b.dy += b.vy * k
+      }
+      let sx = cx + b.dx + wx + parX
+      let sy = cy + b.dy + wy + parY
+      if (!b.held) {
+        const m = b.r * 0.7
+        if (sx < m) {
+          b.dx += m - sx
+          sx = m
+          b.vx = Math.abs(b.vx) * 0.6
+        } else if (sx > vw - m) {
+          b.dx -= sx - (vw - m)
+          sx = vw - m
+          b.vx = -Math.abs(b.vx) * 0.6
+        }
+        if (cy > -vh * 0.1 && cy < vh * 1.1) {
+          if (sy < m) {
+            b.dy += m - sy
+            sy = m
+            b.vy = Math.abs(b.vy) * 0.6
+          } else if (sy > vh - m) {
+            b.dy -= sy - (vh - m)
+            sy = vh - m
+            b.vy = -Math.abs(b.vy) * 0.6
+          }
+        }
+        for (const o of bodies) {
+          if (o === b || !o.visible) continue
+          const ddx = sx - o.x
+          const ddy = sy - o.y
+          const dist = Math.hypot(ddx, ddy)
+          const min = (b.r + o.r) * 0.9
+          if (dist < min && dist > 0.5) {
+            const push = (min - dist) / min
+            b.vx += (ddx / dist) * push * 1100 * k
+            b.vy += (ddy / dist) * push * 1100 * k
+          }
+        }
+      }
+      b.sqv += (-95 * b.sq - 11 * b.sqv) * k
+      b.sq += b.sqv * k
+      b.spinY += b.vsy * k
+      b.spinX += b.vsx * k
+      const decay = Math.exp(-k * 1.7)
+      b.vsy *= decay
+      b.vsx *= decay
+      b.spinY -= b.spinY * k * 0.35
+      b.spinX -= b.spinX * k * 0.35
+      dispX = b.dx + wx
+      dispY = b.dy + wy
+      b.x = cx + dispX + parX
+      b.y = cy + dispY + parY
+      b.r = Math.max(r.width * 0.46, 12)
+    }
+
     g.position.set(
-      (cx - vw / 2) * upp + (isPhone ? 0 : px * 0.22 * (1 + seed * 0.1) * free),
-      -(cy - vh / 2) * upp - off * vh * par * upp * free + bob - (isPhone ? 0 : py * 0.14 * free),
+      (cx + dispX - vw / 2) * upp + (isPhone ? 0 : px * 0.22 * (1 + seed * 0.1) * free),
+      -(cy + dispY - vh / 2) * upp - off * vh * par * upp * free + bob - (isPhone ? 0 : py * 0.14 * free),
       0,
     )
     const pop = reduced ? 1 : easeOutBack(Math.min((t - born.current) / 1.15, 1))
     g.scale.setScalar(Math.max((r.width * upp) / size, 0.0001) * pop)
+    if (b) g.scale.multiplyScalar(1 + b.sq * 0.8 + (b.held ? 0.07 : 0))
 
+    const spinY = b ? b.spinY : 0
+    const spinX = b ? b.spinX : 0
     if (isPhone) {
       // Au repos le téléphone se balance doucement pour montrer ses reflets ; en scène il vient de face.
       // Il ne suit pas le curseur (c'était nerveux) ; au survol il se redresse de face et grossit un peu : il invite au clic.
@@ -350,12 +453,12 @@ function Piece({ el, kind, seed }: { el: HTMLElement; kind: KindName; seed: numb
       g.rotation.z = (reduced ? 0 : Math.sin(t * 0.4 + seed) * 0.04) * calm
       g.scale.multiplyScalar(1 + hoverT.current * 0.06 * free)
     } else if (life) {
-      g.rotation.y = def.rot[1] + (reduced ? 0 : Math.sin(t * def.spin + seed * 1.7) * 0.36) + off * 0.45 * tilt + px * 0.2
-      g.rotation.x = def.rot[0] + (reduced ? 0 : Math.sin(t * 0.37 + seed) * 0.12) + off * 0.3 * tilt - py * 0.12
+      g.rotation.y = def.rot[1] + (reduced ? 0 : Math.sin(t * def.spin + seed * 1.7) * 0.36) + off * 0.45 * tilt + px * 0.2 + spinY
+      g.rotation.x = def.rot[0] + (reduced ? 0 : Math.sin(t * 0.37 + seed) * 0.12) + off * 0.3 * tilt - py * 0.12 + spinX
       g.rotation.z = def.rot[2] + (reduced ? 0 : Math.sin(t * 0.3 + seed * 2.3) * 0.1)
     } else {
-      g.rotation.y = (reduced ? 0 : t * def.spin * (seed % 2 ? 1 : -1)) + off * def.scroll * 2.2 * tilt + px * 0.25
-      g.rotation.x = off * 0.6 * tilt - py * 0.15
+      g.rotation.y = (reduced ? 0 : t * def.spin * (seed % 2 ? 1 : -1)) + off * def.scroll * 2.2 * tilt + px * 0.25 + spinY
+      g.rotation.x = off * 0.6 * tilt - py * 0.15 + spinX
     }
   })
 
@@ -377,13 +480,14 @@ function Piece({ el, kind, seed }: { el: HTMLElement; kind: KindName; seed: numb
 type AnchorRef = { el: HTMLElement; kind: KindName }
 
 /** Cherche les ancres du calque et les re-cherche quand le DOM change (route, langue). */
-function useAnchors(layer: 'back' | 'front', phoneOnly: boolean) {
+function useAnchors(layer: 'back' | 'front', mobile: boolean) {
   const [anchors, setAnchors] = useState<AnchorRef[]>([])
   useEffect(() => {
     const scan = () => {
       const next = [...document.querySelectorAll<HTMLElement>('[data-anchor]')]
-        .filter((el) => (el.dataset.anchor as KindName) in KINDS && (el.dataset.layer ?? 'back') === layer)
-        .filter((el) => !phoneOnly || el.dataset.anchor === 'phone')
+        .filter((el) => (el.dataset.anchor as KindName) in KINDS)
+        // Sur mobile, un seul canvas (devant) porte tous les objets : c'est lui qui reçoit les gestes.
+        .filter((el) => (mobile ? layer === 'front' : (el.dataset.layer ?? 'back') === layer))
         .map((el) => ({ el, kind: el.dataset.anchor as KindName }))
       setAnchors((prev) => (prev.length === next.length && prev.every((p, i) => p.el === next[i].el) ? prev : next))
     }
@@ -398,12 +502,12 @@ function useAnchors(layer: 'back' | 'front', phoneOnly: boolean) {
       mo.disconnect()
       window.clearTimeout(timer)
     }
-  }, [layer, phoneOnly])
+  }, [layer, mobile])
   return anchors
 }
 
-function Scene({ reduced, layer, phoneOnly }: { reduced: boolean; layer: 'back' | 'front'; phoneOnly: boolean }) {
-  const anchors = useAnchors(layer, phoneOnly)
+function Scene({ reduced, layer, mobile }: { reduced: boolean; layer: 'back' | 'front'; mobile: boolean }) {
+  const anchors = useAnchors(layer, mobile)
   const { invalidate } = useThree()
   const pointer = useRef({ x: 0, y: 0 })
   const geos = {
@@ -414,6 +518,9 @@ function Scene({ reduced, layer, phoneOnly }: { reduced: boolean; layer: 'back' 
   }
   const mats = useMaterials()
   const life = useLifeMaterials(mats)
+
+  // Les gestes (attraper, lancer) : une seule écoute pour toute la page, sauf en mouvement réduit.
+  useEffect(() => (reduced ? undefined : useToysInput()), [reduced])
 
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
@@ -436,7 +543,7 @@ function Scene({ reduced, layer, phoneOnly }: { reduced: boolean; layer: 'back' 
     <SharedCtx.Provider value={shared}>
       <Studio />
       {anchors.map((a, i) => (
-        <Piece key={`${i}-${a.kind}`} el={a.el} kind={a.kind} seed={i + (layer === 'front' ? 5 : 0)} />
+        <Piece key={`${i}-${a.kind}`} el={a.el} kind={a.kind} seed={i + (layer === 'front' ? 5 : 0)} front={layer === 'front'} />
       ))}
     </SharedCtx.Provider>
   )
@@ -445,6 +552,7 @@ function Scene({ reduced, layer, phoneOnly }: { reduced: boolean; layer: 'back' 
 export default function SiteScene({ layer = 'back' }: { layer?: 'back' | 'front' }) {
   const reduced = useMemo(() => prefersReducedMotion(), [])
   const mobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
+  if (mobile && layer === 'back') return null
   return (
     <div className={layer === 'front' ? 'pointer-events-none fixed inset-0 z-[40]' : 'pointer-events-none fixed inset-0 z-[15]'} aria-hidden="true">
       <Canvas
@@ -459,7 +567,7 @@ export default function SiteScene({ layer = 'back' }: { layer?: 'back' | 'front'
           gl.domElement.addEventListener('webglcontextlost', (e) => e.preventDefault())
         }}
       >
-        <Scene reduced={reduced} layer={layer} phoneOnly={layer === 'front' && mobile} />
+        <Scene reduced={reduced} layer={layer} mobile={mobile} />
       </Canvas>
     </div>
   )
