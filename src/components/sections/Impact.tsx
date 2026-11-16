@@ -5,6 +5,10 @@ import { useContent } from '../../data/profile'
 import { TitleParts, useT } from '../../i18n/useT'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Counter } from '../ui/Counter'
+import { BigTile, type Tone } from '../ui/BigTile'
+
+const STAT_TONES: Tone[] = ['paper', 'cobalt', 'vermilion', 'acid']
+const FEATURE_TONES: Tone[] = ['paper', 'chrome', 'paper', 'chrome']
 
 export function Impact() {
   const root = useRef<HTMLElement>(null)
@@ -17,9 +21,9 @@ export function Impact() {
       if (prefersReducedMotion()) return
       gsap.fromTo(
         '[data-product-shot]',
-        { clipPath: 'inset(8% 8% 8% 8% round 24px)' },
+        { clipPath: 'inset(8% 8% 8% 8% round 80px)' },
         {
-          clipPath: 'inset(0% 0% 0% 0% round 20px)',
+          clipPath: 'inset(0% 0% 0% 0% round 56px)',
           ease: 'none',
           scrollTrigger: { trigger: '[data-product-shot]', start: 'top 85%', end: 'center 55%', scrub: true },
         },
@@ -71,7 +75,7 @@ export function Impact() {
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-16">
         <figure>
-          <div data-product-shot data-reveal-img className="overflow-hidden rounded-[20px] bg-[#dff6fb]">
+          <div data-product-shot data-reveal-img className="overflow-hidden rounded-[56px] bg-[#dff6fb]">
             <img
               src="/media/shippingbo/shippingbo-intelligence.webp"
               alt={product.alt}
@@ -102,7 +106,7 @@ export function Impact() {
             href={product.link}
             target="_blank"
             rel="noreferrer"
-            className="group mt-8 inline-flex items-center gap-2 self-start rounded-full border border-line px-5 py-2.5 text-sm transition-colors hover:border-paper"
+            className="pop group mt-8 inline-flex items-center gap-2 self-start px-6 py-3 text-sm font-semibold transition-colors hover:bg-paper hover:text-ink"
           >
             {product.linkLabel}
             <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
@@ -111,55 +115,61 @@ export function Impact() {
         </div>
       </div>
 
-      <div data-stats className="mt-24 grid grid-cols-2 border-t-2 border-line lg:grid-cols-4">
-        {IMPACT.stats.map((s) => (
-          <div data-stat key={s.label} className="border-b border-line py-8 pr-6 lg:border-b-0">
+      <div data-stats className="mt-24 grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
+        {IMPACT.stats.map((s, i) => (
+          <BigTile data-stat key={s.label} tone={STAT_TONES[i % STAT_TONES.length]} inner="flex flex-col justify-between gap-10 !p-6 md:!p-8">
             <Counter
               value={s.value}
               prefix={s.prefix}
               suffix={s.suffix}
-              className="display block text-[clamp(2.4rem,1rem+3vw,4.75rem)] whitespace-nowrap tabular-nums"
+              className="display block text-[clamp(2.6rem,1rem+3.6vw,5.5rem)] whitespace-nowrap tabular-nums"
             />
-            <p className="mt-4 text-paper">{s.label}</p>
-            <p className="mt-1 text-sm text-mist">{s.note}</p>
-          </div>
+            <span className="block">
+              <span className="block text-lg leading-snug font-semibold">{s.label}</span>
+              <span className="mt-1 block text-sm opacity-75">{s.note}</span>
+            </span>
+          </BigTile>
         ))}
       </div>
 
       <div data-features className="mt-24">
-        <p className="label mb-6 text-mist">{t.impact.shipped}</p>
-        <ul className="border-t border-line">
+        <p className="sticker mb-8 bg-lemon text-paper">{t.impact.shipped}</p>
+        <ul className="grid gap-4 md:grid-cols-2 md:gap-6">
           {IMPACT.features.map((f, i) => (
-            <li data-feature key={f.name} className="grid gap-2 border-b border-line py-7 md:grid-cols-[3rem_minmax(0,1fr)_minmax(0,1.6fr)] md:gap-8">
-              <span className="label pt-2 text-mist">{String(i + 1).padStart(2, '0')}</span>
-              <h3 className="text-3xl tracking-[-0.03em]">{f.name}</h3>
-              <p className="max-w-xl leading-relaxed text-mist">{f.text}</p>
+            <li data-feature key={f.name}>
+              <BigTile tone={FEATURE_TONES[i % FEATURE_TONES.length]} inner="flex flex-col gap-5 md:!p-10">
+                <span className="label opacity-70">{String(i + 1).padStart(2, '0')}</span>
+                <h3 className="text-[clamp(1.6rem,1.1rem+1.4vw,2.6rem)] leading-[1.02] tracking-[-0.03em]">{f.name}</h3>
+                <p className="max-w-xl leading-relaxed opacity-80">{f.text}</p>
+              </BigTile>
             </li>
           ))}
         </ul>
       </div>
 
-      <div data-roadmap className="mt-24 md:ml-[25%]">
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+      <div data-roadmap className="mt-24">
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <p className="label text-mist">{roadmap.title}</p>
-          <span className="label inline-flex items-center gap-2 rounded-full border border-signal/50 px-3 py-1 text-signal-soft">
-            <span className="size-1.5 rounded-full bg-signal" aria-hidden="true" />
+          <span className="sticker bg-lemon text-paper">
+            <span className="size-1.5 rounded-full bg-paper" aria-hidden="true" />
             {roadmap.badge}
           </span>
         </div>
-        <ol className="grid gap-4 md:grid-cols-3">
+        <ol className="grid gap-4 md:grid-cols-3 md:gap-6">
           {roadmap.items.map((r, i) => (
-            <li data-roadmap-item key={r.name} className="relative rounded-[20px] border border-line bg-graphite/70 p-6 backdrop-blur-sm">
-              <span className="label text-signal-soft">{String(i + 1).padStart(2, '0')}</span>
-              <h4 className="mt-8 text-2xl tracking-[-0.03em]">{r.name}</h4>
-              <p className="mt-3 leading-relaxed text-mist">{r.text}</p>
+            <li data-roadmap-item key={r.name}>
+              <BigTile tone={i === 1 ? 'cobalt' : 'paper'} inner="flex flex-col">
+                <span className="label opacity-70">{String(i + 1).padStart(2, '0')}</span>
+                <h4 className="mt-10 text-2xl leading-tight tracking-[-0.03em]">{r.name}</h4>
+                <p className="mt-3 leading-relaxed opacity-80">{r.text}</p>
+              </BigTile>
             </li>
           ))}
         </ol>
       </div>
 
-      <p className="mt-16 flex items-center gap-3 text-paper md:ml-[25%]">
-        <span className="size-1.5 rounded-full bg-signal" aria-hidden="true" />
+      <p className="mt-14 inline-flex max-w-3xl items-start gap-3 rounded-[28px] bg-graphite px-6 py-4 text-paper">
+        <span className="mt-2 size-2 shrink-0 rounded-full bg-signal" aria-hidden="true" />
         {IMPACT.extra}
       </p>
     </section>

@@ -7,6 +7,7 @@ import { TitleParts, useT } from '../../i18n/useT'
 import { SectionHeading } from '../ui/SectionHeading'
 import { useOpenProject } from '../lab/ProjectDialog'
 import { cn } from '../../lib/cn'
+import { motion } from 'motion/react'
 
 type Tile = { id: string; className: string; imgClass?: string; hoverShot?: number }
 
@@ -24,12 +25,15 @@ function PassionTile({ tile, project }: { tile: Tile; project: Project }) {
   const alt = tile.hoverShot !== undefined ? project.shots[tile.hoverShot] : undefined
 
   return (
-    <button
+    <motion.button
       type="button"
       data-tile
       onClick={() => open(project)}
       aria-label={t.ai.open(project.title)}
-      className={cn('group relative min-h-[320px] overflow-hidden rounded-[20px] bg-graphite text-left', tile.className)}
+      whileHover={{ y: -8 }}
+      whileTap={{ scale: 0.95, rotate: -0.5 }}
+      transition={{ type: 'spring', stiffness: 380, damping: 20 }}
+      className={cn('group relative min-h-[320px] overflow-hidden rounded-[clamp(36px,4.5vw,64px)] bg-graphite text-left shadow-[var(--shadow-card)]', tile.className)}
     >
       <div data-parallax className="absolute -inset-y-[8%] inset-x-0">
         <img
@@ -49,13 +53,13 @@ function PassionTile({ tile, project }: { tile: Tile; project: Project }) {
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" aria-hidden="true" />
       <div className="relative flex h-full flex-col justify-end gap-1 p-6 md:p-8">
-        <h3 className="text-2xl tracking-[-0.03em] md:text-4xl">{project.title}</h3>
+        <h3 className="text-2xl tracking-[-0.03em] text-white md:text-4xl">{project.title}</h3>
         <p className="max-w-md text-white/75">{project.tagline}</p>
       </div>
       <span className="absolute top-5 right-5 grid size-10 place-items-center rounded-full bg-white text-ink opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
         <ArrowUpRight className="size-4" aria-hidden="true" />
       </span>
-    </button>
+    </motion.button>
   )
 }
 

@@ -39,16 +39,20 @@ export function About() {
 
       <div>
         <div className="grid gap-14 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-24">
-          <figure data-about-photo data-reveal-img className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-graphite">
-            <img
-              src="/media/about-portrait.webp"
-              alt={a.photoAlt}
-              className="size-full object-cover object-[50%_20%]"
-              width={900}
-              height={1059}
-              loading="lazy"
-            />
-          </figure>
+          <div className="relative">
+            {/* aplat vermillon décalé derrière le portrait : même langage que le hero */}
+            <div className="absolute -right-4 -bottom-4 size-[88%] rounded-[clamp(40px,5vw,72px)] bg-vermilion max-lg:-right-2 max-lg:-bottom-2" aria-hidden="true" />
+            <figure data-about-photo data-reveal-img className="relative aspect-[4/5] overflow-hidden rounded-[clamp(40px,5vw,72px)] bg-graphite">
+              <img
+                src="/media/about-portrait.webp"
+                alt={a.photoAlt}
+                className="size-full object-cover object-[50%_20%]"
+                width={900}
+                height={1059}
+                loading="lazy"
+              />
+            </figure>
+          </div>
 
           <div>
             <p data-light className="text-[clamp(1.35rem,1rem+0.9vw,2rem)] leading-[1.2] tracking-[-0.02em]">{a.lead}</p>
@@ -58,9 +62,13 @@ export function About() {
               ))}
             </div>
 
-            <dl data-facts className="mt-12 border-t border-line">
+            <dl data-facts className="mt-12 grid gap-3">
               {a.facts.map(([k, v]) => (
-                <div data-fact key={k} className="grid grid-cols-[8rem_minmax(0,1fr)] gap-4 border-b border-line py-4">
+                <div
+                  data-fact
+                  key={k}
+                  className="grid grid-cols-[7rem_minmax(0,1fr)] gap-4 rounded-[28px] bg-graphite px-6 py-4 transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-graphite-2 active:scale-[0.985]"
+                >
                   <dt className="label pt-1 text-mist">{k}</dt>
                   <dd>{v}</dd>
                 </div>
