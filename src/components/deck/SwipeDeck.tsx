@@ -155,14 +155,11 @@ export function SwipeDeck() {
 
   return (
     <section id="deck" className="relative overflow-hidden px-[var(--gutter)] py-28 md:py-40" aria-label={t.deck.label}>
-      <Anchor kind="form-cobalt" className="top-[3%] right-[2%] w-[25vw] max-md:w-[36vw]" par={0.15} />
-      <Anchor kind="cube-chrome" className="bottom-[8%] left-[1.5%] w-[7vw] max-md:hidden" par={0.3} />
-      <Anchor kind="sat-red" className="top-[46%] right-[9%] w-[3.4vw] max-md:hidden" par={0.35} />
-      <Anchor kind="top" className="top-[50%] right-[1%] w-[10vw] max-md:hidden" par={0.2} />
-      <Anchor kind="beads" className="bottom-[3%] right-[18%] w-[19vw] max-md:hidden" par={0.25} />
-      <Anchor kind="bubble" className="top-[28%] left-[-1%] w-[10vw] max-md:hidden" par={0.3} />
-      <Anchor kind="torus" className="top-[2%] left-[34%] w-[9vw] max-md:hidden" par={0.2} />
-      <Anchor kind="cube-cobalt" className="top-[18%] left-[40%] w-[3.6vw] max-md:hidden" par={0.6} layer="front" />
+      <Anchor kind="gamepad" className="top-[4%] right-[2.5%] w-[19vw] max-md:w-[34vw]" par={0.15} tilt={0.7} />
+      <Anchor kind="mp3" className="bottom-[6%] left-[2%] w-[9vw] max-md:hidden" par={0.3} tilt={0.7} />
+      <Anchor kind="torus" className="top-[3%] left-[30%] w-[8vw] max-md:hidden" par={0.2} />
+      <Anchor kind="bubble" className="top-[34%] left-[0.5%] w-[9vw] max-md:hidden" par={0.3} />
+      <Anchor kind="beads" className="bottom-[2%] right-[16%] w-[16vw] max-md:hidden" par={0.25} />
       <SectionHeading index="00" label={t.deck.label} title={<TitleParts parts={t.deck.title} />} intro={t.deck.intro} />
 
       <div className="grid items-start gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">

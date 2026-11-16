@@ -19,6 +19,7 @@ import { Contact } from './components/sections/Contact'
 import { ProjectPage } from './components/project/ProjectPage'
 import ClickSpark from './components/vendor/reactbits/ClickSpark'
 import { PaperBackground } from './components/layout/PaperBackground'
+import { BurnBackdrop } from './components/layout/BurnBackdrop'
 import { ScrollFx } from './components/night/ScrollFx'
 import { useWebGLSupport } from './hooks/useWebGLSupport'
 
@@ -81,6 +82,7 @@ function Shell() {
         {t.nav.skip}
       </a>
       <PaperBackground />
+      {webgl && <BurnBackdrop deps={`${lang}${pathname}`} />}
       <ScrollFx deps={`${lang}${pathname}`} />
       <Nav />
       <ClickSpark

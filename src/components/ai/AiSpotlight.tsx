@@ -106,13 +106,11 @@ export function AiSpotlight() {
 
   return (
     <section ref={root} id="ia" className="relative py-32 md:py-48">
-      <Anchor kind="knot" className="top-[1.5%] left-[1.5%] w-[20vw] max-md:w-[34vw]" par={0.1} tilt={0.8} />
-      <Anchor kind="ring" className="bottom-[4%] right-[1.5%] w-[16vw] max-md:hidden" par={0.2} />
-      <Anchor kind="star-cobalt" className="top-[33%] right-[1.5%] w-[13vw] max-md:hidden" par={0.25} tilt={0.9} />
-      <Anchor kind="crystal" className="top-[56%] left-[1.5%] w-[7.5vw] max-md:hidden" par={0.3} />
-      <Anchor kind="capsule" className="bottom-[22%] right-[27%] w-[6.5vw] max-md:hidden" par={0.3} />
-      <Anchor kind="bubble" className="top-[10%] right-[24%] w-[7vw] max-md:hidden" par={0.3} />
-      <Anchor kind="sat-red" className="top-[48%] left-[44%] w-[2.8vw] max-md:hidden" par={0.7} layer="front" />
+      <Anchor kind="knot" className="top-[1.5%] left-[1.5%] w-[18vw] max-md:w-[34vw]" par={0.1} tilt={0.8} />
+      <Anchor kind="robot" className="top-[30%] right-[1.5%] w-[12vw] max-md:hidden" par={0.25} tilt={0.7} />
+      <Anchor kind="ring" className="bottom-[3%] right-[1.5%] w-[13vw] max-md:hidden" par={0.2} />
+      <Anchor kind="crystal" className="top-[58%] left-[1.5%] w-[6.5vw] max-md:hidden" par={0.3} />
+      <Anchor kind="capsule" className="bottom-[20%] left-[2%] w-[6vw] max-md:hidden" par={0.3} />
       <div className="px-[var(--gutter)]">
         <SectionHeading
           index="03"

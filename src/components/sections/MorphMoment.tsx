@@ -67,14 +67,10 @@ export function MorphMoment() {
   return (
     <section ref={root} id="morph" className="relative -mb-[30vh] h-[190vh]" aria-label={t.morph.aria}>
       <div className="sticky top-0 flex h-[100svh] flex-col items-center justify-center px-[var(--gutter)]">
-        <Anchor kind="form-vermilion" className="top-[8%] left-[3%] w-[27vw] max-md:top-[6%] max-md:w-[38vw]" par={0.1} />
-        <Anchor kind="ring" className="right-[5%] bottom-[10%] w-[17vw] max-md:right-[2%] max-md:bottom-[8%] max-md:w-[30vw]" par={0.2} />
-        <Anchor kind="mobius" className="bottom-[6%] left-[26%] w-[14vw] max-md:hidden" par={0.25} />
-        <Anchor kind="star-cobalt" className="top-[5%] right-[24%] w-[12vw] max-md:hidden" par={0.25} tilt={0.9} />
-        <Anchor kind="crystal" className="bottom-[14%] right-[36%] w-[5.5vw] max-md:hidden" par={0.3} />
-        <Anchor kind="sat-chrome" className="top-[22%] right-[18%] w-[3.2vw] max-md:hidden" par={0.3} />
-        <Anchor kind="bubble" className="top-[48%] left-[2%] w-[8vw] max-md:hidden" par={0.3} />
-        <Anchor kind="bubble" className="bottom-[34%] left-[6%] w-[18vw] md:hidden" par={0.3} />
+        <Anchor kind="reel" className="top-[7%] left-[3%] w-[21vw] max-md:top-[6%] max-md:w-[36vw]" par={0.1} tilt={0.7} />
+        <Anchor kind="camera" className="right-[5%] bottom-[10%] w-[17vw] max-md:right-[2%] max-md:bottom-[8%] max-md:w-[32vw]" par={0.2} tilt={0.7} />
+        <Anchor kind="mobius" className="bottom-[5%] left-[24%] w-[12vw] max-md:hidden" par={0.25} />
+        <Anchor kind="crystal" className="top-[6%] right-[24%] w-[5.5vw] max-md:hidden" par={0.3} />
         <p className="sr-only">{t.morph.sr}</p>
         <p data-big aria-hidden="true" className="display mb-[6vh] flex text-[clamp(10rem,6rem+22vw,26rem)] leading-none">
           {digits.map((d, i) => (

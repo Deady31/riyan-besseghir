@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Environment, Lightformer, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
@@ -25,6 +25,17 @@ type KindName =
   | 'form-cobalt' | 'form-vermilion' | 'form-chrome'
   | 'sat-red' | 'sat-chrome' | 'cube-chrome' | 'cube-cobalt'
   | 'star' | 'star-cobalt' | 'capsule' | 'top' | 'crystal' | 'torus' | 'mobius' | 'beads' | 'phone'
+  | LifeKind
+
+/** Objets « ce que j'aime dans la vie » : modèles à plusieurs matières (tools/blender/build_life.py). */
+const LIFE = ['robot', 'earphones', 'mp3', 'vinyl', 'walkman', 'camera', 'reel', 'gamepad', 'cat', 'dumbbell', 'stopwatch', 'puffy'] as const
+type LifeKind = (typeof LIFE)[number]
+const LIFE_FILE: Record<LifeKind, string> = {
+  robot: 'life-robot.glb', earphones: 'life-earphones.glb', mp3: 'life-mp3.glb', vinyl: 'life-vinyl.glb',
+  walkman: 'life-walkman.glb', camera: 'life-camera.glb', reel: 'life-reel.glb', gamepad: 'life-gamepad.glb',
+  cat: 'life-cat.glb', dumbbell: 'life-dumbbell.glb', stopwatch: 'life-stopwatch.glb', puffy: 'life-star.glb',
+}
+const isLife = (k: string): k is LifeKind => (LIFE as readonly string[]).includes(k)
 
 type GeoKey =
   | 'sculpture' | 'orb' | 'ring' | 'form' | 'slab' | 'sphereA' | 'sphereB' | 'cubeA' | 'cubeB'
@@ -33,7 +44,11 @@ type MatKey = 'chrome' | 'alu' | 'iridescent' | 'bubble' | 'cobalt' | 'vermilion
 
 type Def = { geo?: GeoKey; mat?: MatKey; rot: [number, number, number]; spin: number; scroll: number }
 
-const KINDS: Record<KindName, Def> = {
+/** Les objets ont une face avant : ils se balancent autour d'une pose de trois quarts au lieu de tourner sur eux-mêmes. */
+const LIFE_DEF: Def = { rot: [0.12, -0.45, 0.04], spin: 0.5, scroll: 0.5 }
+
+const KINDS: Record<Exclude<KindName, LifeKind>, Def> & Partial<Record<LifeKind, Def>> = {
+  ...Object.fromEntries(LIFE.map((k) => [k, LIFE_DEF])),
   knot: { geo: 'sculpture', mat: 'chrome', rot: [Math.PI / 2 - 0.15, 0.1, -0.5], spin: 0.28, scroll: 1.5 },
   ring: { geo: 'ring', mat: 'alu', rot: [1.1, 0.2, 0.5], spin: 0.5, scroll: 1.1 },
   orb: { geo: 'orb', mat: 'iridescent', rot: [0, 0, 0], spin: 0.3, scroll: 0.8 },
@@ -81,6 +96,7 @@ const PHONE_H = 2.05
 type Shared = {
   geos: Record<GeoKey, { geometry: THREE.BufferGeometry; size: number }>
   mats: Record<MatKey, THREE.Material>
+  life: Record<string, THREE.Material>
   pointer: React.RefObject<{ x: number; y: number }>
   reduced: boolean
 }
@@ -208,15 +224,64 @@ function PhoneModel({ screen }: { screen: string }) {
   )
 }
 
+/** Matières de studio des objets, indexées par le nom de matière écrit dans les GLB. */
+function useLifeMaterials(base: Record<MatKey, THREE.Material>): Record<string, THREE.Material> {
+  return useMemo(() => {
+    const glass = (color: string, opacity: number) =>
+      new THREE.MeshPhysicalMaterial({ color, transparent: true, opacity, roughness: 0.06, clearcoat: 1, clearcoatRoughness: 0.04, envMapIntensity: 1.6, depthWrite: false })
+    return {
+      chrome: base.chrome,
+      alu: base.alu,
+      cobalt: base.cobalt,
+      red: base.vermilion,
+      ivory: new THREE.MeshPhysicalMaterial({ color: '#f3ecda', roughness: 0.32, clearcoat: 0.7, clearcoatRoughness: 0.2 }),
+      orange: new THREE.MeshPhysicalMaterial({ color: '#f4762b', roughness: 0.3, clearcoat: 0.8, clearcoatRoughness: 0.1 }),
+      clay: new THREE.MeshStandardMaterial({ color: '#d97757', roughness: 0.62 }),
+      black: new THREE.MeshPhysicalMaterial({ color: '#141513', roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.08 }),
+      gold: new THREE.MeshStandardMaterial({ color: '#e9b949', metalness: 1, roughness: 0.2 }),
+      amber: glass('#f39a1d', 0.78),
+      blueglass: glass('#3466ff', 0.66),
+      orangeglass: glass('#ff6a1f', 0.6),
+    }
+  }, [base])
+}
+
+/** Un objet à plusieurs matières : la scène du GLB est clonée, recentrée, et ses matières remplacées par celles du studio. */
+function LifeModel({ kind }: { kind: LifeKind }) {
+  const shared = useContext(SharedCtx)!
+  const { scene } = useGLTF(BASE + LIFE_FILE[kind])
+  const { object, scale } = useMemo(() => {
+    const clone = scene.clone(true)
+    clone.traverse((o) => {
+      if (!(o instanceof THREE.Mesh)) return
+      const name = (o.material as THREE.Material).name
+      const m = shared.life[name]
+      if (m) o.material = m
+      if (m?.transparent) o.renderOrder = 2
+    })
+    const box = new THREE.Box3().setFromObject(clone)
+    const size = box.getSize(new THREE.Vector3())
+    clone.position.sub(box.getCenter(new THREE.Vector3()))
+    return { object: clone, scale: 1 / Math.max(size.x, size.y, size.z) }
+  }, [scene, shared.life])
+  return (
+    <group scale={scale}>
+      <primitive object={object} />
+    </group>
+  )
+}
+
 /** Une forme accrochée à un élément du DOM. */
 function Piece({ el, kind, seed }: { el: HTMLElement; kind: KindName; seed: number }) {
   const shared = useContext(SharedCtx)!
-  const def = KINDS[kind]
+  const def = KINDS[kind]!
   const geo = def.geo ? shared.geos[def.geo] : null
-  const size = geo ? geo.size : PHONE_H
+  const life = isLife(kind)
+  const size = geo ? geo.size : life ? 1 : PHONE_H
   const group = useRef<THREE.Group>(null)
   const born = useRef<number | null>(null)
   const stageT = useRef(0)
+  const hoverT = useRef(0)
   const par = Number(el.dataset.par ?? 0.12)
   const tilt = Number(el.dataset.tilt ?? 1)
   const isPhone = kind === 'phone'
@@ -267,8 +332,8 @@ function Piece({ el, kind, seed }: { el: HTMLElement; kind: KindName; seed: numb
     const free = 1 - stageBlend
 
     g.position.set(
-      (cx - vw / 2) * upp + px * 0.22 * (1 + seed * 0.1) * free,
-      -(cy - vh / 2) * upp - off * vh * par * upp * free + bob - py * 0.14 * free,
+      (cx - vw / 2) * upp + (isPhone ? 0 : px * 0.22 * (1 + seed * 0.1) * free),
+      -(cy - vh / 2) * upp - off * vh * par * upp * free + bob - (isPhone ? 0 : py * 0.14 * free),
       0,
     )
     const pop = reduced ? 1 : easeOutBack(Math.min((t - born.current) / 1.15, 1))
@@ -276,10 +341,18 @@ function Piece({ el, kind, seed }: { el: HTMLElement; kind: KindName; seed: numb
 
     if (isPhone) {
       // Au repos le téléphone se balance doucement pour montrer ses reflets ; en scène il vient de face.
-      const sway = reduced ? 0 : Math.sin(t * 0.55 + seed) * 0.42
-      g.rotation.y = (sway + off * 0.9 + px * 0.2) * free
-      g.rotation.x = (off * 0.4 - py * 0.1 + 0.06) * free
-      g.rotation.z = (reduced ? 0 : Math.sin(t * 0.4 + seed) * 0.05) * free
+      // Il ne suit pas le curseur (c'était nerveux) ; au survol il se redresse de face et grossit un peu : il invite au clic.
+      hoverT.current = THREE.MathUtils.damp(hoverT.current, phoneStage.state.hover ? 1 : 0, 7, dt)
+      const calm = free * (1 - hoverT.current * 0.85)
+      const sway = reduced ? 0 : Math.sin(t * 0.55 + seed) * 0.3
+      g.rotation.y = (sway + off * 0.7) * calm
+      g.rotation.x = (off * 0.4 + 0.06) * calm
+      g.rotation.z = (reduced ? 0 : Math.sin(t * 0.4 + seed) * 0.04) * calm
+      g.scale.multiplyScalar(1 + hoverT.current * 0.06 * free)
+    } else if (life) {
+      g.rotation.y = def.rot[1] + (reduced ? 0 : Math.sin(t * def.spin + seed * 1.7) * 0.36) + off * 0.45 * tilt + px * 0.2
+      g.rotation.x = def.rot[0] + (reduced ? 0 : Math.sin(t * 0.37 + seed) * 0.12) + off * 0.3 * tilt - py * 0.12
+      g.rotation.z = def.rot[2] + (reduced ? 0 : Math.sin(t * 0.3 + seed * 2.3) * 0.1)
     } else {
       g.rotation.y = (reduced ? 0 : t * def.spin * (seed % 2 ? 1 : -1)) + off * def.scroll * 2.2 * tilt + px * 0.25
       g.rotation.x = off * 0.6 * tilt - py * 0.15
@@ -290,6 +363,10 @@ function Piece({ el, kind, seed }: { el: HTMLElement; kind: KindName; seed: numb
     <group ref={group} visible={false}>
       {isPhone ? (
         <PhoneModel screen={el.dataset.screen || PHONE_SCREEN} />
+      ) : life ? (
+        <Suspense fallback={null}>
+          <LifeModel kind={kind} />
+        </Suspense>
       ) : (
         <mesh geometry={geo!.geometry} material={shared.mats[def.mat!]} rotation={def.rot} />
       )}
@@ -336,6 +413,7 @@ function Scene({ reduced, layer, phoneOnly }: { reduced: boolean; layer: 'back' 
     crystal: useGeometry('crystal'), torus: useGeometry('torus'), mobius: useGeometry('mobius'), beads: useGeometry('beads'),
   }
   const mats = useMaterials()
+  const life = useLifeMaterials(mats)
 
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
@@ -352,7 +430,7 @@ function Scene({ reduced, layer, phoneOnly }: { reduced: boolean; layer: 'back' 
     }
   }, [reduced, invalidate])
 
-  const shared = useMemo<Shared>(() => ({ geos, mats, pointer, reduced }), [geos.sculpture, mats, reduced]) // eslint-disable-line react-hooks/exhaustive-deps
+  const shared = useMemo<Shared>(() => ({ geos, mats, life, pointer, reduced }), [geos.sculpture, mats, life, reduced]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <SharedCtx.Provider value={shared}>
@@ -389,3 +467,4 @@ export default function SiteScene({ layer = 'back' }: { layer?: 'back' | 'front'
 
 Object.values(FILES).forEach(([f]) => useGLTF.preload(BASE + f))
 useGLTF.preload(BASE + 'phone.glb')
+Object.values(LIFE_FILE).forEach((f) => useGLTF.preload(BASE + f))

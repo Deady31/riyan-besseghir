@@ -20,7 +20,8 @@ import { phoneStage } from '../../lib/phoneStage'
 
 // Projets dont l'appli réelle s'ouvre dans le téléphone 3D (l'appli doit autoriser l'affichage depuis ce site).
 const LIVE: Record<string, { url: string; screen: string }> = {
-  fooder: { url: import.meta.env.VITE_FOODER_URL ?? 'https://fooder-tawny.vercel.app', screen: '/media/projets/fooder-v2-swipe-mobile.webp' },
+  // `/demo` : entrée sans inscription (profil invité local, aucun compte, cloud coupé).
+  fooder: { url: `${import.meta.env.VITE_FOODER_URL ?? 'https://fooder-tawny.vercel.app'}/demo`, screen: '/media/projets/fooder-v2-swipe-mobile.webp' },
 }
 
 const CAT_TONE: Record<string, Tone> = { consumer: 'vermilion', ia: 'cobalt', outils: 'chrome', jeux: 'acid', pm: 'ink', clients: 'chrome' }
@@ -78,6 +79,8 @@ export function ProjectPage() {
 
   const back = () => navigate('/', { state: { restore: true } })
   const live = LIVE[project.id]
+  const longest = Math.max(...project.title.split(/\s+/).map((w) => w.length))
+  const titleFit = (Math.max(longest, 5) * 0.68).toFixed(2)
 
   return (
     <main className="relative px-[var(--gutter)] pt-24 pb-28 md:pt-28">
@@ -110,14 +113,19 @@ export function ProjectPage() {
         className={cn('relative overflow-hidden px-[clamp(1.5rem,5vw,5rem)] py-[clamp(2.5rem,6vw,5.5rem)]', CATEGORY_TINT[project.category])}
         aria-labelledby="project-title"
       >
-        <div className="grid items-end gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
-          <div>
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+          <div className="@container min-w-0">
             <div className="flex flex-wrap gap-2">
               <span className="sticker bg-paper text-ink">{project.status}</span>
               <span className="sticker border-current">{cat}</span>
               {story?.period && <span className="sticker border-current">{story.period}</span>}
             </div>
-            <h1 id="project-title" className="display mt-8 !text-current text-[clamp(2.8rem,1rem+8vw,9rem)]">
+            <h1
+              id="project-title"
+              className="display mt-8 !text-current [overflow-wrap:anywhere]"
+              // Le titre tient toujours dans sa colonne : la taille suit la largeur disponible et le mot le plus long.
+              style={{ fontSize: `clamp(2rem, calc(100cqi / ${titleFit}), 9rem)` }}
+            >
               {project.title}
             </h1>
             <p className="mt-6 max-w-xl text-[clamp(1.15rem,0.9rem+0.9vw,1.75rem)] leading-snug font-medium">{project.tagline}</p>
@@ -164,9 +172,19 @@ export function ProjectPage() {
             </div>
           </div>
           {live ? (
-            <div className="relative mx-auto aspect-[4/5] w-full max-w-[520px] lg:aspect-square">
+            <button
+              type="button"
+              onClick={() => phoneStage.setOpen(true)}
+              onPointerEnter={() => phoneStage.setHover(true)}
+              onPointerLeave={() => phoneStage.setHover(false)}
+              onFocus={() => phoneStage.setHover(true)}
+              onBlur={() => phoneStage.setHover(false)}
+              aria-label={t.project.play}
+              className="relative mx-auto block aspect-[4/5] w-full max-w-[520px] cursor-pointer rounded-[48px] lg:aspect-square"
+            >
               <Anchor kind="phone" layer="front" screen={live.screen} className="inset-0 w-full" par={0} />
-            </div>
+              <span className="sticker pointer-events-none absolute right-0 bottom-[7%] rotate-[-5deg] bg-paper text-ink lg:-right-8">{t.project.tapPhone}</span>
+            </button>
           ) : (
             project.shots[0] && (
               <div className={cn('mx-auto w-full', project.shots[0].frame === 'mobile' ? 'max-w-[300px]' : 'max-w-2xl')}>

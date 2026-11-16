@@ -61,13 +61,12 @@ export function ProjectIndex() {
 
   return (
     <section ref={root} id="lab" className="relative px-[var(--gutter)] py-32 md:py-44">
-      <Anchor kind="orb" className="top-[1.5%] right-[2%] w-[17vw] max-md:w-[26vw]" par={0.2} />
-      <Anchor kind="form-vermilion" className="bottom-[1%] left-[0.5%] w-[17vw] max-md:hidden" par={0.15} />
-      <Anchor kind="slab" className="top-[38%] right-[0.5%] w-[10vw] max-md:hidden" par={0.25} />
-      <Anchor kind="torus" className="top-[17%] left-[-1.5%] w-[11vw] max-md:hidden" par={0.2} />
-      <Anchor kind="beads" className="bottom-[14%] right-[8%] w-[19vw] max-md:hidden" par={0.25} />
-      <Anchor kind="star" className="top-[60%] left-[0.5%] w-[10vw] max-md:hidden" par={0.3} tilt={0.9} />
-      <Anchor kind="star" className="top-[46%] left-[0.5%] w-[5vw] max-md:hidden" par={0.8} layer="front" />
+      <Anchor kind="earphones" className="top-[1%] right-[2.5%] w-[13vw] max-md:w-[26vw]" par={0.2} tilt={0.7} />
+      <Anchor kind="vinyl" className="bottom-[2%] left-[0.5%] w-[14vw] max-md:hidden" par={0.15} tilt={0.7} />
+      <Anchor kind="slab" className="top-[40%] right-[0.5%] w-[8vw] max-md:hidden" par={0.25} />
+      <Anchor kind="torus" className="top-[18%] left-[-1%] w-[9vw] max-md:hidden" par={0.2} />
+      <Anchor kind="camera" className="bottom-[12%] right-[2%] w-[11vw] max-md:hidden" par={0.25} tilt={0.7} />
+      <Anchor kind="puffy" className="top-[60%] left-[0.5%] w-[7vw] max-md:hidden" par={0.3} tilt={0.7} />
       <SectionHeading
         index="04"
         label={t.index.label}
