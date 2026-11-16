@@ -25,7 +25,7 @@ function DeckCard({ project, tint, depth }: { project: Project; tint: string; de
   const mobile = shot?.frame === 'mobile'
   return (
     <div
-      className="absolute inset-0 flex flex-col overflow-hidden rounded-[28px] border border-line bg-graphite shadow-[var(--shadow-card)]"
+      className="absolute inset-0 flex flex-col overflow-hidden rounded-[44px] border border-line bg-graphite shadow-[var(--shadow-card)]"
       style={{
         transform: `translateY(${depth * 14}px) scale(${1 - depth * 0.05}) rotate(${depth === 0 ? 0 : depth % 2 ? 3 : -3}deg)`,
       }}
@@ -170,7 +170,7 @@ export function SwipeDeck() {
           }}
         >
           {done ? (
-            <div className="absolute inset-0 grid place-items-center rounded-[28px] border-[3px] border-dashed border-line bg-lemon p-6 text-center">
+            <div className="absolute inset-0 grid place-items-center rounded-[44px] border-2 border-dashed border-line bg-lemon p-6 text-center">
               <div>
                 <AfkSkater bubble={t.deck.afk} />
                 <p className="display mt-2 text-4xl">{t.deck.done}</p>

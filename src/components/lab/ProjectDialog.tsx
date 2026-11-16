@@ -84,7 +84,7 @@ export function ProjectDialogProvider({ children }: { children: ReactNode }) {
         }}
         onClick={(e) => e.target === ref.current && close()}
         aria-labelledby="project-dialog-title"
-        className="m-auto max-h-[90svh] w-[min(980px,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-[28px] border border-line bg-ink p-0 text-paper shadow-[var(--shadow-card)] backdrop:bg-plum/55 backdrop:backdrop-blur-[3px]"
+        className="m-auto max-h-[90svh] w-[min(980px,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-[44px] border border-line bg-ink p-0 text-paper shadow-[var(--shadow-card)] backdrop:bg-plum/55 backdrop:backdrop-blur-[3px]"
         data-lenis-prevent
       >
         {project && (

@@ -27,16 +27,16 @@ export function Nav() {
     <header
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-500',
-        scrolled ? 'border-b border-paper bg-ink' : 'border-b border-transparent',
+        scrolled ? 'border-b border-paper/15 bg-ink/90 backdrop-blur' : 'border-b border-transparent',
       )}
     >
       <nav aria-label={t.nav.aria} className="flex items-center justify-between gap-4 px-[var(--gutter)] py-3">
         <a href="#top" onClick={go('top')} className="group flex items-center gap-2 text-sm text-paper">
-          <span className="grid size-8 place-items-center border border-paper font-semibold transition-colors group-hover:bg-paper group-hover:text-ink">
+          <span className="grid size-9 place-items-center rounded-full border border-paper font-semibold transition-colors group-hover:bg-paper group-hover:text-ink">
             R
           </span>
           <span className="hidden sm:inline">riyan.world</span>
-          <span className="size-1.5 bg-vermilion" aria-hidden="true" />
+          <span className="size-1.5 rounded-full bg-vermilion" aria-hidden="true" />
         </a>
 
         <ul className="hidden items-center gap-1 lg:flex">
@@ -45,7 +45,7 @@ export function Nav() {
               <a
                 href={`#${id}`}
                 onClick={go(id)}
-                className="px-3 py-2 text-xs font-semibold tracking-[0.08em] text-mist uppercase transition-colors hover:text-signal"
+                className="rounded-full px-3.5 py-2 text-xs font-semibold tracking-[0.08em] text-mist uppercase transition-colors hover:bg-graphite-2 hover:text-paper"
               >
                 {t.nav.links[id]}
               </a>
@@ -58,7 +58,7 @@ export function Nav() {
           <a
             href="#contact"
             onClick={go('contact')}
-            className="bg-paper px-4 py-2 text-sm font-semibold whitespace-nowrap text-ink transition-colors duration-300 hover:bg-signal"
+            className="rounded-full bg-paper px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-ink transition-[background-color,transform] duration-300 hover:bg-signal active:scale-95"
           >
             {t.nav.contact}
           </a>

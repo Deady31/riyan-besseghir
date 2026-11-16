@@ -19,6 +19,12 @@
   --color-tangerine: #f05235;
   --color-plum: #20211f;
   --color-chrome: #d9dce0;
+  /* alias attendus par les composants Magic UI */
+  --color-background: #f8f4ea;
+  --color-border: #d4ccb8;
+
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
 
   --font-display: 'Sora Variable', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Sora Variable', ui-sans-serif, system-ui, sans-serif;
@@ -103,18 +109,28 @@ h2, h3 {
 
 @layer components {
 /* Briques pop : contour épais + ombre dure, et un rebond au survol. */
+@keyframes shimmer-slide {
+  to { transform: translate(calc(100cqw - 100%), 0); }
+}
+@keyframes spin-around {
+  0% { transform: translateZ(0) rotate(0); }
+  15%, 35% { transform: translateZ(0) rotate(90deg); }
+  65%, 85% { transform: translateZ(0) rotate(270deg); }
+  100% { transform: translateZ(0) rotate(360deg); }
+}
+
 .pop {
   border: 1px solid var(--color-paper);
-  border-radius: 2px !important;
+  border-radius: 999px;
   box-shadow: none;
-  transition: background-color 0.25s ease, color 0.25s ease, transform 0.3s var(--ease-expo);
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
 }
 .pop:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-hard-lg);
 }
 .pop:active {
-  transform: translateY(0);
+  transform: translateY(1px) scale(0.96);
 }
 
 .sticker {
@@ -122,8 +138,8 @@ h2, h3 {
   align-items: center;
   gap: 0.4em;
   border: 1px solid var(--color-paper);
-  border-radius: 2px;
-  padding: 0.3em 0.7em;
+  border-radius: 999px;
+  padding: 0.38em 0.95em;
   font-family: var(--font-mono);
   font-weight: 600;
   font-size: 0.68rem;

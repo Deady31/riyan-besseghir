@@ -15,6 +15,7 @@ import { Passions } from './components/sections/Passions'
 import { About } from './components/sections/About'
 import { Contact } from './components/sections/Contact'
 import { ProjectDialogProvider } from './components/lab/ProjectDialog'
+import ClickSpark from './components/vendor/reactbits/ClickSpark'
 import { PaperBackground } from './components/layout/PaperBackground'
 import { ScrollFx } from './components/night/ScrollFx'
 
@@ -38,18 +39,28 @@ function Site() {
       <PaperBackground />
       <ScrollFx deps={lang} />
       <Nav />
-      <main key={lang}>
-        <Hero />
-        <MorphMoment />
-        <SwipeDeck />
-        <Impact />
-        <Feats />
-        <AiSpotlight />
-        <ProjectIndex />
-        <About />
-        <Passions />
-        <Contact />
-      </main>
+      <ClickSpark
+        sparkColor={['#254dff', '#f05235', '#d9f05a', '#20211f']}
+        sparkCount={10}
+        sparkSize={11}
+        sparkRadius={34}
+        duration={650}
+        layer="front"
+        className="!h-auto"
+      >
+        <main key={lang}>
+          <Hero />
+          <MorphMoment />
+          <SwipeDeck />
+          <Impact />
+          <Feats />
+          <AiSpotlight />
+          <ProjectIndex />
+          <About />
+          <Passions />
+          <Contact />
+        </main>
+      </ClickSpark>
     </ProjectDialogProvider>
   )
 }

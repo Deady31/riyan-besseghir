@@ -10,7 +10,7 @@ import { CATEGORY_TINT, ProjectCard, rarity } from './ProjectCard'
 import { cn } from '../../lib/cn'
 
 const ORDER: Category[] = ['consumer', 'ia', 'outils', 'jeux', 'pm', 'clients']
-const PAGE = 12
+const PAGE = 9
 const FEATURED_IDS = new Set(['fooder'])
 
 type Filter = Category | 'all'
@@ -78,9 +78,8 @@ export function ProjectIndex() {
                 aria-pressed={active}
                 onClick={() => pick(c)}
                 className={cn(
-                  'pop flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium',
-                  active ? (c === 'all' ? 'bg-paper text-ink' : CATEGORY_TINT[c]) : 'bg-graphite',
-                  active && '-translate-y-0.5 -rotate-2',
+                  'pop flex items-center gap-2 px-5 py-2.5 text-sm font-semibold',
+                  active ? (c === 'all' ? 'bg-paper text-ink' : CATEGORY_TINT[c]) : 'bg-transparent text-paper hover:bg-graphite-2',
                 )}
               >
                 {c === 'all' ? t.index.all : label(c)}
@@ -89,13 +88,13 @@ export function ProjectIndex() {
             )
           })}
         </div>
-        <button type="button" onClick={random} className="pop ml-auto flex items-center gap-2 rounded-full bg-lemon px-4 py-2 text-sm font-bold">
+        <button type="button" onClick={random} className="pop ml-auto flex items-center gap-2 bg-lemon px-5 py-2.5 text-sm font-bold text-paper">
           <Shuffle className="size-4" aria-hidden="true" />
           {t.index.random}
         </button>
       </div>
 
-      <ul className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 md:gap-x-6 md:gap-y-10 lg:grid-cols-4">
+      <ul className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
         {shown.map((p) => (
           <li key={p.id} data-card>
             <ProjectCard project={p} number={ALL.indexOf(p) + 1} total={ALL.length} categoryLabel={label(p.category)} onOpen={open} />
@@ -105,7 +104,7 @@ export function ProjectIndex() {
 
       {list.length > limit && (
         <div className="mt-14 flex justify-center">
-          <button type="button" onClick={() => setLimit((l) => l + PAGE)} className="pop rounded-full bg-signal px-7 py-3.5 font-bold text-ink">
+          <button type="button" onClick={() => setLimit((l) => l + PAGE)} className="pop bg-signal px-8 py-4 font-bold text-ink">
             {t.index.more(list.length - limit)}
           </button>
         </div>

@@ -1,5 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
+import { motion } from 'motion/react'
+import { ShimmerButton } from '../vendor/magicui/shimmer-button'
 import { gsap, SplitText, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { scrollToId, useLenis } from '../../lib/SmoothScroll'
 import { useContent } from '../../data/profile'
@@ -68,7 +70,7 @@ export function Hero() {
       </h1>
 
       {/* Aplat signature : un rectangle cobalt net, sans arrondi ni dégradé. */}
-      <div data-slab className="absolute top-[4.75rem] right-[7%] h-[calc(78%-4.75rem)] w-[34%] bg-signal max-md:top-0 max-md:right-0 max-md:left-[18%] max-md:h-[44%] max-md:w-auto" aria-hidden="true" />
+      <div data-slab className="absolute top-[4.75rem] right-[7%] h-[calc(78%-4.75rem)] w-[34%] rounded-[56px] bg-signal max-md:top-20 max-md:right-3 max-md:left-[16%] max-md:h-[40%] max-md:w-auto max-md:rounded-[40px]" aria-hidden="true" />
 
       {/* Couche 1 : le nom, derrière la sculpture. */}
       <div data-name-wrap className="absolute inset-x-0 bottom-0 z-10 px-[var(--gutter)] pb-[clamp(5.5rem,11vh,7.5rem)] max-md:pb-[5.25rem]">
@@ -109,24 +111,29 @@ export function Hero() {
       </div>
 
         <div data-meta className="absolute left-[var(--gutter)] z-30 flex flex-wrap gap-3 max-md:right-[var(--gutter)] max-md:bottom-6 max-md:grid max-md:grid-cols-2 md:top-[11.25rem]">
-          <a
-            href="#lab"
+          <ShimmerButton
             onClick={go('lab')}
-            className="group inline-flex items-center justify-center gap-2 border border-paper bg-paper px-5 py-3 text-sm max-md:px-3 max-md:text-[13px] font-semibold text-ink transition-colors duration-300 hover:bg-signal hover:border-signal"
+            background="#20211f"
+            shimmerColor="#d9f05a"
+            shimmerDuration="3.2s"
+            className="gap-2 px-7 py-3.5 text-sm font-semibold text-ink max-md:px-3 max-md:text-[13px]"
           >
             {t.hero.cta.work}
             <ArrowDown className="size-4 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
-          </a>
-          <a
+          </ShimmerButton>
+          <motion.a
             href={PROFILE.links.cv}
             target="_blank"
             rel="noreferrer"
-            className="group inline-flex items-center justify-center gap-2 border border-paper px-5 py-3 text-sm max-md:px-3 max-md:text-[13px] font-semibold text-paper transition-colors duration-300 hover:bg-paper hover:text-ink"
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.94 }}
+            transition={{ type: 'spring', stiffness: 420, damping: 18 }}
+            className="group inline-flex items-center justify-center gap-2 rounded-full border border-paper px-7 py-3.5 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-paper hover:text-ink max-md:px-3 max-md:text-[13px]"
           >
             {t.hero.cta.cv}
             <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
             <span className="sr-only">{t.links.newTab}</span>
-          </a>
+          </motion.a>
         </div>
 
       <p data-meta className="label absolute right-[var(--gutter)] bottom-8 z-30 text-paper max-md:hidden">

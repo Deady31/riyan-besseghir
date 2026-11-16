@@ -21,7 +21,7 @@ function FeatureCard({ project, index, wide }: { project: Project; index: number
         type="button"
         onClick={() => open(project)}
         aria-label={t.ai.open(project.title)}
-        className="relative block w-full overflow-hidden rounded-[20px] bg-graphite"
+        className="relative block w-full overflow-hidden rounded-[44px] bg-graphite"
       >
         {wide && shot.frame === 'mobile' ? (
           <div className="flex aspect-[16/9] items-center justify-center gap-[4%] overflow-hidden bg-bubblegum px-[6%]">
