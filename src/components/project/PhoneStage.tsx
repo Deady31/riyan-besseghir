@@ -60,7 +60,7 @@ export function PhoneStage({ url, title, closeLabel }: { url: string; title: str
         <button
           type="button"
           onClick={() => phoneStage.setOpen(false)}
-          className="pop fixed top-[4.9rem] right-5 z-[60] grid size-12 place-items-center bg-paper text-ink"
+          className="pop fixed top-[4.9rem] right-5 z-[60] grid size-12 place-items-center bg-paper text-ink max-md:top-auto max-md:right-1/2 max-md:bottom-3 max-md:translate-x-1/2"
           aria-label={closeLabel}
         >
           <X className="size-5" aria-hidden="true" />

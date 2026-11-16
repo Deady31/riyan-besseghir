@@ -80,7 +80,7 @@ export function ProjectPage() {
   const back = () => navigate('/', { state: { restore: true } })
   const live = LIVE[project.id]
   const longest = Math.max(...project.title.split(/\s+/).map((w) => w.length))
-  const titleFit = (Math.max(longest, 5) * 0.68).toFixed(2)
+  const titleFit = (Math.max(longest, 5) * 0.86).toFixed(2)
 
   return (
     <main className="relative px-[var(--gutter)] pt-24 pb-28 md:pt-28">
@@ -122,9 +122,9 @@ export function ProjectPage() {
             </div>
             <h1
               id="project-title"
-              className="display mt-8 !text-current [overflow-wrap:anywhere]"
+              className="display mt-8 !text-current [overflow-wrap:break-word]"
               // Le titre tient toujours dans sa colonne : la taille suit la largeur disponible et le mot le plus long.
-              style={{ fontSize: `clamp(2rem, calc(100cqi / ${titleFit}), 9rem)` }}
+              style={{ fontSize: `clamp(1.25rem, calc(100cqi / ${titleFit}), 9rem)` }}
             >
               {project.title}
             </h1>
