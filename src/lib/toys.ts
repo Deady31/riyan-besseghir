@@ -83,6 +83,12 @@ function occludedAt(x: number, y: number): boolean {
   return false
 }
 
+/** Nombre de prises depuis le chargement de la page (la bulle d'aide s'arrête dès la première). */
+export const gestureCount = () => gestures
+
+/** Vrai si l'objet peut vraiment être attrapé là où il est (devant le contenu, ou rien ne le cache). */
+export const canGrabNow = (b: Body) => b.visible && (b.front || !occludedAt(b.x, b.y))
+
 export function pick(x: number, y: number, touch: boolean): Body | null {
   let best: Body | null = null
   let bestScore = Infinity
@@ -114,11 +120,13 @@ type Drag = {
 }
 
 let drag: Drag | null = null
+let gestures = 0
 let lastGesture = -1e9
 let users = 0
 let remove: (() => void) | null = null
 
 function begin(b: Body, x: number, y: number, touch: boolean, id: number) {
+  gestures++
   drag = { b, ox: x - b.x, oy: y - b.y, sx: x, sy: y, t0: performance.now(), pts: [{ x, y, t: performance.now() }], touch, id }
   b.held = true
   b.tx = b.x

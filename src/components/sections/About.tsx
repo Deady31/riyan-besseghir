@@ -37,10 +37,7 @@ export function About() {
   return (
     <section ref={root} id="about" className="relative px-[var(--gutter)] py-32 md:py-48">
       <Anchor kind="dumbbell" className="top-[5%] right-[2%] w-[17vw] max-md:w-[32vw]" par={0.15} tilt={0.7} />
-      <Anchor kind="cat" className="bottom-[4%] right-[5%] w-[12vw] max-md:hidden" par={0.25} tilt={0.7} />
-      <Anchor kind="crystal" className="top-[40%] left-[0.5%] w-[6vw] max-md:hidden" par={0.3} />
       <Anchor kind="torus" className="top-[1%] left-[40%] w-[7vw] max-md:hidden" par={0.25} />
-      <Anchor kind="cube-chrome" className="top-[64%] left-[1.5%] w-[3.8vw] max-md:hidden" par={0.3} />
       <SectionHeading index="06" label={a.label} title={<TitleParts parts={a.title} />} />
 
       <div>

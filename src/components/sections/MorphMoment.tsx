@@ -70,8 +70,6 @@ export function MorphMoment() {
       <div className="sticky top-0 flex h-[100svh] flex-col items-center justify-center px-[var(--gutter)]">
         <Anchor kind="reel" className="top-[7%] left-[3%] w-[21vw] max-md:top-[6%] max-md:w-[36vw]" par={0.1} tilt={0.7} />
         <Anchor kind="camera" className="right-[5%] bottom-[10%] w-[17vw] max-md:right-[2%] max-md:bottom-[8%] max-md:w-[32vw]" par={0.2} tilt={0.7} />
-        <Anchor kind="mobius" className="bottom-[5%] left-[24%] w-[12vw] max-md:hidden" par={0.25} />
-        <Anchor kind="crystal" className="top-[6%] right-[24%] w-[5.5vw] max-md:hidden" par={0.3} />
         <DepthField />
         <p className="sr-only">{t.morph.sr}</p>
         <p data-big aria-hidden="true" className="display relative z-10 mb-[6vh] flex text-[clamp(10rem,6rem+22vw,26rem)] leading-none">

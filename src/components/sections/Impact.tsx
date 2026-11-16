@@ -74,10 +74,6 @@ export function Impact() {
     <section ref={root} id="impact" className="relative px-[var(--gutter)] py-32 md:py-48">
       <Anchor kind="stopwatch" className="top-[3%] left-[1.5%] w-[12vw] max-md:hidden" par={0.12} tilt={0.7} />
       <Anchor kind="dumbbell" className="top-[24%] right-[0.5%] w-[13vw] max-md:hidden" par={0.25} tilt={0.7} />
-      <Anchor kind="form-chrome" className="bottom-[3%] left-[0.5%] w-[15vw] max-md:hidden" par={0.2} />
-      <Anchor kind="crystal" className="top-[55%] right-[1.5%] w-[6vw] max-md:hidden" par={0.3} />
-      <Anchor kind="puffy" className="top-[52%] left-[0.5%] w-[8vw] max-md:hidden" par={0.3} tilt={0.7} />
-      <Anchor kind="mobius" className="bottom-[4%] right-[4%] w-[12vw] max-md:hidden" par={0.25} />
       <Anchor kind="stopwatch" className="top-[0.5%] right-[4%] w-[22vw] md:hidden" par={0.2} tilt={0.7} />
       <SectionHeading index="01" align="right" label={t.impact.label} title={<TitleParts parts={t.impact.title} />} />
 

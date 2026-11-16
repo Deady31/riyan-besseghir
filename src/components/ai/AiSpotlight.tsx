@@ -108,8 +108,6 @@ export function AiSpotlight() {
     <section ref={root} id="ia" className="theme-dark relative py-32 md:py-48">
       <Anchor kind="robot" className="top-[30%] right-[1.5%] w-[12vw] max-md:hidden" par={0.25} tilt={0.7} />
       <Anchor kind="ring" className="bottom-[3%] right-[1.5%] w-[13vw] max-md:hidden" par={0.2} />
-      <Anchor kind="crystal" className="top-[58%] left-[1.5%] w-[6.5vw] max-md:hidden" par={0.3} />
-      <Anchor kind="capsule" className="bottom-[20%] left-[2%] w-[6vw] max-md:hidden" par={0.3} />
       <div className="px-[var(--gutter)]">
         <SectionHeading
           index="04"

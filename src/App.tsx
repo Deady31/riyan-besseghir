@@ -24,6 +24,7 @@ import { BurnBackdrop } from './components/layout/BurnBackdrop'
 import { Chapters } from './components/layout/Chapters'
 import { HandCursor, HandPreview } from './components/cursor/HandCursor'
 import { BurstCanvas } from './components/fx/BurstCanvas'
+import { ToyHint } from './components/fx/ToyHint'
 import { EggLayer } from './components/eggs/EggLayer'
 const ModelPreview = lazy(() => import('./components/three/ModelPreview').then((m) => ({ default: m.ModelPreview })))
 import { ScrollFx } from './components/night/ScrollFx'
@@ -97,6 +98,7 @@ function Shell() {
       <PaperBackground />
       <HandCursor />
       <BurstCanvas />
+      <ToyHint />
       {webgl && <BurnBackdrop deps={`${lang}${pathname}`} />}
       <ScrollFx deps={`${lang}${pathname}`} />
       <Nav />

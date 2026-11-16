@@ -8,6 +8,7 @@ import { useContent } from '../../data/profile'
 import { useT } from '../../i18n/useT'
 import { LiveClock } from '../ui/LiveClock'
 import { Anchor } from '../three/Anchor'
+import { HeroPortrait } from './HeroPortrait'
 
 export function Hero() {
   const root = useRef<HTMLElement>(null)
@@ -54,10 +55,12 @@ export function Hero() {
         {PROFILE.name}, {PROFILE.role}
       </h1>
 
-      {/* Aplat signature : un rectangle cobalt net, sans arrondi ni dégradé. */}
+      {/* Aplat signature, et par-dessus le portrait en estampe (HeroPortrait). */}
       <div data-slab className="absolute top-[4.75rem] right-[7%] h-[calc(78%-4.75rem)] w-[34%] rounded-[56px] bg-signal max-md:top-36 max-md:right-3 max-md:left-[16%] max-md:h-[36%] max-md:w-auto max-md:rounded-[40px]" aria-hidden="true" />
 
-      {/* Couche 1 : le nom, derrière la sculpture. */}
+      <HeroPortrait />
+
+      {/* Couche 1 : le nom. */}
       <div data-name-wrap className="absolute inset-x-0 bottom-0 z-10 px-[var(--gutter)] pb-[clamp(5.5rem,11vh,7.5rem)] max-md:pb-[5.25rem]">
         <p data-statement className="max-w-[28rem] text-[clamp(1.05rem,0.9rem+0.7vw,1.5rem)] leading-[1.25] font-medium tracking-[-0.01em] text-paper">
           {t.hero.statement}
@@ -74,14 +77,9 @@ export function Hero() {
       </div>
 
       {/* Points d'accroche des formes 3D du fond (voir SiteScene) : la sculpture se pose sur l'aplat cobalt. */}
-      <Anchor kind="cat" className="top-[17%] right-[11%] w-[min(27vw,50vh)] max-md:hidden" par={0.05} tilt={0.7} />
-      <Anchor kind="cat" className="top-[26%] left-1/2 w-[52vw] -translate-x-1/2 md:hidden" par={0.05} tilt={0.7} />
-      <Anchor kind="ring" className="top-[9%] left-[38%] w-[11vw] max-md:hidden" par={0.22} />
       <Anchor kind="robot" className="bottom-[4%] left-[50%] w-[10vw] max-md:hidden" par={0.3} tilt={0.6} />
       <Anchor kind="vinyl" className="bottom-[3%] right-[1.5%] w-[11vw] max-md:hidden" par={0.3} tilt={0.7} />
-      <Anchor kind="puffy" className="bottom-[7%] left-[34%] w-[6.5vw] max-md:hidden" par={0.25} tilt={0.7} />
       <Anchor kind="robot" className="top-[55%] left-[5%] w-[18vw] md:hidden" par={0.3} tilt={0.6} />
-      <Anchor kind="puffy" className="top-[7%] left-[3%] w-[20vw] md:hidden" par={0.2} tilt={0.7} />
 
       {/* Couche 3 : informations et boutons, toujours lisibles. */}
       <div className="absolute inset-x-0 top-0 z-30 px-[var(--gutter)] pt-24 md:pt-28">
