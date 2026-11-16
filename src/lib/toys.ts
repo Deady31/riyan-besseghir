@@ -13,6 +13,8 @@ import { cursorBus } from './cursorBus'
  *  - un geste sur un objet ne déclenche jamais le clic de l'élément dessous.
  */
 export type Body = {
+  /** Identifiant d'easter egg si l'objet en est un. */
+  tag?: string
   front: boolean
   seed: number
   /** Centre affiché à l'écran (px) et rayon de prise. */
@@ -127,6 +129,7 @@ function begin(b: Body, x: number, y: number, touch: boolean, id: number) {
   document.body.style.userSelect = 'none'
   burst(x, y, { count: 6, power: 0.45 })
   if (touch) navigator.vibrate?.(8)
+  if (b.tag) window.dispatchEvent(new CustomEvent('egg-grab', { detail: b.tag }))
 }
 
 function move(x: number, y: number) {
@@ -268,7 +271,10 @@ export function useToysInput(): () => void {
       cursorBus.dragging = false
     }
   }
+  let released = false
   return () => {
+    if (released) return // un second appel ne doit pas retirer les écouteurs d'un autre utilisateur
+    released = true
     users--
     if (users === 0) {
       remove?.()

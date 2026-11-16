@@ -24,6 +24,8 @@ import { BurnBackdrop } from './components/layout/BurnBackdrop'
 import { Chapters } from './components/layout/Chapters'
 import { HandCursor, HandPreview } from './components/cursor/HandCursor'
 import { BurstCanvas } from './components/fx/BurstCanvas'
+import { EggLayer } from './components/eggs/EggLayer'
+const ModelPreview = lazy(() => import('./components/three/ModelPreview').then((m) => ({ default: m.ModelPreview })))
 import { ScrollFx } from './components/night/ScrollFx'
 import { useWebGLSupport } from './hooks/useWebGLSupport'
 
@@ -72,6 +74,7 @@ function Home() {
       <Passions />
       <Contact />
     </main>
+    <EggLayer />
     </>
   )
 }
@@ -127,6 +130,9 @@ export default function App() {
             <Route index element={<Home />} />
             <Route path="projets/:slug" element={<ProjectPage />} />
             {import.meta.env.DEV && <Route path="hand-preview" element={<HandPreview />} />}
+            {import.meta.env.DEV && (
+              <Route path="model-preview" element={<Suspense fallback={null}><ModelPreview /></Suspense>} />
+            )}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>

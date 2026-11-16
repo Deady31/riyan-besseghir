@@ -26,7 +26,7 @@ type KindName =
   | 'form-cobalt' | 'form-vermilion' | 'form-chrome'
   | 'sat-red' | 'sat-chrome' | 'cube-chrome' | 'cube-cobalt'
   | 'star' | 'star-cobalt' | 'capsule' | 'top' | 'crystal' | 'torus' | 'mobius' | 'beads' | 'phone'
-  | LifeKind
+  | LifeKind | 'model'
 
 /** Objets « ce que j'aime dans la vie » : modèles à plusieurs matières (tools/blender/build_life.py). */
 const LIFE = ['robot', 'earphones', 'mp3', 'vinyl', 'walkman', 'camera', 'reel', 'gamepad', 'cat', 'dumbbell', 'stopwatch', 'puffy'] as const
@@ -50,6 +50,7 @@ const LIFE_DEF: Def = { rot: [0.12, -0.45, 0.04], spin: 0.5, scroll: 0.5 }
 
 const KINDS: Record<Exclude<KindName, LifeKind>, Def> & Partial<Record<LifeKind, Def>> = {
   ...Object.fromEntries(LIFE.map((k) => [k, LIFE_DEF])),
+  model: LIFE_DEF,
   knot: { geo: 'sculpture', mat: 'chrome', rot: [Math.PI / 2 - 0.15, 0.1, -0.5], spin: 0.28, scroll: 1.5 },
   ring: { geo: 'ring', mat: 'alu', rot: [1.1, 0.2, 0.5], spin: 0.5, scroll: 1.1 },
   orb: { geo: 'orb', mat: 'iridescent', rot: [0, 0, 0], spin: 0.3, scroll: 0.8 },
@@ -116,7 +117,7 @@ void main() {
   gl_FragColor = vec4(c, 1.0);
 }`
 
-function Studio() {
+export function Studio() {
   return (
     <Environment resolution={256} frames={1}>
       <mesh scale={60}>
@@ -272,12 +273,29 @@ function LifeModel({ kind }: { kind: LifeKind }) {
   )
 }
 
+/** Un modèle fourni (GLB) : matières et textures d'origine conservées, recentré et mis à l'échelle de l'ancre. */
+function ModelAsset({ url }: { url: string }) {
+  const { scene } = useGLTF(url)
+  const { object, scale } = useMemo(() => {
+    const clone = scene.clone(true)
+    const box = new THREE.Box3().setFromObject(clone)
+    const size = box.getSize(new THREE.Vector3())
+    clone.position.sub(box.getCenter(new THREE.Vector3()))
+    return { object: clone, scale: 1 / Math.max(size.x, size.y, size.z, 0.0001) }
+  }, [scene])
+  return (
+    <group scale={scale}>
+      <primitive object={object} />
+    </group>
+  )
+}
+
 /** Une forme accrochée à un élément du DOM, avec un corps physique : on peut l'attraper, la lancer, la pousser (lib/toys.ts). */
 function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; seed: number; front: boolean }) {
   const shared = useContext(SharedCtx)!
   const def = KINDS[kind]!
   const geo = def.geo ? shared.geos[def.geo] : null
-  const life = isLife(kind)
+  const life = isLife(kind) || kind === 'model'
   const size = geo ? geo.size : life ? 1 : PHONE_H
   const group = useRef<THREE.Group>(null)
   const born = useRef<number | null>(null)
@@ -291,13 +309,14 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
   useEffect(() => {
     if (isPhone || shared.reduced) return
     const b = createBody(front, seed)
+    b.tag = el.dataset.egg
     body.current = b
     bodies.add(b)
     return () => {
       bodies.delete(b)
       body.current = null
     }
-  }, [isPhone, front, seed, shared.reduced])
+  }, [isPhone, front, seed, shared.reduced, el])
 
   useFrame((state, dt) => {
     const g = group.current
@@ -466,9 +485,13 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
     <group ref={group} visible={false}>
       {isPhone ? (
         <PhoneModel screen={el.dataset.screen || PHONE_SCREEN} />
+      ) : kind === 'model' ? (
+        <Suspense fallback={null}>
+          <ModelAsset url={el.dataset.model ?? ''} />
+        </Suspense>
       ) : life ? (
         <Suspense fallback={null}>
-          <LifeModel kind={kind} />
+          <LifeModel kind={kind as LifeKind} />
         </Suspense>
       ) : (
         <mesh geometry={geo!.geometry} material={shared.mats[def.mat!]} rotation={def.rot} />

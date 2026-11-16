@@ -112,11 +112,11 @@ vec3 halftoneW(vec2 p, float docY, float t, vec3 tone, vec3 a, vec3 b) {
   float field = fbm(q * 1.2 + vec2(t * 0.012, 3.0));
   // grille à 45°, qui défile à 60 % de la page : la trame glisse sous les blocs
   vec2 g = vec2(p.x + (docY + p.y - p.y) * 0.0, p.y + uScroll * 0.6);
-  g = vec2(g.x + g.y, g.y - g.x) * 0.7071 / 24.0;
+  g = vec2(g.x + g.y, g.y - g.x) * 0.7071 / 30.0;
   float d = length(fract(g) - 0.5);
-  float r = smoothstep(0.34, 0.82, field) * 0.42;
+  float r = smoothstep(0.42, 0.88, field) * 0.3;
   float dotM = smoothstep(r, r - 0.09, d) * step(0.02, r);
-  return mix(col, a, dotM * 0.62);
+  return mix(col, a, dotM * 0.4);
 }
 
 // ---------------------------------------------------------------- cobalt liquide

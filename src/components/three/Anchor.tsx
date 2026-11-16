@@ -12,6 +12,8 @@ export function Anchor({
   tilt,
   layer,
   screen,
+  model,
+  eggId,
 }: {
   kind: string
   className?: string
@@ -19,6 +21,10 @@ export function Anchor({
   tilt?: number
   layer?: 'front'
   screen?: string
+  /** Chemin d'un GLB fourni (matières d'origine conservées). */
+  model?: string
+  /** Identifiant d'easter egg : la première prise de l'objet le marque comme trouvé. */
+  eggId?: string
 }) {
   return (
     <span
@@ -27,6 +33,8 @@ export function Anchor({
       data-tilt={tilt}
       data-layer={layer}
       data-screen={screen}
+      data-model={model}
+      data-egg={eggId}
       aria-hidden="true"
       className={cn('pointer-events-none absolute block aspect-square', className)}
     />

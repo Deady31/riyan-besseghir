@@ -26,5 +26,8 @@ dist-ssr
 # Recherche locale (captures de sites tiers)
 docs/
 
+# Modèles 3D en attente de traitement (npm run models)
+tools/models/inbox/
+
 .vercel
 .env*
