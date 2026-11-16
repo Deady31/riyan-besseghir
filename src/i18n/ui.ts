@@ -22,8 +22,6 @@ const fr = {
     statement: 'AI Product Manager. Je fais passer l’IA du slide à la prod : chez Shippingbo, en hackathon, et la nuit sur 39 projets.',
     tagline: 'Product · IA · Prototypes',
     scroll: '(Défiler)',
-    skaterHint: 'Glisse pour le faire tourner · clic = kickflip',
-    stickers: ['AI Product Manager', 'FOODER · bêta', 'Ex-Shippingbo', '39 projets'],
     aria: 'Introduction',
   },
   deck: {
@@ -150,8 +148,6 @@ const en: UI = {
     statement: 'AI Product Manager. I take AI from slide deck to production: at Shippingbo, at hackathons, and at night across 39 projects.',
     tagline: 'Product · AI · Prototypes',
     scroll: '(Scroll)',
-    skaterHint: 'Drag to spin him · click = kickflip',
-    stickers: ['AI Product Manager', 'FOODER · beta', 'Ex-Shippingbo', '39 projects'],
     aria: 'Introduction',
   },
   deck: {
