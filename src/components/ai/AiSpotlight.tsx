@@ -105,7 +105,7 @@ export function AiSpotlight() {
   )
 
   return (
-    <section ref={root} id="ia" className="relative py-32 md:py-48">
+    <section ref={root} id="ia" className="theme-dark relative py-32 md:py-48">
       <Anchor kind="knot" className="top-[1.5%] left-[1.5%] w-[18vw] max-md:w-[34vw]" par={0.1} tilt={0.8} />
       <Anchor kind="robot" className="top-[30%] right-[1.5%] w-[12vw] max-md:hidden" par={0.25} tilt={0.7} />
       <Anchor kind="ring" className="bottom-[3%] right-[1.5%] w-[13vw] max-md:hidden" par={0.2} />

@@ -21,6 +21,7 @@ import { ProjectPage } from './components/project/ProjectPage'
 import ClickSpark from './components/vendor/reactbits/ClickSpark'
 import { PaperBackground } from './components/layout/PaperBackground'
 import { BurnBackdrop } from './components/layout/BurnBackdrop'
+import { Chapters } from './components/layout/Chapters'
 import { ScrollFx } from './components/night/ScrollFx'
 import { useWebGLSupport } from './hooks/useWebGLSupport'
 
@@ -54,6 +55,8 @@ function Home() {
   }, [lenis])
 
   return (
+    <>
+    <Chapters />
     <main key={lang} className="[overflow-x:clip]">
       <Hero />
       <MorphMoment />
@@ -67,6 +70,7 @@ function Home() {
       <Passions />
       <Contact />
     </main>
+    </>
   )
 }
 

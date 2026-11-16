@@ -34,7 +34,7 @@ export function BigTile({ tone = 'paper', children, className, inner, ...rest }:
         whileHover={{ y: -8 }}
         whileTap={{ scale: 0.955 }}
         transition={{ type: 'spring', stiffness: 380, damping: 20 }}
-        className="h-full rounded-[44px] shadow-[var(--shadow-card)]"
+        className="theme-light h-full rounded-[44px] shadow-[var(--shadow-card)]"
         style={{ '--color-background': t.bg } as CSSProperties}
       >
         <MagicCard className="h-full rounded-[44px]" gradientFrom={t.from} gradientTo={t.to} gradientColor={t.glow} gradientSize={300}>

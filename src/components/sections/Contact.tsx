@@ -34,12 +34,12 @@ export function Contact() {
   ]
 
   return (
-    <section id="contact" className="relative px-[var(--gutter)] pt-32 pb-6 md:pt-44">
+    <section id="contact" className="theme-dark relative px-[var(--gutter)] pt-32 pb-6 md:pt-44">
       <Anchor kind="knot" className="top-[1.5%] right-[5%] w-[20vw] max-md:right-[4%] max-md:w-[36vw]" par={0.1} tilt={0.7} />
       <Anchor kind="robot" className="top-[8%] left-[6%] w-[11vw] max-md:hidden" par={0.25} tilt={0.7} />
       <Anchor kind="puffy" className="top-[3%] left-[32%] w-[8vw] max-md:hidden" par={0.25} tilt={0.7} />
       {/* Grand panneau cobalt arrondi : le seul aplat coloré plein du site, pour marquer la fin. */}
-      <div className="relative isolate overflow-hidden rounded-[clamp(36px,5vw,72px)] bg-signal px-[clamp(1.5rem,5vw,5rem)] py-[clamp(3rem,8vw,7rem)] text-ink">
+      <div className="theme-light relative isolate overflow-hidden rounded-[clamp(36px,5vw,72px)] bg-signal px-[clamp(1.5rem,5vw,5rem)] py-[clamp(3rem,8vw,7rem)] text-ink">
         {webgl && (
           <Suspense fallback={null}>
             <ChromeFlow className="absolute inset-0 -z-10 opacity-90" />

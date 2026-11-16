@@ -1,5 +1,7 @@
 @import '@fontsource-variable/sora';
 @import '@fontsource-variable/manrope';
+@import '@fontsource/instrument-serif/latin-400-italic.css';
+@import '@fontsource/instrument-serif/latin-ext-400-italic.css';
 @import 'tailwindcss';
 
 @theme {
@@ -27,6 +29,7 @@
   --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
 
   --font-display: 'Sora Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-editorial: 'Instrument Serif', 'Times New Roman', serif;
   --font-serif: 'Sora Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
   --font-body: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
@@ -47,6 +50,33 @@
 :root {
   color-scheme: light;
   --gutter: clamp(1.25rem, 0.5rem + 3vw, 3rem);
+}
+
+/* Chapitres sombres : on inverse les jetons de couleur. Les blocs (BigTile, panneau du contact) remettent les jetons clairs
+   avec .theme-light, et le menu suit le monde qui passe dessous (html[data-theme], posé par BurnBackdrop). */
+.theme-dark,
+html[data-theme='dark'] .theme-follow {
+  --color-ink: #0a0b0f;
+  --color-paper: #f1ebdd;
+  --color-graphite: #14161d;
+  --color-graphite-2: #1c1f28;
+  --color-line: #2d313d;
+  --color-mist: #bfbdb0;
+  --color-signal: #7d97ff;
+  --color-signal-soft: #7d97ff;
+  --color-background: #15171e;
+  --color-border: #2d313d;
+  color: var(--color-paper);
+}
+.theme-light {
+  --color-ink: #f1ebdd;
+  --color-paper: #20211f;
+  --color-graphite: #ebe4d3;
+  --color-graphite-2: #e3dbc7;
+  --color-line: #c9c1ae;
+  --color-mist: #5b5a54;
+  --color-background: #f8f4ea;
+  --color-border: #d4ccb8;
 }
 
 html {
@@ -87,11 +117,25 @@ h2, h3 {
 
 .display em,
 .serif-em em {
-  font-style: normal;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: inherit;
+  /* deuxième voix : serif italique, plus claire et plus grande pour garder le même poids optique */
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  font-size: 1.16em;
+  line-height: 0.8;
   color: var(--color-signal);
+}
+
+/* Mot de chapitre en grand : serif italique en contour, plus ou moins visible selon le fond. */
+.editorial {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--color-paper) 21%, transparent);
 }
 
 .serif {
