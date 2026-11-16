@@ -1,22 +1,46 @@
 import { useEffect, useRef } from 'react'
-import { Mesh, Program, Renderer, Triangle, Vec2, Vec3 } from 'ogl'
+import { Mesh, Program, Renderer, Triangle, Vec2 } from 'ogl'
 import { prefersReducedMotion } from '../../lib/motion'
 
 /**
- * Fond du site : chaque zone a sa teinte de papier, et le passage de l'une à l'autre se fait par une ligne de braise
- * qui ronge l'ancien fond (bord carbonisé, liseré incandescent, étincelles). La ligne suit le haut de la section qui arrive.
- * Un seul triangle plein écran en OGL ; rien n'est rendu tant qu'aucune frontière n'est à l'écran.
+ * Fond du site, rendu en un seul triangle plein écran (OGL).
+ * - Chaque section a sa teinte de papier et deux couleurs d'accent ; le passage de l'une à l'autre n'est plus une ligne
+ *   mais un lavis d'encre : la couleur est calculée pour chaque pixel à partir de sa position dans la page, avec une
+ *   frontière large et déformée par du bruit. Il n'y a donc aucun saut quand le défilement change de zone.
+ * - Sous les blocs, de grands nuages de couleur dérivent lentement (parallaxe à 35 % du défilement), une grille de points
+ *   apparaît par plaques, et un grain fin donne de la matière. Un liseré d'ambre très discret marque encore chaque seuil.
+ * Aucune couleur hors palette (pas de violet, pas de néon). Mouvement réduit : image figée, redessinée seulement au défilement.
  */
 
-const TONES = {
-  ivory: [0.945, 0.922, 0.867],
-  sand: [0.89, 0.859, 0.78],
-  chrome: [0.851, 0.863, 0.878],
-} as const
-type Tone = keyof typeof TONES
+const rgb = (hex: string): [number, number, number] => {
+  const n = parseInt(hex.slice(1), 16)
+  return [(n >> 16) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255]
+}
 
-/** Teinte de fond par section (identifiant) ; les autres restent ivoire. */
-const ZONES: Record<string, Tone> = { deck: 'sand', ia: 'chrome', about: 'sand', contact: 'chrome' }
+type Zone = { tone: [number, number, number]; a: [number, number, number]; b: [number, number, number] }
+const zone = (tone: string, a: string, b: string): Zone => ({ tone: rgb(tone), a: rgb(a), b: rgb(b) })
+
+const COBALT = '#7f9bff' // cobalt éclairci : en nuage, le cobalt pur salit le papier
+const VERMILION = '#f05235'
+const ACID = '#d9f05a'
+const CHROME = '#c3c8d0'
+
+const ZONES: Record<string, Zone> = {
+  default: zone('#f1ebdd', COBALT, ACID),
+  top: zone('#f1ebdd', COBALT, ACID),
+  morph: zone('#efe6d3', VERMILION, ACID),
+  deck: zone('#e9dfc7', VERMILION, ACID),
+  impact: zone('#f1ebdd', COBALT, ACID),
+  'hauts-faits': zone('#e3e8f6', COBALT, CHROME),
+  studio: zone('#eaefc9', ACID, COBALT),
+  ia: zone('#dde0e5', COBALT, CHROME),
+  lab: zone('#f1ebdd', VERMILION, ACID),
+  about: zone('#e9dfc7', VERMILION, ACID),
+  passions: zone('#f3dccd', VERMILION, ACID),
+  contact: zone('#dde0e5', COBALT, CHROME),
+}
+
+const N = 12
 
 const VERT = /* glsl */ `
 attribute vec2 position;
@@ -26,77 +50,73 @@ void main() { vUv = uv; gl_Position = vec4(position, 0.0, 1.0); }`
 
 const FRAG = /* glsl */ `
 precision highp float;
+#define N ${N}
 uniform float uTime;
-uniform float uEdge;
-uniform vec2 uRes;
-uniform vec3 uA;
-uniform vec3 uB;
+uniform float uScroll;
+uniform vec2 uView;
+uniform vec3 uTone[N];
+uniform vec3 uA[N];
+uniform vec3 uB[N];
+uniform float uBound[N];
 varying vec2 vUv;
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p) {
   vec2 i = floor(p), f = fract(p);
   f = f * f * (3.0 - 2.0 * f);
-  return mix(mix(hash(i), hash(i + vec2(1, 0)), f.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), f.x), f.y);
+  return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
 }
 float fbm(vec2 p) {
   float v = 0.0, a = 0.5;
-  for (int i = 0; i < 5; i++) { v += a * noise(p); p = p * 2.07 + 11.0; a *= 0.5; }
+  for (int i = 0; i < 4; i++) { v += a * noise(p); p = p * 2.03 + 11.0; a *= 0.5; }
   return v;
 }
 
 void main() {
-  float aspect = uRes.x / uRes.y;
-  vec2 p = vec2(vUv.x * aspect, 1.0 - vUv.y);
-  // Front de combustion : grande ondulation lente + dentelure fine qui frémit.
-  float wave = (fbm(vec2(p.x * 1.6, uTime * 0.07)) - 0.5) * 0.3;
-  float tooth = (fbm(vec2(p.x * 9.0, p.y * 6.0 - uTime * 0.25)) - 0.5) * 0.085;
-  float d = p.y - (uEdge + wave + tooth);
+  vec2 p = vec2(vUv.x * uView.x, (1.0 - vUv.y) * uView.y);
+  float docY = uScroll + p.y;
+  float t = uTime;
 
-  vec3 col = d > 0.0 ? uB : uA;
-  // Papier roussi au-dessus du front, puis carbonisé, puis braise au bord.
-  float scorch = smoothstep(-0.2, -0.02, d) * step(d, 0.0);
-  col = mix(col, uA * vec3(0.8, 0.7, 0.56), scorch * 0.75);
-  float charBand = smoothstep(-0.05, -0.012, d) * step(d, 0.0);
-  col = mix(col, vec3(0.125, 0.13, 0.12), charBand * 0.92);
-  float flick = 0.75 + 0.25 * noise(vec2(p.x * 22.0, uTime * 3.0));
-  float ember = smoothstep(-0.016, 0.0, d) * (1.0 - smoothstep(0.0, 0.012, d));
-  col = mix(col, mix(vec3(0.941, 0.322, 0.208), vec3(1.0, 0.86, 0.42), ember * flick), ember);
-  // Halo chaud sur le nouveau fond, juste sous la braise.
-  col += vec3(0.941, 0.322, 0.208) * (1.0 - smoothstep(0.0, 0.07, d)) * step(0.0, d) * 0.16 * flick;
+  // Frontière organique : le bruit dépend de la position dans la page, jamais de l'écran, donc elle reste collée au contenu.
+  float warp = (fbm(vec2(p.x * 0.0016 + 3.0, docY * 0.0011 - t * 0.03)) - 0.5) * 0.7 * uView.y;
+  float hw = 0.34 * uView.y;
 
-  // Étincelles qui montent du front.
-  vec2 g = vec2(p.x * 26.0, (p.y + uTime * 0.11) * 26.0);
-  vec2 cell = floor(g);
-  float seed = hash(cell);
-  vec2 o = vec2(hash(cell + 3.1), hash(cell + 7.7)) * 0.7 + 0.15;
-  float spark = smoothstep(0.11, 0.0, length(fract(g) - o));
-  float zone = smoothstep(-0.34, -0.03, d) * step(d, -0.02);
-  col = mix(col, vec3(1.0, 0.62, 0.25), spark * step(0.93, seed) * zone * (0.5 + 0.5 * sin(uTime * 5.0 + seed * 40.0)));
+  vec3 tone = uTone[0];
+  vec3 a = uA[0];
+  vec3 b = uB[0];
+  float seam = 0.0;
+  for (int i = 0; i < N - 1; i++) {
+    float d = docY + warp - uBound[i];
+    float k = smoothstep(-hw, hw, d);
+    float differ = step(0.012, length(uTone[i + 1] - uTone[i]));
+    tone = mix(tone, uTone[i + 1], k);
+    a = mix(a, uA[i + 1], k);
+    b = mix(b, uB[i + 1], k);
+    seam = max(seam, differ * exp(-d * d / (2.0 * 26.0 * 26.0)));
+  }
 
-  col += (hash(vUv * uRes + uTime) - 0.5) * 0.018;
+  vec3 col = tone;
+
+  // Grands nuages de couleur, deux champs de bruit qui dérivent et défilent à 35 % de la vitesse de la page.
+  vec2 q = vec2(p.x / (0.8 * uView.x + 420.0), docY * 0.35 / (0.95 * uView.y + 300.0));
+  float f1 = fbm(q * 1.5 + vec2(t * 0.018, -t * 0.012));
+  float f2 = fbm(q * 1.5 + vec2(9.0 - t * 0.014, 4.0 + t * 0.01));
+  col = mix(col, a, smoothstep(0.5, 0.82, f1) * 0.34);
+  col = mix(col, b, smoothstep(0.54, 0.86, f2) * 0.26);
+
+  // Grille de points, par plaques, façon calque de construction.
+  vec2 g = vec2(p.x, docY * 0.7) / 26.0;
+  float dotMask = smoothstep(0.52, 0.74, fbm(q * 2.2 + 21.0));
+  float dotShape = smoothstep(0.17, 0.1, length(fract(g) - 0.5));
+  col = mix(col, vec3(0.125, 0.13, 0.12), dotShape * dotMask * 0.2);
+
+  // Liseré d'ambre très doux (ni rouge ni bleu : leur mélange tirerait vers le violet) sur chaque seuil.
+  float flick = 0.7 + 0.3 * noise(vec2(p.x * 0.02, t * 1.2));
+  col = mix(col, vec3(1.0, 0.62, 0.3), seam * 0.16 * flick);
+
+  col += (hash(vUv * uView + fract(t)) - 0.5) * 0.02;
   gl_FragColor = vec4(col, 1.0);
 }`
-
-type Boundary = { edge: number; a: Tone; b: Tone }
-
-/** Frontière la plus proche du centre de l'écran, ou la teinte unie à afficher. */
-function readBoundary(sections: HTMLElement[], vh: number): Boundary {
-  let tone: Tone = 'ivory'
-  let best: Boundary | null = null
-  let prev: Tone = 'ivory'
-  for (const s of sections) {
-    const t = ZONES[s.id] ?? 'ivory'
-    const top = s.getBoundingClientRect().top
-    if (top <= vh * 0.5) tone = t
-    if (t !== prev && top > -vh * 0.45 && top < vh * 1.45) {
-      const edge = top / vh
-      if (!best || Math.abs(edge - 0.5) < Math.abs(best.edge - 0.5)) best = { edge, a: prev, b: t }
-    }
-    prev = t
-  }
-  return best ?? { edge: -9, a: tone, b: tone }
-}
 
 export function BurnBackdrop({ deps }: { deps: string }) {
   const host = useRef<HTMLDivElement>(null)
@@ -109,54 +129,69 @@ export function BurnBackdrop({ deps }: { deps: string }) {
     try {
       renderer = new Renderer({ alpha: false, antialias: false, dpr: Math.min(window.devicePixelRatio || 1, 1.25) })
     } catch {
-      return // pas de WebGL : le fond ivoire uni du CSS reste en place
+      return // pas de WebGL : le fond CSS (PaperBackground) reste en place
     }
     const gl = renderer.gl
     el.appendChild(gl.canvas)
     gl.canvas.style.cssText = 'width:100%;height:100%;display:block'
+
+    const flat = (pick: (z: Zone) => [number, number, number], zones: Zone[]) => {
+      const out: number[] = []
+      for (let i = 0; i < N; i++) out.push(...pick(zones[Math.min(i, zones.length - 1)]))
+      return out
+    }
     const program = new Program(gl, {
       vertex: VERT,
       fragment: FRAG,
       uniforms: {
         uTime: { value: 0 },
-        uEdge: { value: -9 },
-        uRes: { value: new Vec2(1, 1) },
-        uA: { value: new Vec3(...TONES.ivory) },
-        uB: { value: new Vec3(...TONES.ivory) },
+        uScroll: { value: 0 },
+        uView: { value: new Vec2(1, 1) },
+        uTone: { value: flat((z) => z.tone, [ZONES.default]) },
+        uA: { value: flat((z) => z.a, [ZONES.default]) },
+        uB: { value: flat((z) => z.b, [ZONES.default]) },
+        uBound: { value: new Array(N).fill(1e9) },
       },
     })
     const mesh = new Mesh(gl, { geometry: new Triangle(gl), program })
 
-    let sections: HTMLElement[] = []
+    // Les seuils sont des positions dans la page : on les relit quand le DOM ou la taille changent, pas à chaque image.
     const scan = () => {
-      sections = [...document.querySelectorAll<HTMLElement>('main > section')]
+      const sections = [...document.querySelectorAll<HTMLElement>('main > section')].slice(0, N)
+      if (sections.length === 0) return
+      const zones = sections.map((s) => ZONES[s.id] ?? ZONES.default)
+      const bounds = new Array(N).fill(1e9)
+      sections.forEach((s, i) => {
+        if (i > 0) bounds[i - 1] = s.getBoundingClientRect().top + window.scrollY
+      })
+      program.uniforms.uTone.value = flat((z) => z.tone, zones)
+      program.uniforms.uA.value = flat((z) => z.a, zones)
+      program.uniforms.uB.value = flat((z) => z.b, zones)
+      program.uniforms.uBound.value = bounds
+      dirty = true
     }
-    scan()
-    const scanTimer = window.setInterval(scan, 1200)
 
     let dirty = true
     const resize = () => {
       renderer.setSize(window.innerWidth, window.innerHeight)
-      program.uniforms.uRes.value.set(gl.canvas.width, gl.canvas.height)
-      dirty = true
+      program.uniforms.uView.value.set(window.innerWidth, window.innerHeight)
+      scan()
     }
     resize()
+    const scanTimer = window.setInterval(scan, 800)
     window.addEventListener('resize', resize)
+    const ro = new ResizeObserver(scan)
+    ro.observe(document.body)
 
     let raf = 0
-    let last = ''
-    const frame = (t: number) => {
-      const b = readBoundary(sections, window.innerHeight)
-      const active = b.a !== b.b
-      const key = `${b.a}${b.b}${active ? b.edge.toFixed(4) : ''}`
-      // On ne redessine que si la frontière bouge, ou en continu quand la braise est visible.
-      if (dirty || key !== last || (active && !reduced)) {
-        program.uniforms.uA.value.set(...TONES[b.a])
-        program.uniforms.uB.value.set(...TONES[b.b])
-        program.uniforms.uEdge.value = b.edge
-        program.uniforms.uTime.value = reduced ? 4 : t * 0.001
+    let lastScroll = -1
+    const frame = (now: number) => {
+      const y = window.scrollY
+      if (dirty || y !== lastScroll || !reduced) {
+        program.uniforms.uScroll.value = y
+        program.uniforms.uTime.value = reduced ? 4 : now * 0.001
         renderer.render({ scene: mesh })
-        last = key
+        lastScroll = y
         dirty = false
       }
       raf = requestAnimationFrame(frame)
@@ -167,6 +202,7 @@ export function BurnBackdrop({ deps }: { deps: string }) {
       cancelAnimationFrame(raf)
       window.clearInterval(scanTimer)
       window.removeEventListener('resize', resize)
+      ro.disconnect()
       gl.getExtension('WEBGL_lose_context')?.loseContext()
       gl.canvas.remove()
     }

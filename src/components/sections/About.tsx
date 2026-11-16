@@ -41,7 +41,7 @@ export function About() {
       <Anchor kind="crystal" className="top-[40%] left-[0.5%] w-[6vw] max-md:hidden" par={0.3} />
       <Anchor kind="torus" className="top-[1%] left-[40%] w-[7vw] max-md:hidden" par={0.25} />
       <Anchor kind="cube-chrome" className="top-[64%] left-[1.5%] w-[3.8vw] max-md:hidden" par={0.3} />
-      <SectionHeading index="05" label={a.label} title={<TitleParts parts={a.title} />} />
+      <SectionHeading index="06" label={a.label} title={<TitleParts parts={a.title} />} />
 
       <div>
         <div className="grid gap-14 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-24">
