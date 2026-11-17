@@ -10,7 +10,6 @@ import { AiSpotlight } from './components/ai/AiSpotlight'
 import { ProjectIndex } from './components/lab/ProjectIndex'
 import { About } from './components/sections/About'
 import { Passions } from './components/sections/Passions'
-import { NightOnAir } from './components/fx/NightOnAir'
 import { Contact } from './components/sections/Contact'
 
 /** Tout le bas de l'accueil, dans un seul chunk (voir lib/belowFold.ts). */
@@ -36,7 +35,6 @@ export default function BelowFold({ onMount }: { onMount: () => void }) {
       <ProjectIndex />
       <About />
       <Passions />
-      <NightOnAir />
       <Contact />
     </>
   )

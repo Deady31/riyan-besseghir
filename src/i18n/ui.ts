@@ -133,7 +133,6 @@ const fr = {
     intro: 'Un jeu vidéo, la traduction d’un jeu japonais, des outils pour mes parties classées. C’est là que j’apprends le plus vite.',
     words: ['Manga', 'Jeu vidéo', 'Jazz', 'Cinéma', 'Japon'],
   },
-  night: { aria: 'Transition : signal radio, puis la section contact', word: 'ON AIR', sub: 'Signal en approche' },
   contact: {
     label: 'Contact',
     title: ['Une équipe qui veut ', 'livrer de l’IA', ' ? Parlons-en.'] as Title,
@@ -299,7 +298,6 @@ const en: UI = {
     intro: 'A video game, a Japanese game translation, tools for my ranked matches. That’s where I learn fastest.',
     words: ['Manga', 'Video games', 'Jazz', 'Cinema', 'Japan'],
   },
-  night: { aria: 'Transition: radio signal, then the contact section', word: 'ON AIR', sub: 'Incoming signal' },
   contact: {
     label: 'Contact',
     title: ['Building ', 'AI products', '? Let’s talk.'],

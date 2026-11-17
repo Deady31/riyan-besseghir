@@ -1,32 +1,37 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { AnimatePresence, motion } from 'motion/react'
-import { X } from 'lucide-react'
 import { scrollToId, useLenis } from '../../lib/SmoothScroll'
 import { cn } from '../../lib/cn'
 import { useT } from '../../i18n/useT'
 import { useLang } from '../../i18n/LangProvider'
 import { CHAPTERS } from '../../data/chapters'
 import { useActiveChapter } from '../../hooks/useActiveChapter'
+import { useWebGLSupport } from '../../hooks/useWebGLSupport'
 import { LangSwitch } from '../ui/LangSwitch'
 
+const Logo3D = lazy(() => import('./Logo3D'))
+
 /**
- * Barre du haut épurée : le logo, un seul bouton « Menu » qui affiche le chapitre en cours, la langue et le contact.
- * Le menu ouvre l'index complet des chapitres en grand, avec leur numéro : une seule liste, la même que le rail de gauche,
- * qui ne casse plus en deux lignes quand l'écran se resserre.
+ * Barre du haut : le logo (un R chromé en 3D, qui ramène tout en haut), un menu qui se déplie dès que le curseur le touche
+ * (sur tactile : au toucher), la langue et le contact. La liste des chapitres est la même que le rail de gauche.
  */
 export function Nav() {
   const lenis = useLenis()
   const t = useT()
   const { lang } = useLang()
+  const webgl = useWebGLSupport()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const [logoHover, setLogoHover] = useState(false)
+  const [spinKey, setSpinKey] = useState(0)
+  const [logoReady, setLogoReady] = useState(false)
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const home = pathname === '/'
   const active = useActiveChapter(home)
-  const closeRef = useRef<HTMLButtonElement>(null)
-  const opener = useRef<HTMLButtonElement>(null)
+  const wrap = useRef<HTMLDivElement>(null)
+  const closeTimer = useRef(0)
   const label = (c: (typeof CHAPTERS)[number]) => (lang === 'en' ? c.en : c.fr)
 
   useEffect(() => {
@@ -48,60 +53,93 @@ export function Nav() {
     [home, lenis, navigate],
   )
 
-  // Menu ouvert : la page ne défile plus, Échap ferme, le focus va sur « Fermer » puis revient au bouton.
+  // Menu ouvert : Échap ou un clic ailleurs le ferme.
   useEffect(() => {
     if (!open) return
-    lenis?.stop()
-    closeRef.current?.focus()
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
-    window.addEventListener('keydown', onKey)
-    const back = opener.current
-    return () => {
-      lenis?.start()
-      window.removeEventListener('keydown', onKey)
-      back?.focus()
+    const onDown = (e: PointerEvent) => {
+      if (wrap.current && !wrap.current.contains(e.target as Node)) setOpen(false)
     }
-  }, [open, lenis])
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('pointerdown', onDown)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('pointerdown', onDown)
+    }
+  }, [open])
+
+  // Survol à la souris : ouvre tout de suite, ferme après un court délai (pour passer du bouton à la liste sans la perdre).
+  const enter = (e: React.PointerEvent) => {
+    if (e.pointerType !== 'mouse') return
+    window.clearTimeout(closeTimer.current)
+    setOpen(true)
+  }
+  const leave = (e: React.PointerEvent) => {
+    if (e.pointerType !== 'mouse') return
+    window.clearTimeout(closeTimer.current)
+    closeTimer.current = window.setTimeout(() => setOpen(false), 220)
+  }
 
   const pick = (id: string) => {
     setOpen(false)
-    window.setTimeout(() => go(id), 60)
+    go(id)
   }
 
   const current = home ? CHAPTERS[active] : null
 
   return (
-    <>
-      <header
-        className={cn(
-          'theme-follow fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-500',
-          scrolled ? 'border-b border-paper/15 bg-ink/90 backdrop-blur' : 'border-b border-transparent',
-        )}
-      >
-        <nav aria-label={t.nav.aria} className="flex items-center gap-2 px-[var(--gutter)] py-3 sm:gap-3">
-          <a
-            href="#top"
-            onClick={(e) => {
-              e.preventDefault()
-              go('top')
-            }}
-            className="group flex items-center gap-2 text-sm text-paper"
-          >
-            <span className="grid size-9 place-items-center rounded-full border border-paper font-semibold transition-colors group-hover:bg-paper group-hover:text-ink">
+    <header
+      className={cn(
+        'theme-follow fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-500',
+        scrolled ? 'border-b border-paper/15 bg-ink/90 backdrop-blur' : 'border-b border-transparent',
+      )}
+    >
+      <nav aria-label={t.nav.aria} className="flex items-center gap-2 px-[var(--gutter)] py-2 sm:gap-3">
+        <a
+          href="#top"
+          aria-label={lang === 'en' ? 'riyan.world, back to top' : 'riyan.world, retour en haut'}
+          onClick={(e) => {
+            e.preventDefault()
+            setSpinKey((k) => k + 1)
+            go('top')
+          }}
+          onPointerEnter={() => setLogoHover(true)}
+          onPointerLeave={() => setLogoHover(false)}
+          onFocus={() => setLogoHover(true)}
+          onBlur={() => setLogoHover(false)}
+          className="group flex items-center gap-2 text-sm text-paper"
+        >
+          <span className="relative block size-[52px] shrink-0">
+            {/* Repli statique tant que la 3D n'est pas là (ou sans WebGL) */}
+            <span
+              className={cn('absolute inset-1 grid place-items-center rounded-full border border-paper text-base font-bold transition-opacity duration-300', logoReady && 'opacity-0')}
+              aria-hidden="true"
+            >
               R
             </span>
-            <span className="hidden sm:inline">riyan.world</span>
-            <span className="size-1.5 rounded-full bg-vermilion max-sm:hidden" aria-hidden="true" />
-          </a>
+            {webgl && (
+              <span className="absolute inset-0">
+                <Suspense fallback={null}>
+                  <Logo3D active={logoHover} spinKey={spinKey} onReady={() => setLogoReady(true)} />
+                </Suspense>
+              </span>
+            )}
+          </span>
+          <span className="hidden font-semibold tracking-[-0.01em] sm:inline">riyan.world</span>
+        </a>
 
+        <div ref={wrap} className="relative ml-1 sm:ml-2" onPointerEnter={enter} onPointerLeave={leave}>
           <button
-            ref={opener}
             type="button"
-            onClick={() => setOpen(true)}
-            aria-haspopup="dialog"
+            onClick={() => setOpen((o) => !o)}
+            aria-haspopup="true"
             aria-expanded={open}
+            aria-controls="chapter-menu"
             aria-label="Menu"
-            className="ml-1 inline-flex shrink-0 items-center gap-3 rounded-full border border-paper/25 py-2.5 pr-3.5 pl-3.5 text-xs sm:ml-2 sm:py-2 sm:pr-4 font-semibold tracking-[0.08em] text-paper uppercase transition-colors hover:bg-paper hover:text-ink"
+            className={cn(
+              'inline-flex shrink-0 items-center gap-3 rounded-full border border-paper/25 py-2.5 pr-3.5 pl-3.5 text-xs font-semibold tracking-[0.08em] uppercase transition-colors sm:py-2 sm:pr-4',
+              open ? 'bg-paper text-ink' : 'text-paper hover:bg-paper hover:text-ink',
+            )}
           >
             <span className="grid gap-[3px]" aria-hidden="true">
               <span className="block h-[2px] w-4 rounded bg-current" />
@@ -115,71 +153,55 @@ export function Nav() {
             )}
           </button>
 
-          <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3 md:gap-4">
-            <LangSwitch />
-            <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault()
-                go('contact')
-              }}
-              className="rounded-full bg-paper px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-ink transition-[background-color,transform] duration-300 hover:bg-signal active:scale-95"
-            >
-              {t.nav.contact}
-            </a>
-          </div>
-        </nav>
-      </header>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            key="menu"
-            role="dialog"
-            aria-modal="true"
-            aria-label={lang === 'en' ? 'Chapters' : 'Chapitres'}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="theme-light fixed inset-0 z-[70] overflow-y-auto bg-ink px-[var(--gutter)] pt-5 pb-12"
-          >
-            <div className="flex items-center justify-between">
-              <span className="label text-mist">{lang === 'en' ? 'All chapters' : 'Tous les chapitres'}</span>
-              <button
-                ref={closeRef}
-                type="button"
-                onClick={() => setOpen(false)}
-                className="inline-flex items-center gap-2 rounded-full border border-paper px-4 py-2 text-xs font-semibold tracking-[0.08em] text-paper uppercase transition-colors hover:bg-paper hover:text-ink"
+          <AnimatePresence>
+            {open && (
+              <motion.ul
+                id="chapter-menu"
+                key="menu"
+                initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -6, scale: 0.98 }}
+                transition={{ duration: 0.18, ease: 'easeOut' }}
+                className="theme-light absolute top-full left-0 z-10 mt-2 w-[min(86vw,320px)] origin-top-left rounded-[28px] border-[2.5px] border-[#2B0F3A] bg-ink p-2 shadow-[var(--shadow-card)]"
               >
-                <X className="size-4" aria-hidden="true" />
-                {lang === 'en' ? 'Close' : 'Fermer'}
-              </button>
-            </div>
+                {CHAPTERS.map((c, i) => {
+                  const here = home && i === active
+                  return (
+                    <li key={c.id}>
+                      <button
+                        type="button"
+                        onClick={() => pick(c.id)}
+                        aria-current={here ? 'true' : undefined}
+                        className={cn(
+                          'group flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-left text-[15px] font-semibold transition-colors',
+                          here ? 'bg-signal text-ink' : 'text-paper hover:bg-[#EADFFF]',
+                        )}
+                      >
+                        <span className={cn('w-6 shrink-0 text-[11px] tabular-nums', here ? 'text-ink/80' : 'text-mist')}>{String(i + 1).padStart(2, '0')}</span>
+                        <span className="transition-transform duration-200 group-hover:translate-x-1">{label(c)}</span>
+                      </button>
+                    </li>
+                  )
+                })}
+              </motion.ul>
+            )}
+          </AnimatePresence>
+        </div>
 
-            <ol className="mx-auto mt-10 grid max-w-6xl gap-x-16 md:grid-cols-2">
-              {CHAPTERS.map((c, i) => (
-                <li key={c.id} className="border-b border-paper/15">
-                  <button
-                    type="button"
-                    onClick={() => pick(c.id)}
-                    aria-current={home && i === active ? 'true' : undefined}
-                    className={cn(
-                      'group flex w-full items-baseline gap-5 py-4 text-left transition-colors md:py-5',
-                      home && i === active ? 'text-signal' : 'text-paper hover:text-signal',
-                    )}
-                  >
-                    <span className="label w-8 shrink-0 tabular-nums text-mist">{String(i + 1).padStart(2, '0')}</span>
-                    <span className="display text-[clamp(1.8rem,1.1rem+2.4vw,3.2rem)] transition-transform duration-300 group-hover:translate-x-1.5">
-                      {label(c)}
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ol>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+        <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3 md:gap-4">
+          <LangSwitch />
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault()
+              go('contact')
+            }}
+            className="rounded-full bg-paper px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-ink transition-[background-color,transform] duration-300 hover:bg-signal active:scale-95"
+          >
+            {t.nav.contact}
+          </a>
+        </div>
+      </nav>
+    </header>
   )
 }

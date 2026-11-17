@@ -8,10 +8,4 @@ describe('transitions plein écran', () => {
     expect(WAVE_TONES.dark.color[2]).toBeGreaterThan(WAVE_TONES.light.color[0])
     expect(JSON.stringify(WAVE_TONES)).not.toContain('FFD83D')
   })
-  it('le mot du glitch existe en FR et en EN', () => {
-    for (const l of ['fr', 'en'] as const) {
-      expect(UI_TEXT[l].night.word.length).toBeGreaterThan(0)
-      expect(UI_TEXT[l].night.aria.length).toBeGreaterThan(0)
-    }
-  })
 })

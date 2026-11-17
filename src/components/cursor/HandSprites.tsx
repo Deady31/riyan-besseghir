@@ -122,11 +122,11 @@ export function HandSprites() {
 
       <g data-s="point">
         <Lift id="h-point" />
-        <Outlined id="h-point" />
+        {/* Le pouce est replié DERRIÈRE la paume : on le dessine d'abord, la paume le recouvre. */}
         <Outlined id="h-thumb-point" />
+        <Outlined id="h-point" />
         <Cuff />
         <ellipse cx="41.5" cy="20" rx="2.8" ry="7" fill="#fff" opacity=".9" transform="rotate(-2 41 20)" />
-        <ellipse cx="32" cy="62" rx="5.5" ry="2.4" fill="#fff" opacity=".8" transform="rotate(-24 32 64)" />
       </g>
 
       <g data-s="fist">
@@ -142,8 +142,8 @@ export function HandSprites() {
         <circle className="hand-ring" cx="41.5" cy="8" r="9" fill="none" stroke={COBALT} strokeWidth="3" />
         <circle className="hand-ring hand-ring-2" cx="41.5" cy="8" r="9" fill="none" stroke={VERMILION} strokeWidth="3" />
         <Lift id="h-point" />
-        <Outlined id="h-point" />
         <Outlined id="h-thumb-point" />
+        <Outlined id="h-point" />
         <Cuff />
         <ellipse cx="41.5" cy="20" rx="2.8" ry="7" fill="#fff" opacity=".9" transform="rotate(-2 41 20)" />
       </g>
