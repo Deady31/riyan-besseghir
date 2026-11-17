@@ -28,7 +28,7 @@ import { BurstCanvas } from './components/fx/BurstCanvas'
 import { ToyHint } from './components/fx/ToyHint'
 import { EggLayer } from './components/eggs/EggLayer'
 const ModelPreview = lazy(() => import('./components/three/ModelPreview').then((m) => ({ default: m.ModelPreview })))
-import { PaintSplash } from './components/fx/PaintSplash'
+import { HoloGate } from './components/fx/HoloGate'
 import { NightOnAir } from './components/fx/NightOnAir'
 import { ScrollFx } from './components/night/ScrollFx'
 import { useWebGLSupport } from './hooks/useWebGLSupport'
@@ -69,8 +69,7 @@ function Home() {
       <Hero />
       <MorphMoment />
       <SwipeDeck />
-      <div id="impact-gate" aria-hidden="true" className="h-0" />
-      <PaintSplash trigger="#impact-gate" />
+      <HoloGate />
       <Impact />
       <Feats />
       <Studio />

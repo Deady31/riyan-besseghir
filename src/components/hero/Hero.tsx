@@ -10,6 +10,7 @@ import { LiveClock } from '../ui/LiveClock'
 import { Anchor } from '../three/Anchor'
 import { HeroPortrait } from './HeroPortrait'
 import { HeroMosaic } from '../fx/HeroMosaic'
+import { ChapterBg } from '../backgrounds/ChapterBg'
 
 export function Hero() {
   const root = useRef<HTMLElement>(null)
@@ -34,6 +35,12 @@ export function Hero() {
         .from(name.chars, { yPercent: 105, duration: 1.2, ease: 'expo.out', stagger: 0.03 }, 0.2)
         .from('[data-meta]', { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out', stagger: 0.07 }, 0.8)
 
+      // La grille de points du hero s'efface dès qu'on défile : le hero reste épinglé au-dessus du 39 pendant la mosaïque.
+      gsap.to('[data-chapter-bg="top"]', {
+        opacity: 0,
+        ease: 'none',
+        scrollTrigger: { trigger: root.current, start: 'top top', end: '+=35%', scrub: true },
+      })
       gsap.to('[data-name-wrap]', {
         yPercent: -14,
         ease: 'none',
@@ -53,7 +60,8 @@ export function Hero() {
   }
 
   return (
-    <section ref={root} id="top" className="relative z-[25] h-[100svh] min-h-[680px] overflow-hidden" aria-label={t.hero.aria}>
+    <section ref={root} id="top" className="relative isolate z-[25] h-[100svh] min-h-[680px] overflow-hidden" aria-label={t.hero.aria}>
+      <ChapterBg kind="top" />
       <h1 className="sr-only">
         {PROFILE.name}, {PROFILE.role}
       </h1>

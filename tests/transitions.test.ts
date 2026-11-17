@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { makeTiles, mulberry } from '../src/components/fx/HeroMosaic'
-import { makeBlobs, makeDrips } from '../src/components/fx/PaintSplash'
+import { PRESETS } from '../src/components/backgrounds/ChapterBg'
 import { UI_TEXT } from '../src/i18n/ui'
 
 describe('transitions plein écran', () => {
@@ -13,12 +13,10 @@ describe('transitions plein écran', () => {
     expect(tiles.every((t) => t.back.toUpperCase() !== '#FFD83D')).toBe(true)
     expect(makeTiles(5, 6)).toEqual(tiles)
   })
-  it('les coulures restent dans l’écran et de longueurs variées', () => {
-    const d = makeDrips(22)
-    expect(d.length).toBeGreaterThan(8)
-    expect(d.every((x) => x.left < 101 && x.length > 0)).toBe(true)
-    expect(new Set(d.map((x) => Math.round(x.length))).size).toBeGreaterThan(4)
-    expect(makeBlobs(14).every((b) => b.color.toUpperCase() !== '#FFD83D')).toBe(true)
+  it('chaque chapitre a son fond, sans citron', () => {
+    const kinds = Object.keys(PRESETS)
+    for (const k of ['top', 'morph', 'deck', 'feats', 'studio', 'demo', 'ia', 'lab', 'about', 'passions', 'contact', 'holo', 'onair']) expect(kinds).toContain(k)
+    expect(JSON.stringify(PRESETS).toUpperCase()).not.toContain('#FFD83D')
   })
   it('le mot du glitch existe en FR et en EN', () => {
     for (const l of ['fr', 'en'] as const) {
