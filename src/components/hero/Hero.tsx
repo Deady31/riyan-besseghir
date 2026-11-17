@@ -19,7 +19,8 @@ export function Hero() {
   useGSAP(
     () => {
       if (prefersReducedMotion()) return
-      const name = SplitText.create('[data-name]', { type: 'chars', mask: 'chars' })
+      // Pas de masque par lettre : il couperait le contour et l'ombre décalée.
+      const name = SplitText.create('[data-name]', { type: 'chars' })
       // Les lignes sont recoupées quand la police arrive (autoSplit) : sinon la coupure est calculée avec la police de
       // secours et un mot se retrouve seul sur sa ligne.
       const lines = SplitText.create('[data-statement]', {
@@ -31,7 +32,7 @@ export function Hero() {
       })
       const tl = gsap.timeline({ delay: 0.2 })
       tl.from('[data-slab]', { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'expo.out' })
-        .from(name.chars, { yPercent: 105, duration: 1.2, ease: 'expo.out', stagger: 0.03 }, 0.2)
+        .from(name.chars, { yPercent: 60, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.03 }, 0.2)
         .from('[data-meta]', { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out', stagger: 0.07 }, 0.8)
 
       // Sortie épurée : la grille de points s'efface, le bloc et le portrait remontent doucement.
@@ -83,7 +84,7 @@ export function Hero() {
         <p
           data-name
           aria-hidden="true"
-          className="display brand-name mt-6 text-[clamp(2.4rem,13.4vw,4rem)] md:mt-8 md:text-[clamp(3.6rem,1rem+12.2vw,14rem)]"
+          className="display brand-name name-outline mt-6 text-[clamp(2.4rem,13.4vw,4rem)] md:mt-8 md:text-[clamp(3.6rem,1rem+12.2vw,14rem)]"
         >
           Riyan
           <br />

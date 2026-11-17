@@ -1,5 +1,5 @@
 @import '@fontsource-variable/rubik';
-@import '@fontsource/bungee';
+@import '@fontsource-variable/space-grotesk';
 @import 'tailwindcss';
 
 @theme {
@@ -28,7 +28,7 @@
   --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
 
   --font-display: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-brand: 'Bungee', 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-brand: 'Space Grotesk Variable', 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
   --font-editorial: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
@@ -225,13 +225,21 @@ h2, h3 {
   color: var(--color-signal);
 }
 
-/* Le nom en lettrage d'enseigne de rue (Bungee), comme les tags de Jet Set Radio. */
+/* Le nom : Space Grotesk, serré. */
 .brand-name {
   font-family: var(--font-brand);
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 0.92;
-  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.88;
+  text-transform: none;
+}
+
+/* Lettres claires cernées de prune, avec une ombre violette décalée : lisible sur la crème comme sur le violet. */
+.name-outline {
+  color: #fff6e5;
+  -webkit-text-stroke: 0.06em #2b0f3a;
+  paint-order: stroke fill;
+  text-shadow: 0.06em 0.07em 0 #6c2bff;
 }
 
 /* Plus aucun italique nulle part : les balises qui l'imposent par défaut sont remises droites. */
