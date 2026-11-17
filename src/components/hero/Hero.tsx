@@ -9,6 +9,7 @@ import { useT } from '../../i18n/useT'
 import { LiveClock } from '../ui/LiveClock'
 import { Anchor } from '../three/Anchor'
 import { HeroPortrait } from './HeroPortrait'
+import { HeroMosaic } from '../fx/HeroMosaic'
 
 export function Hero() {
   const root = useRef<HTMLElement>(null)
@@ -38,11 +39,6 @@ export function Hero() {
         ease: 'none',
         scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true },
       })
-      gsap.to('[data-slab]', {
-        yPercent: -10,
-        ease: 'none',
-        scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true },
-      })
       return () => {
         name.revert()
         lines.revert()
@@ -57,7 +53,7 @@ export function Hero() {
   }
 
   return (
-    <section ref={root} id="top" className="relative h-[100svh] min-h-[680px] overflow-hidden" aria-label={t.hero.aria}>
+    <section ref={root} id="top" className="relative z-[25] h-[100svh] min-h-[680px] overflow-hidden" aria-label={t.hero.aria}>
       <h1 className="sr-only">
         {PROFILE.name}, {PROFILE.role}
       </h1>
@@ -66,9 +62,11 @@ export function Hero() {
       <div data-slab className="absolute top-[4.75rem] right-[7%] h-[calc(78%-4.75rem)] w-[34%] rounded-[56px] bg-signal max-md:top-36 max-md:right-3 max-md:left-[16%] max-md:h-[36%] max-md:w-auto max-md:rounded-[40px]" aria-hidden="true" />
 
       <HeroPortrait />
+      {/* Sortie du hero : le bloc et le portrait se découpent en mosaïque et s'éparpillent (transition 1). */}
+      <HeroMosaic />
 
       {/* Couche 1 : le nom. */}
-      <div data-name-wrap className="absolute inset-x-0 bottom-0 z-10 px-[var(--gutter)] pb-[clamp(5.5rem,11vh,7.5rem)] max-md:pb-[5.25rem]">
+      <div data-name-wrap data-hero-fade className="absolute inset-x-0 bottom-0 z-10 px-[var(--gutter)] pb-[clamp(5.5rem,11vh,7.5rem)] max-md:pb-[5.25rem]">
         <p data-statement className="max-w-[28rem] text-[clamp(1.05rem,0.9rem+0.7vw,1.5rem)] leading-[1.25] font-medium tracking-[-0.01em] text-paper">
           {t.hero.statement}
         </p>
@@ -89,7 +87,7 @@ export function Hero() {
       <Anchor kind="robot" className="top-[55%] left-[5%] w-[18vw] md:hidden" par={0.3} tilt={0.6} />
 
       {/* Couche 3 : informations et boutons, toujours lisibles. */}
-      <div className="absolute inset-x-0 top-0 z-30 px-[var(--gutter)] pt-24 md:pt-28">
+      <div data-hero-fade className="absolute inset-x-0 top-0 z-30 px-[var(--gutter)] pt-24 md:pt-28">
         <div className="label flex flex-wrap items-center gap-x-6 gap-y-2 text-mist">
           <p data-meta className="flex items-center gap-2 text-paper">
             <span className="size-2 rounded-full bg-vermilion" aria-hidden="true" />
@@ -101,7 +99,7 @@ export function Hero() {
         </div>
       </div>
 
-        <div data-meta className="absolute left-[var(--gutter)] z-30 flex flex-wrap gap-3 max-md:right-[var(--gutter)] max-md:bottom-6 max-md:grid max-md:grid-cols-2 md:top-[11.25rem]">
+        <div data-meta data-hero-fade className="absolute left-[var(--gutter)] z-30 flex flex-wrap gap-3 max-md:right-[var(--gutter)] max-md:bottom-6 max-md:grid max-md:grid-cols-2 md:top-[11.25rem]">
           <ShimmerButton
             onClick={go('lab')}
             background="#2B0F3A"
@@ -127,7 +125,7 @@ export function Hero() {
           </motion.a>
         </div>
 
-      <p data-meta className="label absolute right-[var(--gutter)] bottom-8 z-30 text-paper max-md:hidden">
+      <p data-meta data-hero-fade className="label absolute right-[var(--gutter)] bottom-8 z-30 text-paper max-md:hidden">
         {t.hero.scroll}
       </p>
     </section>

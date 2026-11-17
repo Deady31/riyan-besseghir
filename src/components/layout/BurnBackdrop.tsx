@@ -57,12 +57,17 @@ const zone = (kind: number, tone: string, a: string, b: string, dark = false, sc
 // Deux mondes seulement : le papier crème (calme) et la nuit prune (rythme). Plus d'images de fond.
 const CREAM = '#FFF6E5'
 const PLUM = '#2B0F3A'
+const LILAC = '#D8C8FF'
+const ROSE = '#FFC4E6'
+const VIOLET = '#5A22D6'
+const WINE = '#6B2A6E'
 const ZONES: Record<string, Zone> = {
-  default: zone(PAPER, CREAM, CREAM, CREAM),
-  top: zone(PAPER, CREAM, CREAM, CREAM),
-  morph: zone(NIGHT, PLUM, PLUM, PLUM, true),
-  ia: zone(NIGHT, PLUM, PLUM, PLUM, true),
-  contact: zone(NIGHT, PLUM, PLUM, PLUM, true),
+  // Fond vivant mais dans la charte : de larges nuages lilas et roses qui dérivent sur la crème, violet profond sur la prune.
+  default: zone(PAPER, CREAM, LILAC, ROSE),
+  top: zone(PAPER, CREAM, LILAC, ROSE),
+  morph: zone(NIGHT, PLUM, VIOLET, WINE, true),
+  ia: zone(NIGHT, PLUM, VIOLET, WINE, true),
+  contact: zone(NIGHT, PLUM, VIOLET, WINE, true),
 }
 
 const N = 12
@@ -118,17 +123,12 @@ float fbm(vec2 p) {
 
 // ---------------------------------------------------------------- papier
 vec3 paperW(vec2 p, float docY, float t, vec3 tone, vec3 a, vec3 b) {
-  return tone;
   vec3 col = tone;
   vec2 q = vec2(p.x / (0.8 * uView.x + 420.0), docY * 0.35 / (0.95 * uView.y + 300.0));
   float f1 = fbm(q * 1.5 + vec2(t * 0.018, -t * 0.012));
   float f2 = fbm(q * 1.5 + vec2(9.0 - t * 0.014, 4.0 + t * 0.01));
-  col = mix(col, a, smoothstep(0.5, 0.82, f1) * 0.34);
-  col = mix(col, b, smoothstep(0.54, 0.86, f2) * 0.26);
-  vec2 g = vec2(p.x, p.y + uScroll * 0.7) / 26.0;
-  float dotMask = smoothstep(0.52, 0.74, fbm(q * 2.2 + 21.0));
-  float dotShape = smoothstep(0.17, 0.1, length(fract(g) - 0.5));
-  col = mix(col, vec3(0.125, 0.13, 0.12), dotShape * dotMask * 0.2);
+  col = mix(col, a, smoothstep(0.45, 0.8, f1) * 0.6);
+  col = mix(col, b, smoothstep(0.5, 0.84, f2) * 0.5);
   return col;
 }
 
@@ -181,7 +181,6 @@ float starLayer(vec2 p, float docY, float cell, float par, float t, float thresh
   return (core + cross * 0.9) * step(thresh, h) * tw;
 }
 vec3 nightW(vec2 p, float docY, float t, vec3 tone, vec3 a, vec3 b) {
-  return tone;
   vec3 col = tone;
   vec2 q = vec2(p.x / (0.9 * uView.x + 300.0), docY * 0.14 / (0.9 * uView.y + 300.0));
   float n1 = fbm(q * 1.6 + vec2(t * 0.01, 4.0));
