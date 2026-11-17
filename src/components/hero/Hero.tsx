@@ -15,6 +15,9 @@ export function Hero() {
   const lenis = useLenis()
   const t = useT()
   const PROFILE = useContent().profile
+  // « AI Product Manager. Je fais passer… » : le rôle passe en grand, la suite reste en texte courant.
+  const [heroRole, ...heroTail] = t.hero.statement.split('. ')
+  const heroRest = heroTail.join('. ')
   useGSAP(
     () => {
       if (prefersReducedMotion()) return
@@ -69,11 +72,13 @@ export function Hero() {
 
       {/* Couche 1 : le nom. */}
       <div data-name-wrap data-hero-fade className="absolute inset-x-0 bottom-0 z-10 px-[var(--gutter)] pb-[clamp(5.5rem,11vh,7.5rem)] max-md:pb-[5.25rem]">
-        <p data-statement className="max-w-[28rem] text-[clamp(1.05rem,0.9rem+0.7vw,1.5rem)] leading-[1.25] font-medium tracking-[-0.01em] text-paper">
-          {t.hero.statement}
+        <p data-statement className="max-w-[36rem] text-[clamp(1.05rem,0.9rem+0.7vw,1.5rem)] leading-[1.25] font-medium tracking-[-0.01em] text-paper">
+          <span className="block text-[clamp(1.9rem,1.1rem+2.8vw,3.6rem)] leading-[1.02] font-bold tracking-[-0.035em]">{heroRole}</span>
+          <span className="mt-2 block">{heroRest}</span>
         </p>
         <p
           data-name
+          data-solid
           aria-hidden="true"
           className="display brand-name mt-6 text-[clamp(2.4rem,13.4vw,4rem)] md:mt-8 md:text-[clamp(3.6rem,1rem+12.2vw,14rem)]"
         >
@@ -90,8 +95,8 @@ export function Hero() {
       {/* Couche 3 : informations et boutons, toujours lisibles. */}
       <div data-hero-fade className="absolute inset-x-0 top-0 z-30 px-[var(--gutter)] pt-24 md:pt-28">
         <div className="label flex flex-wrap items-center gap-x-6 gap-y-2 text-mist">
-          <p data-meta className="flex items-center gap-2 text-paper">
-            <span className="size-2 rounded-full bg-vermilion" aria-hidden="true" />
+          <p data-meta className="flex items-center gap-2.5 !text-[clamp(0.95rem,0.85rem+0.4vw,1.2rem)] font-semibold !tracking-normal !normal-case text-paper">
+            <span className="size-2.5 rounded-full bg-vermilion" aria-hidden="true" />
             {PROFILE.availability}
           </p>
           <p data-meta>

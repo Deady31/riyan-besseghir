@@ -19,7 +19,7 @@ const fr = {
   deck: {
     label: 'Le deck',
     title: ['Swipe mes projets. ', 'MIAM', ' ou BOF ?'] as Title,
-    intro: 'Le principe de FOODER, appliqué à mon travail. À droite, tu gardes. À gauche, tu passes. Touche une carte pour ouvrir sa fiche.',
+    intro: 'FOODER, mon appli, fait swiper des restos (MIAM ou BOF). Même principe ici, appliqué à mes projets : à droite, tu gardes ; à gauche, tu passes. Touche une carte pour ouvrir sa fiche.',
     like: 'MIAM',
     nope: 'BOF',
     likeAria: (t: string) => `Garder ${t}`,
@@ -29,13 +29,13 @@ const fr = {
     done: 'Paquet terminé !',
     restart: 'Rejouer le paquet',
     afk: 'Bon… on rejoue ?',
-    hint: 'Glisse la carte, ou utilise ← →',
+    hint: 'Glisse la carte, ou utilise ← → · les 39 projets sont dans l’index, plus bas',
     count: (i: number, n: number) => `${i} / ${n}`,
   },
   morph: {
     aria: 'Chiffre clé',
     sr: '39 projets construits.',
-    line1: 'projets construits, de l’idée au truc qui tourne.',
+    line1: 'projets construits, de l’idée au produit livré.',
     line2: 'Agents IA, apps grand public, jeux, outils : chacun est une carte à collectionner, plus bas.',
   },
   demo: {
@@ -69,7 +69,7 @@ const fr = {
     title: ['Je construis. ', 'Je le raconte', ' tout haut.'] as Title,
     intro: 'Tout ce que je construis mérite d’être expliqué : pourquoi ça existe, comment ça marche, ce que j’ai décidé. Mon cap : le startup building, passer d’une idée à un produit que des gens utilisent.',
     pillars: {
-      build: { tag: 'Construire', title: (n: number) => `${n} projets`, text: 'de l’idée au truc qui tourne : IA, apps grand public, jeux, outils.' },
+      build: { tag: 'Construire', title: (n: number) => `${n} projets`, text: 'de l’idée au produit livré : IA, apps grand public, jeux, outils.' },
       document: { tag: 'Documenter', title: (n: number) => `${n} fiches`, text: 'une page par projet : pourquoi, comment, décisions, preuves. Rien d’inventé : ce qui n’est pas trouvé n’est pas écrit.' },
       share: { tag: 'Partager', title: 'En public', text: 'Le code et les démos sont ouverts quand c’est possible, pour qu’on juge sur pièces.' },
     },
@@ -186,7 +186,7 @@ const en: UI = {
   deck: {
     label: 'The deck',
     title: ['Swipe my projects. ', 'YUM', ' or MEH?'] as Title,
-    intro: 'The FOODER mechanic, applied to my work. Right to keep, left to pass. Tap a card to open it.',
+    intro: 'FOODER, my app, lets you swipe restaurants (YUM or MEH). Same idea here, applied to my projects: right to keep, left to pass. Tap a card to open it.',
     like: 'YUM',
     nope: 'MEH',
     likeAria: (t: string) => `Keep ${t}`,
@@ -196,13 +196,13 @@ const en: UI = {
     done: 'Deck finished!',
     restart: 'Play again',
     afk: 'So… again?',
-    hint: 'Drag the card, or use ← →',
+    hint: 'Drag the card, or use ← → · all 39 projects are in the index below',
     count: (i: number, n: number) => `${i} / ${n}`,
   },
   morph: {
     aria: 'Key figure',
     sr: '39 projects built.',
-    line1: 'projects built, from idea to something that runs.',
+    line1: 'projects built, from idea to shipped product.',
     line2: 'AI agents, consumer apps, games, tools: each one is a collectible card, further down.',
   },
   demo: {

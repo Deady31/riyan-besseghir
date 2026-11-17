@@ -310,6 +310,17 @@ function ModelAsset({ url }: { url: string }) {
   )
 }
 
+/** Les éléments « pleins » de la page (photo, nom) : un objet lancé rebondit dessus. Mesurés au plus toutes les 250 ms. */
+let solidRects: DOMRect[] = []
+let solidsAt = 0
+function solids(now: number) {
+  if (now - solidsAt > 250) {
+    solidsAt = now
+    solidRects = [...document.querySelectorAll('[data-solid]')].map((e) => e.getBoundingClientRect()).filter((r) => r.width > 4 && r.bottom > 0 && r.top < innerHeight)
+  }
+  return solidRects
+}
+
 /** Une forme accrochée à un élément du DOM, avec un corps physique : on peut l'attraper, la lancer, la pousser (lib/toys.ts). */
 function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; seed: number; front: boolean }) {
   const shared = useContext(SharedCtx)!
@@ -475,6 +486,40 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
             const push = (min - dist) / min
             b.vx += (ddx / dist) * push * 1100 * k
             b.vy += (ddy / dist) * push * 1100 * k
+          }
+        }
+      }
+      // Rebond sur les éléments pleins (seulement quand l'objet est en mouvement : à l'arrêt il reste chez lui).
+      if (!b.held && Math.hypot(b.vx, b.vy) > 40) {
+        for (const r of solids(performance.now())) {
+          const rad = b.r * 0.7
+          const nx0 = Math.max(r.left, Math.min(sx, r.right))
+          const ny0 = Math.max(r.top, Math.min(sy, r.bottom))
+          let ex = sx - nx0
+          let ey = sy - ny0
+          let d = Math.hypot(ex, ey)
+          if (d >= rad) continue
+          if (d < 0.5) {
+            // centre à l'intérieur : on sort par le bord le plus proche
+            const gaps = [sx - r.left, r.right - sx, sy - r.top, r.bottom - sy]
+            const m = Math.min(...gaps)
+            ex = m === gaps[0] ? -1 : m === gaps[1] ? 1 : 0
+            ey = m === gaps[2] ? -1 : m === gaps[3] ? 1 : 0
+            d = 0
+          } else {
+            ex /= d
+            ey /= d
+          }
+          const pen = rad - d
+          b.dx += ex * pen
+          b.dy += ey * pen
+          sx += ex * pen
+          sy += ey * pen
+          const vn = b.vx * ex + b.vy * ey
+          if (vn < 0) {
+            b.vx -= 1.7 * vn * ex
+            b.vy -= 1.7 * vn * ey
+            b.sqv += 3
           }
         }
       }

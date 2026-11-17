@@ -74,7 +74,7 @@ export function Feats() {
         </ul>
       </div>
 
-      <figure data-photo className="relative mx-[var(--gutter)] aspect-[4/5] overflow-hidden rounded-[clamp(36px,5vw,72px)] md:aspect-[16/9]">
+      <figure data-photo className="relative mx-[var(--gutter)] aspect-[5/4] overflow-hidden rounded-[clamp(36px,5vw,72px)] md:mx-auto md:aspect-[16/9] md:w-[min(calc(100%-2*var(--gutter)),calc(66svh*16/9))]">
         <img src={hackathon.photo} alt={t.feats.photoAlt} className="size-full object-cover object-[50%_32%]" width={1600} height={1720} loading="lazy" />
         <figcaption className="label absolute inset-x-0 bottom-0 flex justify-between gap-4 bg-gradient-to-t from-black/70 to-transparent p-6 text-white md:p-10">
           <span>{hackathon.event}</span>

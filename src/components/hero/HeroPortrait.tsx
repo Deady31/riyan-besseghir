@@ -12,6 +12,7 @@ export function HeroPortrait() {
       className="pointer-events-none absolute top-[4.75rem] right-[7%] z-[5] h-[calc(78%-4.75rem)] w-[34%] max-md:top-36 max-md:right-3 max-md:left-[16%] max-md:h-[36%] max-md:w-auto"
     >
       <div
+        data-solid
         className="sticker-in absolute top-[2%] left-1/2 aspect-[900/1059] h-[92%] -translate-x-1/2"
         style={{ maskImage: 'linear-gradient(to bottom, #000 82%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, #000 82%, transparent 100%)' }}
       >

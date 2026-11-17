@@ -14,7 +14,6 @@ import { ProjectPage } from './components/project/ProjectPage'
 import ClickSpark from './components/vendor/reactbits/ClickSpark'
 import { PaperBackground } from './components/layout/PaperBackground'
 import { BurnBackdrop } from './components/layout/BurnBackdrop'
-import { Chapters } from './components/layout/Chapters'
 import { HandCursor, HandPreview } from './components/cursor/HandCursor'
 import { BurstCanvas } from './components/fx/BurstCanvas'
 import { ToyHint } from './components/fx/ToyHint'
@@ -63,6 +62,16 @@ function Home() {
     return () => cancelAnimationFrame(id)
   }, [lang])
 
+  // Tout lien vers une fiche projet mémorise la position : au retour on retrouve la page là où on l'a quittée.
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as Element | null)?.closest?.('a[href^="/projets/"]')
+      if (a) sessionStorage.setItem('homeY', String(window.scrollY))
+    }
+    document.addEventListener('click', onClick, true)
+    return () => document.removeEventListener('click', onClick, true)
+  }, [])
+
   useEffect(() => {
     if (!mounted && pending.current) return
     const target = sessionStorage.getItem('scrollTo')
@@ -82,7 +91,6 @@ function Home() {
 
   return (
     <>
-    <Chapters />
     <main key={lang} className="[overflow-x:clip]">
       <Hero />
       <MorphMoment />

@@ -106,7 +106,7 @@ export function SwipeDeck() {
       }
       paintStamps(dir * THRESHOLD)
       gsap.to(el, {
-        x: dir * window.innerWidth * 0.9,
+        x: dir * (window.innerWidth * 0.62 + 360),
         y: '+=40',
         rotation: dir * 28,
         duration: 0.45,
@@ -162,7 +162,7 @@ export function SwipeDeck() {
 
       <div className="flex flex-col items-center gap-12">
         <div
-          className="relative mx-auto aspect-[4/5] w-full max-w-[440px]"
+          className="relative mx-auto aspect-[4/5] w-full max-w-[min(560px,92vw)]"
           role="group"
           aria-roledescription="deck"
           aria-label={done ? t.deck.done : t.deck.count(index + 1, deck.length)}

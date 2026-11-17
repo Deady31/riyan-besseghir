@@ -18,7 +18,7 @@ export const STORIES: Record<string, Pair> = {
   'chatbot-cv': {
     fr: {
       period: '10 → 22 sept. 2026',
-      why: `Un CV en PDF ne répond pas aux questions d'un recruteur. Je voulais qu'il puisse les poser directement et obtenir des réponses sourcées, dites comme je les dirais.`,
+      why: `Un CV en PDF ne répond pas aux questions d'un recruteur. Je voulais qu'il puisse les poser directement et obtenir des réponses sourcées, formulées comme je les formulerais moi-même.`,
       how: [
         `Le recruteur pose sa question dans le chat.`,
         `Elle est comparée à ma base de connaissance (9 fichiers vectorisés dans Supabase pgvector) et les 7 passages les plus proches sont retrouvés.`,
