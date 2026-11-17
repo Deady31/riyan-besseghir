@@ -16,6 +16,7 @@ import { ShotFrame } from '../ui/ShotFrame'
 import { cn } from '../../lib/cn'
 import { Anchor } from '../three/Anchor'
 import { PhoneStage } from './PhoneStage'
+import { PhoneMock } from './PhoneMock'
 import { LIVE } from '../../data/live'
 import { phoneStage } from '../../lib/phoneStage'
 
@@ -178,6 +179,7 @@ export function ProjectPage() {
                 data-cursor="tap"
                 className="relative block aspect-[4/5] w-full cursor-pointer rounded-[48px] lg:aspect-square"
               >
+                <PhoneMock screen={live.screen} />
                 <Anchor kind="phone" layer="front" screen={live.screen} className="inset-0 w-full" par={0} />
               </button>
               {/* L'étiquette est HORS de la zone du téléphone : la 3D est dessinée par-dessus la page et la masquerait. */}

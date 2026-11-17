@@ -6,6 +6,7 @@ import { TitleParts, useT } from '../../i18n/useT'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Anchor } from '../three/Anchor'
 import { PhoneStage } from '../project/PhoneStage'
+import { PhoneMock } from '../project/PhoneMock'
 
 /**
  * Juste avant Méca-Riyan (section IA) : la vraie appli FOODER, jouable dans le téléphone 3D.
@@ -49,6 +50,7 @@ export function FooderDemo() {
             data-cursor="tap"
             className="relative block aspect-[4/5] w-full cursor-pointer rounded-[48px] lg:aspect-square"
           >
+            <PhoneMock screen={live.screen} />
             <Anchor kind="phone" layer="front" screen={live.screen} className="inset-0 w-full" par={0} />
           </button>
           {/* L'étiquette est HORS de la zone du téléphone : la 3D est dessinée par-dessus la page et la masquerait. */}

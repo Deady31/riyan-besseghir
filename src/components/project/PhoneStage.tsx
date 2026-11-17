@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { X } from 'lucide-react'
-import { phoneStage, usePhoneOpen } from '../../lib/phoneStage'
+import { phoneStage, usePhoneOpen, usePhoneRendered } from '../../lib/phoneStage'
 import { useLenis } from '../../lib/SmoothScroll'
 import { cn } from '../../lib/cn'
+import { useT } from '../../i18n/useT'
 
 /**
  * Scène plein écran du téléphone : le modèle 3D (calque avant) se centre et grandit, puis l'appli réelle
@@ -14,6 +15,9 @@ const SCREEN_RADIUS = 0.115 / 2.05
 
 export function PhoneStage({ url, title, closeLabel }: { url: string; title: string; closeLabel: string }) {
   const open = usePhoneOpen()
+  const t = useT()
+  // Sans téléphone 3D (WebGL absent, perdu, lent) : l'appli s'ouvre directement dans un cadre téléphone en 2D.
+  const rendered3D = usePhoneRendered()
   const lenis = useLenis()
   const [ready, setReady] = useState(false)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -28,8 +32,10 @@ export function PhoneStage({ url, title, closeLabel }: { url: string; title: str
     closeRef.current?.focus()
     lenis?.stop()
     let raf = 0
+    const started = performance.now()
     const poll = () => {
-      if (phoneStage.state.t > 0.97) setReady(true)
+      // Le téléphone 3D est en place, ou il n'existe pas / tarde trop (1,8 s) : on affiche l'appli.
+      if (phoneStage.state.t > 0.97 || (!phoneStage.state.rendered && performance.now() - started > 150) || performance.now() - started > 1800) setReady(true)
       else raf = requestAnimationFrame(poll)
     }
     poll()
@@ -72,9 +78,18 @@ export function PhoneStage({ url, title, closeLabel }: { url: string; title: str
         >
           <X className="size-5" aria-hidden="true" />
         </button>
+        {/* Repli si le navigateur bloque l'affichage intégré (cookies tiers, mode strict…) : l'appli s'ouvre dans un onglet. */}
+        <a
+          href={url}
+          target="_blank"
+          rel="noreferrer"
+          className="pop fixed top-[4.9rem] right-[4.75rem] z-[60] inline-flex h-12 items-center rounded-full bg-paper px-4 text-xs font-semibold tracking-[0.06em] whitespace-nowrap text-ink uppercase max-md:top-auto max-md:right-4 max-md:bottom-3"
+        >
+          {t.project.openAlone} ↗
+        </a>
       {ready && (
         <div
-          className="fixed top-1/2 left-1/2 z-[50] -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-white"
+          className={cn('fixed top-1/2 left-1/2 z-[50] -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-white', !rendered3D && 'shadow-[0_0_0_clamp(8px,1.5svh,14px)_#1b1b1f,0_0_0_clamp(10px,1.8svh,17px)_#b9bcc4,0_24px_60px_rgba(0,0,0,0.5)]')}
           style={{
             width: `calc(${side} * ${SCREEN_W})`,
             height: `calc(${side} * ${SCREEN_H})`,

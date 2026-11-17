@@ -207,6 +207,11 @@ function PhoneModel({ screen }: { screen: string }) {
       alive = false
     }
   }, [screen])
+  // Le modèle est monté : le repli 2D peut s'effacer. Démonté (ou contexte perdu) : le repli revient.
+  useEffect(() => {
+    phoneStage.setRendered(true)
+    return () => phoneStage.setRendered(false)
+  }, [])
   const parts = useMemo(() => {
     const out: Record<string, THREE.BufferGeometry> = {}
     scene.traverse((o) => {
@@ -740,7 +745,10 @@ export default function SiteScene({ layer = 'back' }: { layer?: 'back' | 'front'
         style={{ pointerEvents: 'none' }}
         onCreated={({ gl }) => {
           // Si le navigateur reprend le contexte WebGL (économie d'énergie, onglet en arrière-plan), on le laisse se rétablir.
-          gl.domElement.addEventListener('webglcontextlost', (e) => e.preventDefault())
+          gl.domElement.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault()
+            if (layer === 'front') phoneStage.setRendered(false)
+          })
         }}
       >
         <Scene reduced={reduced} layer={layer} mobile={mobile} />
