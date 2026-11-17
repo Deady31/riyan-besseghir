@@ -96,9 +96,6 @@ export function HandSprites() {
         <g id="h-thumb-point">
           <ellipse cx="32" cy="64" rx="12" ry="7.2" transform="rotate(-24 32 64)" />
         </g>
-        <g id="h-thumb-fist">
-          <rect x="24" y="57" width="36" height="15" rx="7.5" transform="rotate(-9 42 64)" />
-        </g>
       </defs>
 
       <g data-s="idle">
@@ -131,8 +128,8 @@ export function HandSprites() {
 
       <g data-s="fist">
         <Lift id="h-fist" />
+        {/* Poing fermé : le pouce est replié à l'intérieur, on ne le voit pas. */}
         <Outlined id="h-fist" />
-        <Outlined id="h-thumb-fist" />
         <Cuff />
         <ellipse cx="36" cy="49" rx="9" ry="3.6" fill="#fff" opacity=".8" />
         <circle cx="48" cy="44" r="2.2" fill="#fff" opacity=".9" />
