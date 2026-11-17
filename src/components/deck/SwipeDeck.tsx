@@ -10,7 +10,8 @@ import { cn } from '../../lib/cn'
 import { Anchor } from '../three/Anchor'
 import { AfkSkater } from './AfkSkater'
 
-const DECK_IDS = ['fooder', 'chatbot-cv', 'finger', 'departs', 'lio', 'one-piece', 'derniere-note', 'ps2-skater'] as const
+// Trois cartes seulement : on arrive vite au paquet vide et à son animation.
+const DECK_IDS = ['chatbot-cv', 'fooder', 'finger'] as const
 
 /** Fond de carte par projet : la palette pop tourne pour que chaque carte ait sa couleur. */
 // pas de citron en grand aplat (illisible) : il reste sur les stickers et petits boutons

@@ -1,3 +1,4 @@
+import { FooderDemo } from './components/sections/FooderDemo'
 import { lazy, Suspense, useEffect } from 'react'
 import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router'
 import { SmoothScroll, scrollToId, useLenis } from './lib/SmoothScroll'
@@ -69,6 +70,7 @@ function Home() {
       <Impact />
       <Feats />
       <Studio />
+      <FooderDemo />
       <AiSpotlight />
       <ProjectIndex />
       <About />

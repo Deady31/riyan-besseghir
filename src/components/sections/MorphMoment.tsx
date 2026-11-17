@@ -6,63 +6,47 @@ import { Anchor } from '../three/Anchor'
 import { DepthField } from '../fx/DepthField'
 
 /**
- * Le chiffre clé s'ouvre en fondu net, puis « se fait swiper » : chaque chiffre est une carte du deck,
- * le premier part à gauche (BOF), le dernier à droite (MIAM), avec le tampon qui apparaît et le chiffre qui se floute.
+ * Le chiffre clé, façon tag de rue : il défile de 0 à 39 en entrant, pendant que son relief (deux calques décalés,
+ * violet puis rose) s'épaissit derrière lui ; à la sortie, il fonce vers l'écran et le traverse.
  */
 export function MorphMoment() {
   const root = useRef<HTMLElement>(null)
   const t = useT()
-  const digits = String(PROJECTS.length).split('')
+  const total = PROJECTS.length
 
   useGSAP(
     () => {
       if (prefersReducedMotion()) return
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: root.current, start: 'top 40%', end: 'bottom bottom', scrub: true },
-      })
-      gsap.fromTo(
-        '[data-big]',
-        { scale: 0.55, opacity: 0, filter: 'blur(24px)' },
-        {
-          scale: 1,
-          opacity: 1,
-          filter: 'blur(0px)',
-          ease: 'power2.out',
-          scrollTrigger: { trigger: root.current, start: 'top 85%', end: 'top 15%', scrub: true },
-        },
-      )
+      const glyphs = gsap.utils.toArray<HTMLElement>('[data-count]')
+      const counter = { n: 0 }
+      const paint = () => glyphs.forEach((g) => (g.textContent = String(Math.round(counter.n))))
+      paint()
 
-      // Sortie : les chiffres partent chacun de leur côté comme deux cartes balancées d'un geste.
-      const exit = gsap.timeline({
-        scrollTrigger: { trigger: root.current, start: 'bottom 160%', end: 'bottom 105%', scrub: true },
-      })
-      gsap.utils.toArray<HTMLElement>('[data-digit]').forEach((el, i, all) => {
-        const dir = i < all.length / 2 ? -1 : 1
-        exit.to(
-          el,
-          {
-            xPercent: dir * 190,
-            yPercent: 18,
-            rotation: dir * 24,
-            scale: 1.1,
-            ease: 'power2.in',
-          },
-          0,
-        )
-        exit.to(el.querySelector('[data-glyph]'), { opacity: 0, filter: 'blur(16px)', ease: 'power2.in', duration: 0.55 }, 0.45)
-        exit.fromTo(
-          el.querySelector('[data-stamp]'),
-          { opacity: 0, scale: 0.6 },
-          { opacity: 1, scale: 1, ease: 'back.out(2)', duration: 0.35 },
-          0.05,
-        )
-        exit.to(el.querySelector('[data-stamp]'), { opacity: 0, duration: 0.25 }, 0.85)
-      })
-      exit.to('[data-caption]', { opacity: 0, y: 40, ease: 'power1.in', duration: 0.6 }, 0)
+      // Entrée : le compteur monte, le chiffre se redresse et son relief s'épaissit.
+      const enter = gsap.timeline({ scrollTrigger: { trigger: root.current, start: 'top 80%', end: 'top 5%', scrub: 0.6 } })
+      enter
+        .fromTo('[data-big]', { scale: 0.6, rotation: -8, opacity: 0 }, { scale: 1, rotation: -3, opacity: 1, ease: 'back.out(1.6)', duration: 1 }, 0)
+        .to(counter, { n: total, ease: 'power2.out', duration: 1, onUpdate: paint }, 0)
+        .fromTo('[data-layer="1"]', { x: 0, y: 0 }, { x: 14, y: 14, ease: 'power2.out', duration: 1 }, 0.1)
+        .fromTo('[data-layer="2"]', { x: 0, y: 0 }, { x: 28, y: 28, ease: 'power2.out', duration: 1 }, 0.2)
+        .fromTo('[data-caption]', { opacity: 0, y: 30 }, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.5 }, 0.5)
 
-      tl.fromTo('[data-caption]', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.25, ease: 'none' })
+      // Sortie : la légende s'efface d'abord, puis le chiffre fonce vers l'écran et le traverse.
+      const exit = gsap.timeline({ scrollTrigger: { trigger: root.current, start: 'bottom 165%', end: 'bottom 100%', scrub: 0.4 } })
+      exit
+        .to('[data-caption]', { opacity: 0, y: -20, ease: 'power1.in', duration: 0.12 }, 0)
+        .to('[data-big]', { scale: 9, rotation: 4, ease: 'power3.in', duration: 1 }, 0.1)
+        .to('[data-layer="1"]', { x: 40, y: 40, ease: 'power2.in', duration: 1 }, 0.1)
+        .to('[data-layer="2"]', { x: 80, y: 80, ease: 'power2.in', duration: 1 }, 0.1)
+        .to('[data-big]', { opacity: 0, ease: 'none', duration: 0.25 }, 0.85)
     },
-    { scope: root },
+    { scope: root, dependencies: [total] },
+  )
+
+  const layer = (n: string, color: string) => (
+    <span data-layer={n} aria-hidden="true" className="absolute inset-0 will-change-transform" style={{ color, WebkitTextStroke: '6px #2B0F3A' }}>
+      <span data-count>{total}</span>
+    </span>
   )
 
   return (
@@ -72,24 +56,16 @@ export function MorphMoment() {
         <Anchor kind="camera" className="right-[5%] bottom-[10%] w-[17vw] max-md:right-[2%] max-md:bottom-[8%] max-md:w-[32vw]" par={0.2} tilt={0.7} />
         <DepthField />
         <p className="sr-only">{t.morph.sr}</p>
-        <p data-big aria-hidden="true" className="display relative z-10 mb-[6vh] flex text-[clamp(10rem,6rem+22vw,26rem)] leading-none">
-          {digits.map((d, i) => (
-            <span key={i} data-digit className="relative inline-block will-change-transform">
-              <span data-glyph className="inline-block">
-                {d}
-              </span>
-              <span
-                data-stamp
-                className="sticker absolute top-[14%] left-1/2 -translate-x-1/2 rotate-[-8deg] bg-paper text-[clamp(0.9rem,0.5rem+1.4vw,1.6rem)] text-ink opacity-0"
-              >
-                {i < digits.length / 2 ? t.deck.nope : t.deck.like}
-              </span>
-            </span>
-          ))}
+        <p data-big aria-hidden="true" className="display relative z-10 mb-[5vh] text-[clamp(10rem,6rem+22vw,26rem)] leading-none will-change-transform [paint-order:stroke_fill]">
+          {layer('2', '#FF7EC8')}
+          {layer('1', '#6C2BFF')}
+          <span className="relative block text-ink" style={{ color: '#FFF6E5', WebkitTextStroke: '6px #2B0F3A', paintOrder: 'stroke fill' }}>
+            <span data-count>{total}</span>
+          </span>
         </p>
-        <div data-caption className="relative z-10 max-w-xl text-center [text-shadow:0_2px_14px_rgb(5_10_58/0.85)]">
-          <p className="text-[clamp(1.2rem,0.9rem+0.9vw,1.75rem)] leading-snug tracking-[-0.02em]">{t.morph.line1}</p>
-          <p className="mt-3 text-mist">{t.morph.line2}</p>
+        <div data-caption className="relative z-10 max-w-3xl text-center">
+          <p className="text-[clamp(1.6rem,1.1rem+1.8vw,3rem)] leading-[1.1] font-bold tracking-[-0.02em] text-[#FFF6E5]">{t.morph.line1}</p>
+          <p className="mx-auto mt-4 max-w-2xl text-[clamp(1.1rem,0.95rem+0.5vw,1.45rem)] leading-snug font-medium text-[#D8C8FF]">{t.morph.line2}</p>
         </div>
       </div>
     </section>

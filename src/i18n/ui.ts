@@ -38,6 +38,14 @@ const fr = {
     line1: 'projets construits, de l’idée au truc qui tourne.',
     line2: 'Agents IA, apps grand public, jeux, outils : chacun est une carte à collectionner, plus bas.',
   },
+  demo: {
+    label: 'Démo jouable',
+    title: ['Teste-la ici : ', 'swipe des restos', ' pour de vrai.'] as Title,
+    intro: 'FOODER, mon appli la plus aboutie : on swipe des restos comme des profils, MIAM ou BOF. Touche le téléphone : c’est la vraie appli, en mode invité, sans compte.',
+    points: ['Bêta ouverte', 'PWA installable', 'Mode invité, sans compte'],
+    play: 'Tester dans le téléphone',
+    cta: 'Voir la fiche FOODER',
+  },
   impact: {
     label: 'Impact',
     title: ['J’ai conçu et piloté Shippingbo Intelligence, ', 'le bundle IA de Shippingbo.'] as Title,
@@ -194,6 +202,14 @@ const en: UI = {
     sr: '39 projects built.',
     line1: 'projects built, from idea to something that runs.',
     line2: 'AI agents, consumer apps, games, tools: each one is a collectible card, further down.',
+  },
+  demo: {
+    label: 'Playable demo',
+    title: ['Try it here: ', 'swipe restaurants', ' for real.'] as Title,
+    intro: 'FOODER, my most complete app: swipe restaurants like profiles, YUM or MEH. Tap the phone: it is the real app, in guest mode, no account.',
+    points: ['Open beta', 'Installable PWA', 'Guest mode, no account'],
+    play: 'Try it in the phone',
+    cta: 'See the FOODER page',
   },
   impact: {
     label: 'Impact',

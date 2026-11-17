@@ -16,13 +16,9 @@ import { ShotFrame } from '../ui/ShotFrame'
 import { cn } from '../../lib/cn'
 import { Anchor } from '../three/Anchor'
 import { PhoneStage } from './PhoneStage'
+import { LIVE } from '../../data/live'
 import { phoneStage } from '../../lib/phoneStage'
 
-// Projets dont l'appli réelle s'ouvre dans le téléphone 3D (l'appli doit autoriser l'affichage depuis ce site).
-const LIVE: Record<string, { url: string; screen: string }> = {
-  // `/demo` : entrée sans inscription (profil invité local, aucun compte, cloud coupé).
-  fooder: { url: `${import.meta.env.VITE_FOODER_URL ?? 'https://fooder-tawny.vercel.app'}/demo`, screen: '/media/projets/fooder-v2-swipe-mobile.webp' },
-}
 
 const CAT_TONE: Record<string, Tone> = { consumer: 'vermilion', ia: 'cobalt', outils: 'chrome', jeux: 'acid', pm: 'ink', clients: 'chrome' }
 const STEP_TONES: Tone[] = ['paper', 'chrome', 'paper', 'chrome']
