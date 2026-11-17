@@ -9,7 +9,6 @@ import { useOpenProject } from '../../lib/useOpenProject'
 import { cn } from '../../lib/cn'
 import { Anchor } from '../three/Anchor'
 import { motion } from 'motion/react'
-import { ChapterBg } from '../backgrounds/ChapterBg'
 
 type Tile = { id: string; className: string; imgClass?: string; hoverShot?: number }
 
@@ -94,7 +93,6 @@ export function Passions() {
 
   return (
     <section ref={root} id="passions" className="relative isolate [overflow:clip] py-32 md:py-48">
-      <ChapterBg kind="passions" />
       <Anchor kind="gamepad" className="top-[1%] right-[3%] w-[15vw] max-md:w-[30vw]" par={0.2} tilt={0.7} />
       <Anchor kind="psp" className="top-[18%] right-[27%] w-[11vw] max-md:hidden" par={0.25} tilt={0.7} />
       <div className="px-[var(--gutter)]">

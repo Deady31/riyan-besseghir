@@ -1,3 +1,4 @@
+import { WaveField } from './components/backgrounds/WaveField'
 import { FooderDemo } from './components/sections/FooderDemo'
 import { lazy, Suspense, useEffect } from 'react'
 import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router'
@@ -104,6 +105,7 @@ function Shell() {
       <BurstCanvas />
       <ToyHint />
       {webgl && <BurnBackdrop deps={`${lang}${pathname}`} />}
+      {webgl && <WaveField />}
       <ScrollFx deps={`${lang}${pathname}`} />
       <Nav />
       <ClickSpark

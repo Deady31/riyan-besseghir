@@ -9,7 +9,6 @@ import { useT } from '../../i18n/useT'
 import { LiveClock } from '../ui/LiveClock'
 import { Anchor } from '../three/Anchor'
 import { HeroPortrait } from './HeroPortrait'
-import { ChapterBg } from '../backgrounds/ChapterBg'
 
 export function Hero() {
   const root = useRef<HTMLElement>(null)
@@ -35,12 +34,7 @@ export function Hero() {
         .from(name.chars, { yPercent: 60, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.03 }, 0.2)
         .from('[data-meta]', { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out', stagger: 0.07 }, 0.8)
 
-      // Sortie épurée : la grille de points s'efface, le bloc et le portrait remontent doucement.
-      gsap.to('[data-chapter-bg="top"]', {
-        opacity: 0,
-        ease: 'none',
-        scrollTrigger: { trigger: root.current, start: 'top top', end: '+=35%', scrub: true },
-      })
+      // Sortie épurée : le bloc et le portrait remontent doucement.
       gsap.to('[data-slab]', {
         yPercent: -10,
         ease: 'none',
@@ -66,7 +60,6 @@ export function Hero() {
 
   return (
     <section ref={root} id="top" className="relative isolate z-[25] h-[100svh] min-h-[680px] overflow-hidden" aria-label={t.hero.aria}>
-      <ChapterBg kind="top" />
       <h1 className="sr-only">
         {PROFILE.name}, {PROFILE.role}
       </h1>

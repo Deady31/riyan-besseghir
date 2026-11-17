@@ -11,7 +11,6 @@ import { useOpenProject } from '../../lib/useOpenProject'
 import { ChatDemo } from './ChatDemo'
 import { cn } from '../../lib/cn'
 import { Anchor } from '../three/Anchor'
-import { ChapterBg } from '../backgrounds/ChapterBg'
 
 function FeatureCard({ project, index, wide }: { project: Project; index: number; wide?: boolean }) {
   const open = useOpenProject()
@@ -107,7 +106,6 @@ export function AiSpotlight() {
 
   return (
     <section ref={root} id="ia" className="theme-dark relative isolate py-32 md:py-48">
-      <ChapterBg kind="ia" />
       <Anchor kind="robot" className="top-[30%] right-[1.5%] w-[12vw] max-md:hidden" par={0.25} tilt={0.7} />
       <Anchor kind="ring" className="bottom-[3%] right-[1.5%] w-[13vw] max-md:hidden" par={0.2} />
       <div className="px-[var(--gutter)]">

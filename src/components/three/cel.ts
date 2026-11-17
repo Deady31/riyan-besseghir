@@ -47,7 +47,10 @@ export function toToon(m: THREE.Material): THREE.Material {
     opacity: src.opacity,
     alphaTest: src.alphaTest,
     side: src.side,
+    // Une matière opaque le reste vraiment : le canal alpha d'une texture ne doit jamais laisser le fond transparaître.
+    depthWrite: !src.transparent,
   })
+  if (!src.transparent) out.blending = THREE.NoBlending
   out.name = m.name
   converted.set(m, out)
   return out

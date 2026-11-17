@@ -6,7 +6,6 @@ import { TitleParts, useT } from '../../i18n/useT'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Anchor } from '../three/Anchor'
 import { PhoneStage } from '../project/PhoneStage'
-import { ChapterBg } from '../backgrounds/ChapterBg'
 
 /**
  * Juste avant Méca-Riyan (section IA) : la vraie appli FOODER, jouable dans le téléphone 3D.
@@ -16,7 +15,6 @@ export function FooderDemo() {
   const live = LIVE.fooder
   return (
     <section id="demo" className="relative isolate px-[var(--gutter)] py-24 md:py-36" aria-label={t.demo.label}>
-      <ChapterBg kind="demo" />
       <PhoneStage url={live.url} title="FOODER" closeLabel={t.project.closePhone} />
       <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
         <div>

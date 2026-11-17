@@ -34,8 +34,8 @@ const LIFE = ['robot', 'earphones', 'mp3', 'vinyl', 'walkman', 'camera', 'reel',
 type LifeKind = (typeof LIFE)[number]
 const LIFE_FILE: Record<LifeKind, string> = {
   robot: 'life-robot.glb', earphones: 'life-earphones.glb', mp3: 'life-mp3.glb', vinyl: 'life-vinyl.glb',
-  walkman: 'life-walkman.glb', camera: 'life-camera.glb', reel: 'life-reel.glb', gamepad: 'life-gamepad.glb',
-  // Chat, haltère et PSP : modèles fournis par Riyan (public/media/3d/user, voir tools/models) ; matières d'origine conservées.
+  walkman: 'life-walkman.glb', camera: 'life-camera.glb', reel: 'life-reel.glb', gamepad: 'user/ps2-controller.glb',
+  // Chat, haltère, PSP et manette PS2 : modèles fournis par Riyan (public/media/3d/user, voir tools/models) ; matières d'origine conservées.
   cat: 'user/lucky-cat.glb', dumbbell: 'user/gym-dumbbell.glb', stopwatch: 'life-stopwatch.glb', puffy: 'life-star.glb',
   psp: 'user/sony-psp.glb',
 }

@@ -12,6 +12,12 @@
     "triangles": 26256
   },
   {
+    "name": "ps2-controller",
+    "file": "ps2-controller.glb",
+    "kb": 40,
+    "triangles": 1028
+  },
+  {
     "name": "sony-psp",
     "file": "sony-psp.glb",
     "kb": 185,

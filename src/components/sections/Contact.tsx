@@ -7,7 +7,6 @@ import { RevealText } from '../ui/RevealText'
 import { LiveClock } from '../ui/LiveClock'
 import { ShimmerButton } from '../vendor/magicui/shimmer-button'
 import { Anchor } from '../three/Anchor'
-import { ChapterBg } from '../backgrounds/ChapterBg'
 
 export function Contact() {
   const t = useT()
@@ -32,7 +31,6 @@ export function Contact() {
 
   return (
     <section id="contact" className="theme-dark relative isolate px-[var(--gutter)] pt-32 pb-6 md:pt-44">
-      <ChapterBg kind="contact" />
       <Anchor kind="robot" className="top-[8%] left-[6%] w-[11vw] max-md:hidden" par={0.25} tilt={0.7} />
       {/* Grand panneau cobalt arrondi : le seul aplat coloré plein du site, pour marquer la fin. */}
       <div className="theme-light relative isolate overflow-hidden rounded-[clamp(36px,5vw,72px)] bg-signal px-[clamp(1.5rem,5vw,5rem)] py-[clamp(3rem,8vw,7rem)] text-ink">

@@ -4,7 +4,6 @@ import { useT } from '../../i18n/useT'
 import { PROJECTS } from '../../data/projects'
 import { Anchor } from '../three/Anchor'
 import { DepthField } from '../fx/DepthField'
-import { ChapterBg } from '../backgrounds/ChapterBg'
 
 /**
  * Le chiffre clé, façon tag de rue : il défile de 0 à 39 en entrant, pendant que son relief (deux calques décalés,
@@ -53,7 +52,6 @@ export function MorphMoment() {
   return (
     <section ref={root} id="morph" className="theme-dark relative -mb-[30vh] h-[190vh] [overflow-x:clip]" aria-label={t.morph.aria}>
       <div className="sticky top-0 isolate flex h-[100svh] flex-col items-center justify-center px-[var(--gutter)]">
-        <ChapterBg kind="morph" soft={false} />
         <Anchor kind="reel" className="top-[7%] left-[3%] w-[21vw] max-md:top-[6%] max-md:w-[36vw]" par={0.1} tilt={0.7} />
         <Anchor kind="camera" className="right-[5%] bottom-[10%] w-[17vw] max-md:right-[2%] max-md:bottom-[8%] max-md:w-[32vw]" par={0.2} tilt={0.7} />
         <DepthField />

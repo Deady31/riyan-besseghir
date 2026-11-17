@@ -11,7 +11,6 @@ import { BigTile } from '../ui/BigTile'
 import { Counter } from '../ui/Counter'
 import { Anchor } from '../three/Anchor'
 import { GithubIcon, LinkedinIcon } from '../ui/BrandIcons'
-import { ChapterBg } from '../backgrounds/ChapterBg'
 
 const rise = {
   initial: { opacity: 0, y: 48 },
@@ -40,7 +39,6 @@ export function Studio() {
 
   return (
     <section id="studio" className="relative isolate px-[var(--gutter)] py-32 md:py-48" aria-labelledby="studio-title">
-      <ChapterBg kind="studio" />
       <Anchor kind="star-cobalt" className="top-[3%] right-[4%] w-[12vw] max-md:w-[24vw]" par={0.2} tilt={0.8} />
       <Anchor kind="capsule" className="bottom-[2%] left-[46%] w-[8vw] max-md:hidden" par={0.25} />
       <SectionHeading index="03" label={s.label} title={<TitleParts parts={s.title} />} intro={s.intro} />

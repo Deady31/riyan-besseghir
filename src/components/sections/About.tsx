@@ -3,7 +3,6 @@ import { gsap, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Anchor } from '../three/Anchor'
 import { TitleParts, useT } from '../../i18n/useT'
-import { ChapterBg } from '../backgrounds/ChapterBg'
 
 export function About() {
   const root = useRef<HTMLElement>(null)
@@ -37,7 +36,6 @@ export function About() {
 
   return (
     <section ref={root} id="about" className="relative isolate px-[var(--gutter)] py-32 md:py-48">
-      <ChapterBg kind="about" />
       <Anchor kind="dumbbell" className="top-[5%] right-[2%] w-[17vw] max-md:w-[32vw]" par={0.15} tilt={0.7} />
       <Anchor kind="torus" className="top-[1%] left-[40%] w-[7vw] max-md:hidden" par={0.25} />
       <SectionHeading index="06" label={a.label} title={<TitleParts parts={a.title} />} />
