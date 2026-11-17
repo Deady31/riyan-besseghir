@@ -40,8 +40,26 @@ for (const p of PROJECTS) {
   writeFileSync(new URL(`projets/${p.id}/index.html`, dist), html)
 }
 
+// Version recruteur : page prérendue (titre, description et texte pour les aperçus de lien et les robots).
+{
+  const title = 'Version recruteur · Riyan Besseghir'
+  const desc = 'Riyan Besseghir, AI Product Manager. Ouvert aux opportunités, CDI ou freelance. Toulouse, Paris, remote. Chiffres, expériences, projets et un agent qui répond aux questions des recruteurs.'
+  const url = `${SITE}/recruteur`
+  const body = `<h1>Riyan Besseghir</h1><p>AI Product Manager. Ouvert aux opportunités · CDI ou freelance. Toulouse · Paris · Remote.</p><p><a href="mailto:riyan.besseghir@gmail.com">riyan.besseghir@gmail.com</a> · <a href="https://www.linkedin.com/in/riyan-besseghir-8514a425b/">LinkedIn</a> · <a href="https://github.com/Deady31">GitHub</a></p><ul>${PROJECTS.slice(0, 6).map((p) => `<li>${esc(p.title)} : ${esc(p.tagline)}</li>`).join('')}</ul><p><a href="/">Portfolio complet</a></p>`
+  const html = template
+    .replace(/<title>.*?<\/title>/s, `<title>${esc(title)}</title>`)
+    .replace(/<meta name="description"[^>]*>/, `<meta name="description" content="${esc(desc)}" />`)
+    .replace(/<meta property="og:title"[^>]*>/, `<meta property="og:title" content="${esc(title)}" />`)
+    .replace(/<meta property="og:description"[^>]*>/, `<meta property="og:description" content="${esc(desc)}" />`)
+    .replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${url}" />`)
+    .replace(/<meta property="og:url"[^>]*>/, `<meta property="og:url" content="${url}" />`)
+    .replace('<div id="root"></div>', `<div id="root"></div>\n<noscript>${body}</noscript>`)
+  mkdirSync(new URL('recruteur/', dist), { recursive: true })
+  writeFileSync(new URL('recruteur/index.html', dist), html)
+}
+
 const today = new Date().toISOString().slice(0, 10)
-const urls = ['/', ...PROJECTS.map((p) => `/projets/${p.id}`)]
+const urls = ['/', '/recruteur', ...PROJECTS.map((p) => `/projets/${p.id}`)]
 writeFileSync(
   new URL('sitemap.xml', dist),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls

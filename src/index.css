@@ -95,6 +95,11 @@ html[data-theme='dark'] .theme-follow {
 }
 
 /* Bulle « Attrape-moi » : petite pastille avec une queue vers l'objet. */
+@media print {
+  .no-print { display: none !important; }
+  body, .bg-ink { background: #fff !important; }
+}
+
 /* Bulle de dialogue d'un objet : posée en haut à gauche (transform piloté par ToyBubbles), la queue pointe vers l'objet. */
 .toy-say {
   position: absolute;

@@ -9,6 +9,7 @@ import { CHAPTERS } from '../../data/chapters'
 import { useActiveChapter } from '../../hooks/useActiveChapter'
 import { useWebGLSupport } from '../../hooks/useWebGLSupport'
 import { LangSwitch } from '../ui/LangSwitch'
+import { setMode } from '../../lib/visitorMode'
 
 const Logo3D = lazy(() => import('./Logo3D'))
 
@@ -183,6 +184,20 @@ export function Nav() {
                     </li>
                   )
                 })}
+                <li className="mt-1 border-t border-paper/15 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpen(false)
+                      setMode('recruiter')
+                      navigate('/recruteur')
+                    }}
+                    className="group flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-left text-[15px] font-semibold text-paper transition-colors hover:bg-[#EADFFF]"
+                  >
+                    <span className="w-6 shrink-0 text-[11px] text-mist">↗</span>
+                    <span className="transition-transform duration-200 group-hover:translate-x-1">{t.nav.recruiter}</span>
+                  </button>
+                </li>
               </motion.ul>
             )}
           </AnimatePresence>
