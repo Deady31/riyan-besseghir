@@ -95,6 +95,46 @@ html[data-theme='dark'] .theme-follow {
 }
 
 /* Bulle « Attrape-moi » : petite pastille avec une queue vers l'objet. */
+/* Bulle de dialogue d'un objet : posée en haut à gauche (transform piloté par ToyBubbles), la queue pointe vers l'objet. */
+.toy-say {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: min(230px, 70vw);
+  padding: 7px 13px;
+  border: 2.5px solid #2b0f3a;
+  border-radius: 18px;
+  background: #fff6e5;
+  box-shadow: 3px 4px 0 #2b0f3a;
+  color: #2b0f3a;
+  font: 700 14px/1.25 var(--font-body);
+  text-align: center;
+  white-space: normal;
+  will-change: transform;
+  animation: say-pop 0.32s var(--ease-spring) both;
+  transition: opacity 0.26s ease;
+}
+.toy-say::after {
+  content: '';
+  position: absolute;
+  left: var(--tail, 50%);
+  bottom: -8px;
+  width: 11px;
+  height: 11px;
+  background: #fff6e5;
+  border-right: 2.5px solid #2b0f3a;
+  border-bottom: 2.5px solid #2b0f3a;
+  transform: translateX(-50%) rotate(45deg);
+}
+.toy-say-out { opacity: 0; }
+@keyframes say-pop {
+  from { opacity: 0; scale: 0.6; }
+  to { opacity: 1; scale: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toy-say { animation: none; }
+}
+
 .toy-hint { animation: hint-pop 0.45s var(--ease-spring) both; }
 .toy-hint::after {
   content: '';

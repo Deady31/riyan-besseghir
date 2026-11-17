@@ -18,6 +18,7 @@ import { Chapters } from './components/layout/Chapters'
 import { HandCursor, HandPreview } from './components/cursor/HandCursor'
 import { BurstCanvas } from './components/fx/BurstCanvas'
 import { ToyHint } from './components/fx/ToyHint'
+import { ToyBubbles } from './components/fx/ToyBubbles'
 import { EggLayer } from './components/eggs/EggLayer'
 const ModelPreview = lazy(() => import('./components/three/ModelPreview').then((m) => ({ default: m.ModelPreview })))
 import { ScrollFx } from './components/night/ScrollFx'
@@ -117,6 +118,7 @@ function Shell() {
       <HandCursor />
       <BurstCanvas />
       <ToyHint />
+      <ToyBubbles />
       {webgl && <BurnBackdrop deps={`${lang}${pathname}`} />}
       {webgl && <WaveField />}
       <ScrollFx deps={`${lang}${pathname}`} />

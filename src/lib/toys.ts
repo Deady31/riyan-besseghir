@@ -15,6 +15,8 @@ import { cursorBus } from './cursorBus'
 export type Body = {
   /** Identifiant d'easter egg si l'objet en est un. */
   tag?: string
+  /** Type d'objet (robot, cat, gamepad…), pour choisir ses répliques. */
+  kind?: string
   front: boolean
   seed: number
   /** Centre affiché à l'écran (px) et rayon de prise. */
@@ -43,6 +45,15 @@ export type Body = {
 }
 
 export const bodies = new Set<Body>()
+
+/** Ce qu'on fait à un objet : on le saisit, on le tape, on le lance. Les bulles de dialogue s'y abonnent. */
+export type ToyEvent = 'grab' | 'tap' | 'throw'
+const toyListeners = new Set<(b: Body, e: ToyEvent) => void>()
+export function onToyEvent(cb: (b: Body, e: ToyEvent) => void) {
+  toyListeners.add(cb)
+  return () => void toyListeners.delete(cb)
+}
+const emitToy = (b: Body, e: ToyEvent) => toyListeners.forEach((l) => l(b, e))
 if (import.meta.env.DEV) (window as unknown as { __toys: Set<Body> }).__toys = bodies
 
 export function createBody(front: boolean, seed: number): Body {
@@ -138,6 +149,7 @@ function begin(b: Body, x: number, y: number, touch: boolean, id: number) {
   burst(x, y, { count: 6, power: 0.45 })
   if (touch) navigator.vibrate?.(8)
   if (b.tag) window.dispatchEvent(new CustomEvent('egg-grab', { detail: b.tag }))
+  emitToy(b, 'grab')
 }
 
 function move(x: number, y: number) {
@@ -183,6 +195,7 @@ function end(x: number, y: number) {
     b.vsx += (Math.random() - 0.5) * 5
     b.sqv += 4.5
     burst(x, y, { count: 18, dirX: nx, dirY: ny })
+    emitToy(b, 'tap')
     return
   }
   // Un lancer : la vitesse vient des derniers 180 ms du geste.
@@ -204,6 +217,7 @@ function end(x: number, y: number) {
   b.vsx = -b.vy * 0.004
   const speed = Math.hypot(b.vx, b.vy)
   if (speed > 500) burst(z.x, z.y, { count: 8, dirX: -b.vx, dirY: -b.vy, power: 0.6 })
+  if (speed > 350) emitToy(b, 'throw')
 }
 
 /** Branche les entrées (souris et tactile). Appelée par chaque scène ; l'écoute n'existe qu'une fois. */

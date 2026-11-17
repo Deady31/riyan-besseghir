@@ -327,6 +327,7 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
     if (isPhone || shared.reduced) return
     const b = createBody(front, seed)
     b.tag = el.dataset.egg
+    b.kind = kind
     body.current = b
     bodies.add(b)
     return () => {
