@@ -166,20 +166,25 @@ export function ProjectPage() {
             </div>
           </div>
           {live ? (
-            <button
-              type="button"
-              onClick={() => phoneStage.setOpen(true)}
-              onPointerEnter={() => phoneStage.setHover(true)}
-              onPointerLeave={() => phoneStage.setHover(false)}
-              onFocus={() => phoneStage.setHover(true)}
-              onBlur={() => phoneStage.setHover(false)}
-              aria-label={`${t.project.tapPhone} : ${t.project.play}`}
-              data-cursor="tap"
-              className="relative mx-auto block aspect-[4/5] w-full max-w-[520px] cursor-pointer rounded-[48px] lg:aspect-square"
-            >
-              <Anchor kind="phone" layer="front" screen={live.screen} className="inset-0 w-full" par={0} />
-              <span className="sticker pointer-events-none absolute right-0 bottom-[7%] rotate-[-5deg] bg-paper text-ink lg:-right-8">{t.project.tapPhone}</span>
-            </button>
+            <div className="mx-auto w-full max-w-[520px]">
+              <button
+                type="button"
+                onClick={() => phoneStage.setOpen(true)}
+                onPointerEnter={() => phoneStage.setHover(true)}
+                onPointerLeave={() => phoneStage.setHover(false)}
+                onFocus={() => phoneStage.setHover(true)}
+                onBlur={() => phoneStage.setHover(false)}
+                aria-label={`${t.project.tapPhone} : ${t.project.play}`}
+                data-cursor="tap"
+                className="relative block aspect-[4/5] w-full cursor-pointer rounded-[48px] lg:aspect-square"
+              >
+                <Anchor kind="phone" layer="front" screen={live.screen} className="inset-0 w-full" par={0} />
+              </button>
+              {/* L'étiquette est HORS de la zone du téléphone : la 3D est dessinée par-dessus la page et la masquerait. */}
+              <button type="button" onClick={() => phoneStage.setOpen(true)} data-cursor="tap" className="sticker pop mx-auto mt-3 block rotate-[-2deg] bg-paper text-ink">
+                {t.project.tapPhone}
+              </button>
+            </div>
           ) : (
             project.shots[0] && (
               <div className={cn('mx-auto w-full', project.shots[0].frame === 'mobile' ? 'max-w-[300px]' : 'max-w-2xl')}>

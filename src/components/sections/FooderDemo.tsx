@@ -37,20 +37,25 @@ export function FooderDemo() {
             </Link>
           </div>
         </div>
-        <button
-          type="button"
-          onClick={() => phoneStage.setOpen(true)}
-          onPointerEnter={() => phoneStage.setHover(true)}
-          onPointerLeave={() => phoneStage.setHover(false)}
-          onFocus={() => phoneStage.setHover(true)}
-          onBlur={() => phoneStage.setHover(false)}
-          aria-label={`${t.project.tapPhone} : FOODER`}
-          data-cursor="tap"
-          className="relative mx-auto block aspect-[4/5] w-full max-w-[460px] cursor-pointer rounded-[48px] lg:aspect-square"
-        >
-          <Anchor kind="phone" layer="front" screen={live.screen} className="inset-0 w-full" par={0} />
-          <span className="sticker pointer-events-none absolute right-0 bottom-[7%] rotate-[-5deg] bg-lemon text-paper lg:-right-6">{t.project.tapPhone}</span>
-        </button>
+        <div className="mx-auto w-full max-w-[460px]">
+          <button
+            type="button"
+            onClick={() => phoneStage.setOpen(true)}
+            onPointerEnter={() => phoneStage.setHover(true)}
+            onPointerLeave={() => phoneStage.setHover(false)}
+            onFocus={() => phoneStage.setHover(true)}
+            onBlur={() => phoneStage.setHover(false)}
+            aria-label={`${t.project.tapPhone} : FOODER`}
+            data-cursor="tap"
+            className="relative block aspect-[4/5] w-full cursor-pointer rounded-[48px] lg:aspect-square"
+          >
+            <Anchor kind="phone" layer="front" screen={live.screen} className="inset-0 w-full" par={0} />
+          </button>
+          {/* L'étiquette est HORS de la zone du téléphone : la 3D est dessinée par-dessus la page et la masquerait. */}
+          <button type="button" onClick={() => phoneStage.setOpen(true)} data-cursor="tap" className="sticker pop mx-auto mt-3 block rotate-[-2deg] bg-lemon text-paper">
+            {t.project.tapPhone}
+          </button>
+        </div>
       </div>
     </section>
   )
