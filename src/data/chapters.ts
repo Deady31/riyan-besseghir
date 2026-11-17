@@ -4,7 +4,7 @@ export const CHAPTERS = [
   { id: 'morph', fr: 'Trente-neuf', en: 'Thirty-nine' },
   { id: 'deck', fr: 'Le deck', en: 'The deck' },
   { id: 'impact', fr: 'Impact', en: 'Impact' },
-  { id: 'hauts-faits', fr: 'Hauts faits', en: 'Highlights' },
+  { id: 'hauts-faits', fr: 'Hackathon IA', en: 'AI hackathon' },
   { id: 'studio', fr: 'Builder', en: 'Builder' },
   { id: 'demo', fr: 'Démo FOODER', en: 'FOODER demo' },
   { id: 'ia', fr: 'Agents IA', en: 'AI agents' },

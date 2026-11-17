@@ -63,7 +63,15 @@ export function Feats() {
     <section ref={root} id="hauts-faits" className="relative isolate py-32 md:py-48">
       <Anchor kind="cat" className="top-[3%] right-[3%] w-[9vw] max-md:w-[14vw]" par={0.2} tilt={0.7} />
       <div className="px-[var(--gutter)]">
-        <SectionHeading index="02" label={t.feats.label} title={<TitleParts parts={t.feats.title} />} />
+        <SectionHeading index="02" label={t.feats.label} title={<TitleParts parts={t.feats.title} />} className="!mb-8 md:!mb-10" />
+        {/* L'essentiel en un coup d'œil : durée, équipe, commanditaire, rôle, outil. */}
+        <ul className="mb-14 flex flex-wrap gap-2.5 md:mb-20" aria-label={t.feats.label}>
+          {t.feats.chips.map((c, i) => (
+            <li key={c} className={['sticker bg-lemon', 'sticker bg-vermilion', 'sticker bg-chrome', 'sticker bg-paper text-ink', 'sticker bg-signal text-ink'][i % 5]}>
+              {c}
+            </li>
+          ))}
+        </ul>
       </div>
 
       <figure data-photo className="relative mx-[var(--gutter)] aspect-[4/5] overflow-hidden rounded-[clamp(36px,5vw,72px)] md:aspect-[16/9]">
