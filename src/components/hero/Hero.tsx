@@ -9,7 +9,6 @@ import { useT } from '../../i18n/useT'
 import { LiveClock } from '../ui/LiveClock'
 import { Anchor } from '../three/Anchor'
 import { HeroPortrait } from './HeroPortrait'
-import { HeroMosaic } from '../fx/HeroMosaic'
 import { ChapterBg } from '../backgrounds/ChapterBg'
 
 export function Hero() {
@@ -35,11 +34,16 @@ export function Hero() {
         .from(name.chars, { yPercent: 105, duration: 1.2, ease: 'expo.out', stagger: 0.03 }, 0.2)
         .from('[data-meta]', { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out', stagger: 0.07 }, 0.8)
 
-      // La grille de points du hero s'efface dès qu'on défile : le hero reste épinglé au-dessus du 39 pendant la mosaïque.
+      // Sortie épurée : la grille de points s'efface, le bloc et le portrait remontent doucement.
       gsap.to('[data-chapter-bg="top"]', {
         opacity: 0,
         ease: 'none',
         scrollTrigger: { trigger: root.current, start: 'top top', end: '+=35%', scrub: true },
+      })
+      gsap.to('[data-slab]', {
+        yPercent: -10,
+        ease: 'none',
+        scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true },
       })
       gsap.to('[data-name-wrap]', {
         yPercent: -14,
@@ -70,8 +74,6 @@ export function Hero() {
       <div data-slab className="absolute top-[4.75rem] right-[7%] h-[calc(78%-4.75rem)] w-[34%] rounded-[56px] bg-signal max-md:top-36 max-md:right-3 max-md:left-[16%] max-md:h-[36%] max-md:w-auto max-md:rounded-[40px]" aria-hidden="true" />
 
       <HeroPortrait />
-      {/* Sortie du hero : le bloc et le portrait se découpent en mosaïque et s'éparpillent (transition 1). */}
-      <HeroMosaic />
 
       {/* Couche 1 : le nom. */}
       <div data-name-wrap data-hero-fade className="absolute inset-x-0 bottom-0 z-10 px-[var(--gutter)] pb-[clamp(5.5rem,11vh,7.5rem)] max-md:pb-[5.25rem]">
