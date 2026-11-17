@@ -456,7 +456,9 @@ export function BurnBackdrop({ deps }: { deps: string }) {
       const want: { idx: number; dist: number }[] = []
       sections.forEach((s, i) => {
         if (!sectionZones[i].scene) return
-        const top = s.getBoundingClientRect().top + y
+        // Une section épinglée par GSAP passe en position fixe : on mesure alors son « pin-spacer », resté en place dans le flux.
+        const holder = s.parentElement?.classList.contains('pin-spacer') ? s.parentElement : s
+        const top = holder.getBoundingClientRect().top + y
         const bottom = top + s.offsetHeight
         const dist = Math.max(top - (y + H), y - bottom, 0) // 0 = visible
         if (dist < 2.2 * H) want.push({ idx: i, dist })
@@ -516,9 +518,11 @@ export function BurnBackdrop({ deps }: { deps: string }) {
       const flip = new Array(N).fill(0)
       const y = window.scrollY
       sections.forEach((s, i) => {
-        const top = s.getBoundingClientRect().top + y
+        // Une section épinglée par GSAP passe en position fixe : on mesure alors son « pin-spacer », resté en place dans le flux.
+        const holder = s.parentElement?.classList.contains('pin-spacer') ? s.parentElement : s
+        const top = holder.getBoundingClientRect().top + y
         tops[i] = top
-        bots[i] = top + s.offsetHeight
+        bots[i] = top + holder.offsetHeight
         if (i > 0) {
           bounds[i - 1] = top
           burn[i - 1] = sectionZones[i - 1].dark !== sectionZones[i].dark ? 1 : 0
@@ -545,7 +549,8 @@ export function BurnBackdrop({ deps }: { deps: string }) {
     const syncTheme = () => {
       let dark = false
       for (let i = 0; i < sections.length; i++) {
-        const r = sections[i].getBoundingClientRect()
+        const el = sections[i]
+        const r = (el.parentElement?.classList.contains('pin-spacer') ? el.parentElement : el).getBoundingClientRect()
         if (r.top <= 60 && r.bottom > 60) dark = sectionZones[i].dark
       }
       const next = dark ? 'dark' : 'light'

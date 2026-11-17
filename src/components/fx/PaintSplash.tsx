@@ -50,8 +50,8 @@ export function PaintSplash({ trigger }: { trigger: string }) {
       const body = stage.current.querySelector<HTMLElement>('[data-body]')!
       const dripEls = gsap.utils.toArray<HTMLElement>('[data-drip]', stage.current)
       const blobEls = gsap.utils.toArray<HTMLElement>('[data-blob]', stage.current)
-      gsap.set(stage.current, { autoAlpha: 0 })
-      gsap.set(body, { yPercent: -100 })
+      gsap.set(stage.current, { visibility: 'hidden' })
+      gsap.set(body, { yPercent: -100, force3D: false })
       gsap.set(dripEls, { scaleY: 0.15 })
       gsap.set(blobEls, { scale: 0 })
 
@@ -63,7 +63,7 @@ export function PaintSplash({ trigger }: { trigger: string }) {
           end: () => '+=' + Math.round(window.innerHeight * 1.5),
           invalidateOnRefresh: true,
           scrub: 0.5,
-          onToggle: (self) => gsap.set(stage.current, { autoAlpha: self.isActive ? 1 : 0 }),
+          onToggle: (self) => gsap.set(stage.current, { visibility: self.isActive ? 'visible' : 'hidden' }),
         },
       })
       // 1. le jet : l'aplat descend, les coulures s'allongent en retard
@@ -84,7 +84,7 @@ export function PaintSplash({ trigger }: { trigger: string }) {
 
   return (
     <div ref={stage} aria-hidden="true" className="pointer-events-none invisible fixed inset-0 z-[55] overflow-hidden">
-      <div data-body className="absolute inset-0 will-change-transform" style={{ background: PAINT }}>
+      <div data-body className="absolute inset-0" style={{ background: PAINT }}>
         {/* bord supérieur irrégulier : gouttes retournées qui mordent sur la section révélée */}
         {tops.map((d, i) => (
           <span

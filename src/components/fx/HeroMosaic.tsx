@@ -131,7 +131,7 @@ export function HeroMosaic() {
           0.5 + tile.delay * 0.1,
         )
       })
-      tl.to(content, { autoAlpha: 0, y: -40, duration: 0.25, ease: 'power1.in', stagger: 0.03 }, 0.48)
+      tl.to(content, { autoAlpha: 0, y: -40, duration: 0.2, ease: 'power1.in', stagger: 0.02 }, 0.22)
 
       return () => swap(false)
     },
