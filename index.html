@@ -25,6 +25,8 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Le portrait est le plus gros élément du premier écran : on le demande avant que le JS ne s'exécute. -->
+    <link rel="preload" as="image" href="/media/portrait/naturel.webp" type="image/webp" fetchpriority="high" />
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

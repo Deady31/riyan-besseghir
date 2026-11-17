@@ -1,4 +1,4 @@
-import { Suspense, createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Environment, Lightformer, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
@@ -99,7 +99,7 @@ const FILES: Record<GeoKey, [string, string?]> = {
 const PHONE_H = 2.05
 
 type Shared = {
-  geos: Record<GeoKey, { geometry: THREE.BufferGeometry; size: number }>
+  geos: Partial<Record<GeoKey, GeoData>>
   mats: Record<MatKey, THREE.Material>
   life: Record<string, THREE.Material>
   reduced: boolean
@@ -136,7 +136,9 @@ export function Studio() {
   )
 }
 
-function useGeometry(key: GeoKey) {
+type GeoData = { geometry: THREE.BufferGeometry; size: number }
+
+function useGeometry(key: GeoKey): GeoData {
   const [file, name] = FILES[key]
   const { scene } = useGLTF(BASE + file)
   return useMemo(() => {
@@ -151,6 +153,18 @@ function useGeometry(key: GeoKey) {
     geometry.boundingBox!.getSize(s)
     return { geometry, size: Math.max(s.x, s.y, s.z) }
   }, [scene, name])
+}
+
+/**
+ * Charge une forme de base et la remet à la scène. Une forme n'est téléchargée que si la page courante a une ancre qui
+ * l'utilise : l'accueil n'a besoin que de quelques-unes des quinze, pas des 800 Ko de toutes.
+ */
+function GeoLoader({ gkey, onReady }: { gkey: GeoKey; onReady: (k: GeoKey, g: GeoData) => void }) {
+  const g = useGeometry(gkey)
+  useEffect(() => {
+    onReady(gkey, g)
+  }, [gkey, g, onReady])
+  return null
 }
 
 /** Matières des formes : aplats toon aux couleurs de la charte (plus de chrome ni de verre irisé). */
@@ -295,9 +309,9 @@ function ModelAsset({ url }: { url: string }) {
 function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; seed: number; front: boolean }) {
   const shared = useContext(SharedCtx)!
   const def = KINDS[kind]!
-  const geo = def.geo ? shared.geos[def.geo] : null
+  const geo = def.geo ? (shared.geos[def.geo] ?? null) : null
   const life = isLife(kind) || kind === 'model'
-  const size = geo ? geo.size : life ? 1 : PHONE_H
+  const size = geo ? geo.size : life || def.geo ? 1 : PHONE_H
   const group = useRef<THREE.Group>(null)
   const born = useRef<number | null>(null)
   const stageT = useRef(0)
@@ -338,7 +352,8 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
     if (!g) return
     const b = body.current
     // Loin du cadre (et au repos) : aucune mesure de mise en page, rien à dessiner.
-    if (!isPhone && !nearRef.current && !(b && (b.held || Math.abs(b.dx) > 20 || Math.abs(b.dy) > 20))) {
+    const stageIdle = !isPhone || (stageT.current === 0 && !phoneStage.state.open)
+    if (stageIdle && !nearRef.current && !(b && (b.held || Math.abs(b.dx) > 20 || Math.abs(b.dy) > 20))) {
       g.visible = false
       if (b) b.visible = false
       born.current = null
@@ -505,7 +520,7 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
 
   return (
     <group ref={group} visible={false}>
-      {!near && !isPhone ? null : isPhone ? (
+      {!near && !(isPhone && phoneStage.state.open) ? null : isPhone ? (
         <PhoneModel screen={el.dataset.screen || PHONE_SCREEN} />
       ) : kind === 'model' ? (
         <Suspense fallback={null}>
@@ -516,9 +531,11 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
           <LifeModel kind={kind as LifeKind} />
         </Suspense>
       ) : (
-        <mesh geometry={geo!.geometry} material={shared.mats[def.mat!]} rotation={def.rot}>
-          <mesh geometry={geo!.geometry} material={OUTLINE} />
-        </mesh>
+        geo && (
+          <mesh geometry={geo.geometry} material={shared.mats[def.mat!]} rotation={def.rot}>
+            <mesh geometry={geo.geometry} material={OUTLINE} />
+          </mesh>
+        )
       )}
     </group>
   )
@@ -679,24 +696,26 @@ function CelLights() {
 
 function Scene({ reduced, layer, mobile }: { reduced: boolean; layer: 'back' | 'front'; mobile: boolean }) {
   const anchors = useAnchors(layer, mobile)
-  const geos = {
-    orb: useGeometry('orb'), ring: useGeometry('ring'), form: useGeometry('form'),
-    slab: useGeometry('slab'), sphereA: useGeometry('sphereA'), sphereB: useGeometry('sphereB'), cubeA: useGeometry('cubeA'),
-    cubeB: useGeometry('cubeB'), star: useGeometry('star'), capsule: useGeometry('capsule'), top: useGeometry('top'),
-    crystal: useGeometry('crystal'), torus: useGeometry('torus'), mobius: useGeometry('mobius'), beads: useGeometry('beads'),
-  }
+  const [geos, setGeos] = useState<Partial<Record<GeoKey, GeoData>>>({})
+  const onGeo = useCallback((k: GeoKey, g: GeoData) => setGeos((prev) => (prev[k] === g ? prev : { ...prev, [k]: g })), [])
+  const needed = useMemo(() => [...new Set(anchors.map((a) => KINDS[a.kind]?.geo).filter((k): k is GeoKey => Boolean(k)))], [anchors])
   const mats = useMaterials()
   const life = useLifeMaterials(mats)
 
   // Les gestes (attraper, lancer) : une seule écoute pour toute la page, sauf en mouvement réduit.
   useEffect(() => (reduced ? undefined : useToysInput()), [reduced])
 
-  const shared = useMemo<Shared>(() => ({ geos, mats, life, reduced }), [geos.orb, mats, life, reduced]) // eslint-disable-line react-hooks/exhaustive-deps
+  const shared = useMemo<Shared>(() => ({ geos, mats, life, reduced }), [geos, mats, life, reduced])
 
   return (
     <SharedCtx.Provider value={shared}>
       <Studio />
       <CelLights />
+      {needed.map((k) => (geos[k] ? null : (
+        <Suspense key={k} fallback={null}>
+          <GeoLoader gkey={k} onReady={onGeo} />
+        </Suspense>
+      )))}
       <FrameDriver reduced={reduced} anchors={anchors} />
       {anchors.map((a, i) => (
         <Piece key={`${i}-${a.kind}`} el={a.el} kind={a.kind} seed={i + (layer === 'front' ? 5 : 0)} front={layer === 'front'} />
@@ -728,7 +747,3 @@ export default function SiteScene({ layer = 'back' }: { layer?: 'back' | 'front'
     </div>
   )
 }
-
-// Seules les formes de base (petites, partagées par presque toutes les sections) sont préchargées ; les objets de vie, le
-// téléphone et les modèles fournis ne se chargent que lorsque leur place approche (voir `near` dans Piece).
-Object.values(FILES).forEach(([f]) => useGLTF.preload(BASE + f))
