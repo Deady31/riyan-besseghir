@@ -94,7 +94,6 @@ export function Passions() {
   return (
     <section ref={root} id="passions" className="relative overflow-hidden py-32 md:py-48">
       <Anchor kind="gamepad" className="top-[1%] right-[3%] w-[15vw] max-md:w-[30vw]" par={0.2} tilt={0.7} />
-      <Anchor kind="reel" className="bottom-[2%] left-[1.5%] w-[13vw] max-md:hidden" par={0.15} tilt={0.7} />
       <Anchor kind="psp" className="top-[18%] right-[27%] w-[11vw] max-md:hidden" par={0.25} tilt={0.7} />
       <div className="px-[var(--gutter)]">
         <SectionHeading

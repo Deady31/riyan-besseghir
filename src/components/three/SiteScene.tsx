@@ -5,6 +5,7 @@ import * as THREE from 'three'
 import { prefersReducedMotion } from '../../lib/motion'
 import { phoneStage } from '../../lib/phoneStage'
 import { bodies, createBody, useToysInput, type Body } from '../../lib/toys'
+import { CEL, OUTLINE, addOutlines, outlineUniforms, toToon, toon } from './cel'
 
 /**
  * Le décor 3D de tout le site. Deux canvas fixes :
@@ -152,22 +153,17 @@ function useGeometry(key: GeoKey) {
   }, [scene, name])
 }
 
+/** Matières des formes : aplats toon aux couleurs de la charte (plus de chrome ni de verre irisé). */
 function useMaterials(): Record<MatKey, THREE.Material> {
   return useMemo(
     () => ({
-      chrome: new THREE.MeshStandardMaterial({ color: '#eceef2', metalness: 1, roughness: 0.07, envMapIntensity: 1.2, side: THREE.DoubleSide }),
-      alu: new THREE.MeshStandardMaterial({ color: '#c9ccd3', metalness: 1, roughness: 0.34, envMapIntensity: 1 }),
-      iridescent: new THREE.MeshPhysicalMaterial({
-        color: '#9fb3ff', transparent: true, opacity: 0.5, roughness: 0.05, clearcoat: 1, clearcoatRoughness: 0.04,
-        iridescence: 1, iridescenceIOR: 1.35, iridescenceThicknessRange: [120, 620], envMapIntensity: 1.5, depthWrite: false,
-      }),
-      bubble: new THREE.MeshPhysicalMaterial({
-        color: '#ffffff', transparent: true, opacity: 0.22, roughness: 0.02, clearcoat: 1, clearcoatRoughness: 0.02,
-        iridescence: 1, iridescenceIOR: 1.6, iridescenceThicknessRange: [200, 900], envMapIntensity: 2, depthWrite: false,
-      }),
-      cobalt: new THREE.MeshPhysicalMaterial({ color: COBALT, roughness: 0.14, clearcoat: 1, clearcoatRoughness: 0.03, envMapIntensity: 1.1 }),
-      vermilion: new THREE.MeshPhysicalMaterial({ color: VERMILION, roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.05 }),
-      acid: new THREE.MeshPhysicalMaterial({ color: '#FFD83D', roughness: 0.2, clearcoat: 1, clearcoatRoughness: 0.05 }),
+      chrome: toon(CEL.lilac, { side: THREE.DoubleSide }),
+      alu: toon(CEL.lilacMid),
+      iridescent: toon(CEL.violetSoft),
+      bubble: toon(CEL.cream),
+      cobalt: toon(COBALT),
+      vermilion: toon(VERMILION),
+      acid: toon(CEL.lemon),
     }),
     [],
   )
@@ -229,24 +225,24 @@ function PhoneModel({ screen }: { screen: string }) {
 
 /** Matières de studio des objets, indexées par le nom de matière écrit dans les GLB. */
 function useLifeMaterials(base: Record<MatKey, THREE.Material>): Record<string, THREE.Material> {
-  return useMemo(() => {
-    const glass = (color: string, opacity: number) =>
-      new THREE.MeshPhysicalMaterial({ color, transparent: true, opacity, roughness: 0.06, clearcoat: 1, clearcoatRoughness: 0.04, envMapIntensity: 1.6, depthWrite: false })
-    return {
+  // Le citron reste réservé aux petites pièces (or, ambre) ; les grandes surfaces sont crème, lilas, violet ou rose.
+  return useMemo(
+    () => ({
       chrome: base.chrome,
       alu: base.alu,
       cobalt: base.cobalt,
       red: base.vermilion,
-      ivory: new THREE.MeshPhysicalMaterial({ color: '#f3ecda', roughness: 0.32, clearcoat: 0.7, clearcoatRoughness: 0.2 }),
-      orange: new THREE.MeshPhysicalMaterial({ color: '#f4762b', roughness: 0.3, clearcoat: 0.8, clearcoatRoughness: 0.1 }),
-      clay: new THREE.MeshStandardMaterial({ color: '#d97757', roughness: 0.62 }),
-      black: new THREE.MeshPhysicalMaterial({ color: '#141513', roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.08 }),
-      gold: new THREE.MeshStandardMaterial({ color: '#e9b949', metalness: 1, roughness: 0.2 }),
-      amber: glass('#f39a1d', 0.78),
-      blueglass: glass('#8A5CFF', 0.66),
-      orangeglass: glass('#ff6a1f', 0.6),
-    }
-  }, [base])
+      ivory: toon(CEL.cream),
+      orange: toon(CEL.lemon), // boutons de la manette et du chrono : petites pièces
+      clay: toon(CEL.pinkDeep),
+      black: toon(CEL.plum),
+      gold: toon(CEL.lemon),
+      amber: toon(CEL.pink), // disque de la bobine : grande surface, donc pas de citron
+      blueglass: toon(CEL.violetSoft),
+      orangeglass: toon(CEL.pink),
+    }),
+    [base],
+  )
 }
 
 /** Un objet à plusieurs matières : la scène du GLB est clonée, recentrée, et ses matières remplacées par celles du studio. */
@@ -258,11 +254,11 @@ function LifeModel({ kind }: { kind: LifeKind }) {
     clone.traverse((o) => {
       if (!(o instanceof THREE.Mesh)) return
       const name = (o.material as THREE.Material).name
-      const m = shared.life[name]
-      if (m) o.material = m
-      if (m?.transparent) o.renderOrder = 2
+      // Matière connue : la couleur de la charte ; modèle fourni : sa propre couleur et sa texture, passées en toon.
+      o.material = shared.life[name] ?? toToon(o.material as THREE.Material)
     })
     const box = new THREE.Box3().setFromObject(clone)
+    addOutlines(clone)
     const size = box.getSize(new THREE.Vector3())
     clone.position.sub(box.getCenter(new THREE.Vector3()))
     return { object: clone, scale: 1 / Math.max(size.x, size.y, size.z) }
@@ -279,9 +275,13 @@ function ModelAsset({ url }: { url: string }) {
   const { scene } = useGLTF(url)
   const { object, scale } = useMemo(() => {
     const clone = scene.clone(true)
+    clone.traverse((o) => {
+      if (o instanceof THREE.Mesh) o.material = toToon(o.material as THREE.Material)
+    })
     const box = new THREE.Box3().setFromObject(clone)
     const size = box.getSize(new THREE.Vector3())
     clone.position.sub(box.getCenter(new THREE.Vector3()))
+    addOutlines(clone)
     return { object: clone, scale: 1 / Math.max(size.x, size.y, size.z, 0.0001) }
   }, [scene])
   return (
@@ -516,7 +516,9 @@ function Piece({ el, kind, seed, front }: { el: HTMLElement; kind: KindName; see
           <LifeModel kind={kind as LifeKind} />
         </Suspense>
       ) : (
-        <mesh geometry={geo!.geometry} material={shared.mats[def.mat!]} rotation={def.rot} />
+        <mesh geometry={geo!.geometry} material={shared.mats[def.mat!]} rotation={def.rot}>
+          <mesh geometry={geo!.geometry} material={OUTLINE} />
+        </mesh>
       )}
     </group>
   )
@@ -656,6 +658,25 @@ function FrameDriver({ reduced, anchors }: { reduced: boolean; anchors: AnchorRe
   return null
 }
 
+/**
+ * Lumières du cel-shading : un fond doux (les ombres ne tombent jamais au noir) et une lumière haute à gauche qui choisit
+ * la marche de la rampe. Intensités en unités physiques (×π) pour que la face éclairée rende la couleur exacte de la charte.
+ * Tient aussi à jour la taille du canvas pour l'épaisseur des contours.
+ */
+function CelLights() {
+  const size = useThree((s) => s.size)
+  useEffect(() => {
+    outlineUniforms.uRes.value.set(size.width, size.height)
+    outlineUniforms.uPx.value = size.width < 768 ? 2 : 2.6
+  }, [size.width, size.height])
+  return (
+    <>
+      <ambientLight intensity={0.62 * Math.PI} color="#ffffff" />
+      <directionalLight intensity={0.4 * Math.PI} position={[-4, 5, 6]} color="#ffffff" />
+    </>
+  )
+}
+
 function Scene({ reduced, layer, mobile }: { reduced: boolean; layer: 'back' | 'front'; mobile: boolean }) {
   const anchors = useAnchors(layer, mobile)
   const geos = {
@@ -675,6 +696,7 @@ function Scene({ reduced, layer, mobile }: { reduced: boolean; layer: 'back' | '
   return (
     <SharedCtx.Provider value={shared}>
       <Studio />
+      <CelLights />
       <FrameDriver reduced={reduced} anchors={anchors} />
       {anchors.map((a, i) => (
         <Piece key={`${i}-${a.kind}`} el={a.el} kind={a.kind} seed={i + (layer === 'front' ? 5 : 0)} front={layer === 'front'} />

@@ -87,7 +87,6 @@ export function ProjectPage() {
       {live && <PhoneStage url={live.url} title={project.title} closeLabel={t.project.closePhone} />}
       <Anchor kind="orb" className="top-[62%] right-[2%] w-[10vw] max-md:w-[22vw]" par={0.2} />
       <Anchor kind="form-cobalt" className="top-[38%] left-[1.5%] w-[9vw] max-md:hidden" par={0.15} />
-      <Anchor kind="ring" className="bottom-[14%] right-[3%] w-[11vw] max-md:hidden" par={0.2} />
       <div className="mb-8 flex items-center justify-between gap-4">
         <motion.button
           type="button"
