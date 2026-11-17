@@ -81,8 +81,7 @@ export function ProjectPage() {
   return (
     <main className="relative px-[var(--gutter)] pt-24 pb-28 [overflow-x:clip] md:pt-28">
       {live && <PhoneStage url={live.url} title={project.title} closeLabel={t.project.closePhone} />}
-      <Anchor kind="orb" className="top-[62%] right-[2%] w-[10vw] max-md:w-[22vw]" par={0.2} />
-      <Anchor kind="form-cobalt" className="top-[38%] left-[1.5%] w-[9vw] max-md:hidden" par={0.15} />
+      <Anchor kind="orb" className="top-[62%] right-[2%] w-[8vw] max-md:w-[14vw]" par={0.2} />
       <div className="mb-8 flex items-center justify-between gap-4">
         <motion.button
           type="button"
@@ -193,7 +192,7 @@ export function ProjectPage() {
 
       {/* 1. Pourquoi je l'ai créé */}
       <motion.section {...rise} className="mt-16 grid gap-6 md:mt-24 lg:grid-cols-[minmax(0,0.38fr)_minmax(0,1fr)] lg:gap-10" aria-labelledby="why-title">
-        <h2 id="why-title" className="display title-outline text-[clamp(2rem,1rem+3vw,4rem)]">
+        <h2 id="why-title" className="display text-[clamp(2rem,1rem+3vw,4rem)]">
           {t.project.why}
         </h2>
         <BigTile tone="paper" inner="md:!p-12">
@@ -206,7 +205,7 @@ export function ProjectPage() {
       {/* 2. Comment ça marche */}
       {how.length > 0 && (
         <motion.section {...rise} className="mt-16 md:mt-24" aria-labelledby="how-title">
-          <h2 id="how-title" className="display title-outline text-[clamp(2rem,1rem+3vw,4rem)]">
+          <h2 id="how-title" className="display text-[clamp(2rem,1rem+3vw,4rem)]">
             {t.project.how}
           </h2>
           <ol className={cn('mt-10 grid gap-4 md:gap-6', how.length >= 4 ? 'md:grid-cols-2' : how.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2')}>
@@ -225,7 +224,7 @@ export function ProjectPage() {
       {/* 3. Ce que j'ai décidé */}
       {story?.decisions && story.decisions.length > 0 && (
         <motion.section {...rise} className="mt-16 md:mt-24" aria-labelledby="dec-title">
-          <h2 id="dec-title" className="display title-outline text-[clamp(2rem,1rem+3vw,4rem)]">
+          <h2 id="dec-title" className="display text-[clamp(2rem,1rem+3vw,4rem)]">
             {t.project.decisions}
           </h2>
           <ul className="mt-10 grid gap-3 md:gap-4">
@@ -242,7 +241,7 @@ export function ProjectPage() {
       {/* 4. Les preuves */}
       {story?.proof && story.proof.length > 0 && (
         <motion.section {...rise} className="mt-16 md:mt-24" aria-labelledby="proof-title">
-          <h2 id="proof-title" className="display title-outline text-[clamp(2rem,1rem+3vw,4rem)]">
+          <h2 id="proof-title" className="display text-[clamp(2rem,1rem+3vw,4rem)]">
             {t.project.proof}
           </h2>
           <ul className="mt-10 grid gap-4 md:grid-cols-3 md:gap-6">
@@ -261,7 +260,7 @@ export function ProjectPage() {
       {/* 5. Les écrans */}
       {project.shots.length > 0 && (
         <motion.section {...rise} className="mt-16 md:mt-24" aria-labelledby="shots-title">
-          <h2 id="shots-title" className="display title-outline text-[clamp(2rem,1rem+3vw,4rem)]">
+          <h2 id="shots-title" className="display text-[clamp(2rem,1rem+3vw,4rem)]">
             {t.project.screens}
           </h2>
           {desktopShots.length > 0 && (
@@ -287,7 +286,7 @@ export function ProjectPage() {
 
       {/* 6. Sous le capot */}
       <motion.section {...rise} className="mt-16 md:mt-24" aria-labelledby="stack-title">
-        <h2 id="stack-title" className="display title-outline text-[clamp(2rem,1rem+3vw,4rem)]">
+        <h2 id="stack-title" className="display text-[clamp(2rem,1rem+3vw,4rem)]">
           {t.project.stack}
         </h2>
         <ul className="mt-8 flex flex-wrap gap-3">

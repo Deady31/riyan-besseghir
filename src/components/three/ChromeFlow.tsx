@@ -3,7 +3,7 @@ import { Mesh, Program, Renderer, Triangle, Vec2 } from 'ogl'
 import { prefersReducedMotion } from '../../lib/motion'
 
 /**
- * Fond liquide en OGL : un chrome fondu teinté cobalt, avec des filets de lumière qui suivent le curseur.
+ * Fond liquide en OGL : un chrome fondu teinté violet, avec un reflet rose sur les bords, avec des filets de lumière qui suivent le curseur.
  * Un seul triangle plein écran et un fragment shader ; le rendu s'arrête quand le bloc quitte l'écran.
  */
 
@@ -23,9 +23,10 @@ uniform vec2 uRes;
 uniform vec2 uMouse;
 varying vec2 vUv;
 
-vec3 cobalt = vec3(0.145, 0.302, 1.0);
-vec3 deep = vec3(0.03, 0.07, 0.42);
-vec3 ivory = vec3(0.945, 0.922, 0.867);
+vec3 cobalt = vec3(0.424, 0.169, 1.0);   // violet de la charte #6C2BFF
+vec3 deep = vec3(0.13, 0.03, 0.38);      // violet profond
+vec3 ivory = vec3(1.0, 0.965, 0.898);    // crème #FFF6E5
+vec3 pink = vec3(1.0, 0.494, 0.784);     // rose #FF7EC8
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p) {
@@ -64,7 +65,7 @@ void main() {
   float rim = pow(1.0 - n.z, 2.0);
 
   vec3 col = mix(deep, cobalt, smoothstep(0.15, 0.85, f));
-  col = mix(col, cobalt * 1.35, rim * 0.55);
+  col = mix(col, mix(cobalt * 1.35, pink, 0.55), rim * 0.6);
   col += ivory * spec * 0.85;
   col += ivory * smoothstep(0.62, 0.9, f) * 0.1;
 

@@ -106,8 +106,7 @@ export function AiSpotlight() {
 
   return (
     <section ref={root} id="ia" className="theme-dark relative isolate py-32 md:py-48">
-      <Anchor kind="robot" className="top-[30%] right-[1.5%] w-[12vw] max-md:hidden" par={0.25} tilt={0.7} />
-      <Anchor kind="ring" className="bottom-[3%] right-[1.5%] w-[13vw] max-md:hidden" par={0.2} />
+      <Anchor kind="robot" className="top-[30%] right-[1.5%] w-[10vw] max-md:hidden" par={0.25} tilt={0.7} />
       <div className="px-[var(--gutter)]">
         <SectionHeading
           index="04"
@@ -123,7 +122,7 @@ export function AiSpotlight() {
           <div className="grid items-center gap-16 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-24">
             <div className="lg:order-2">
               <p className="mb-6"><span className="sticker rotate-1 bg-signal text-ink">{t.ai.featured}</span></p>
-              <h3 className="display title-outline text-[length:var(--text-mega)]">
+              <h3 className="display text-[length:var(--text-mega)]">
                 Méca-<em>Riyan</em>
               </h3>
               <p className="mt-8 max-w-md text-[clamp(1.25rem,1rem+0.6vw,1.6rem)] leading-snug tracking-[-0.02em]">{chat.tagline}</p>

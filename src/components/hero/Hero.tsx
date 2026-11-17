@@ -75,18 +75,17 @@ export function Hero() {
         <p
           data-name
           aria-hidden="true"
-          className="display brand-name name-outline mt-6 text-[clamp(2.4rem,13.4vw,4rem)] md:mt-8 md:text-[clamp(3.6rem,1rem+12.2vw,14rem)]"
+          className="display brand-name mt-6 text-[clamp(2.4rem,13.4vw,4rem)] md:mt-8 md:text-[clamp(3.6rem,1rem+12.2vw,14rem)]"
         >
           Riyan
           <br />
-          Besseghir
+          <span className="text-signal">Besseghir</span>
         </p>
       </div>
 
       {/* Points d'accroche des formes 3D du fond (voir SiteScene) : la sculpture se pose sur l'aplat cobalt. */}
       <Anchor kind="robot" className="bottom-[4%] left-[50%] w-[10vw] max-md:hidden" par={0.3} tilt={0.6} />
-      <Anchor kind="vinyl" className="bottom-[3%] right-[1.5%] w-[11vw] max-md:hidden" par={0.3} tilt={0.7} />
-      <Anchor kind="robot" className="top-[55%] left-[5%] w-[18vw] md:hidden" par={0.3} tilt={0.6} />
+      <Anchor kind="robot" className="top-[55%] left-[5%] w-[14vw] md:hidden" par={0.3} tilt={0.6} />
 
       {/* Couche 3 : informations et boutons, toujours lisibles. */}
       <div data-hero-fade className="absolute inset-x-0 top-0 z-30 px-[var(--gutter)] pt-24 md:pt-28">

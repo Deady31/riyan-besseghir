@@ -234,32 +234,7 @@ h2, h3 {
   text-transform: none;
 }
 
-/* Grands titres : lettres crème, gros contour prune, ombre prune décalée : lisibles sur le crème comme sur la nuit. Le mot en
-   accent prend la couleur forte du monde où il est (violet sur le crème, lilas sur la nuit). Les masques de ligne de SplitText
-   sont élargis pour ne couper ni le contour ni l'ombre. */
-.title-outline {
-  color: #fff6e5;
-  -webkit-text-stroke: 0.09em #2b0f3a;
-  paint-order: stroke fill;
-  text-shadow: 0.07em 0.08em 0 #2b0f3a;
-  /* le contour mange de la place : on rouvre un peu l'espacement serré de .display */
-  letter-spacing: -0.025em;
-}
-.title-outline em {
-  color: var(--color-signal);
-}
-.title-outline > div {
-  padding: 0.1em 0.14em 0.18em 0.1em;
-  margin: -0.1em -0.14em -0.18em -0.1em;
-}
 
-/* Lettres claires cernées de prune, avec une ombre violette décalée : lisible sur la crème comme sur le violet. */
-.name-outline {
-  color: #fff6e5;
-  -webkit-text-stroke: 0.06em #2b0f3a;
-  paint-order: stroke fill;
-  text-shadow: 0.06em 0.07em 0 #6c2bff;
-}
 
 /* Plus aucun italique nulle part : les balises qui l'imposent par défaut sont remises droites. */
 em,

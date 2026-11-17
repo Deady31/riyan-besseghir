@@ -44,7 +44,7 @@ export function MorphMoment() {
   )
 
   const layer = (n: string, color: string) => (
-    <span data-layer={n} aria-hidden="true" className="absolute inset-0 will-change-transform" style={{ color, WebkitTextStroke: '6px #2B0F3A' }}>
+    <span data-layer={n} aria-hidden="true" className="absolute inset-0 will-change-transform" style={{ color }}>
       <span data-count>{total}</span>
     </span>
   )
@@ -52,14 +52,13 @@ export function MorphMoment() {
   return (
     <section ref={root} id="morph" className="theme-dark relative -mb-[30vh] h-[190vh] [overflow-x:clip]" aria-label={t.morph.aria}>
       <div className="sticky top-0 isolate flex h-[100svh] flex-col items-center justify-center px-[var(--gutter)]">
-        <Anchor kind="reel" className="top-[7%] left-[3%] w-[21vw] max-md:top-[6%] max-md:w-[36vw]" par={0.1} tilt={0.7} />
-        <Anchor kind="camera" className="right-[5%] bottom-[10%] w-[17vw] max-md:right-[2%] max-md:bottom-[8%] max-md:w-[32vw]" par={0.2} tilt={0.7} />
+        <Anchor kind="reel" className="top-[7%] left-[3%] w-[11vw] max-md:top-[6%] max-md:w-[20vw]" par={0.1} tilt={0.7} />
         <DepthField />
         <p className="sr-only">{t.morph.sr}</p>
-        <p data-big aria-hidden="true" className="display relative z-10 mb-[5vh] text-[clamp(10rem,6rem+22vw,26rem)] leading-none will-change-transform [paint-order:stroke_fill]">
+        <p data-big aria-hidden="true" className="display relative z-10 mb-[5vh] text-[clamp(10rem,6rem+22vw,26rem)] leading-none will-change-transform">
           {layer('2', '#FF7EC8')}
           {layer('1', '#6C2BFF')}
-          <span className="relative block text-ink" style={{ color: '#FFF6E5', WebkitTextStroke: '6px #2B0F3A', paintOrder: 'stroke fill' }}>
+          <span className="relative block text-ink" style={{ color: '#FFF6E5' }}>
             <span data-count>{total}</span>
           </span>
         </p>

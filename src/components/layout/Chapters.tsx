@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLang } from '../../i18n/LangProvider'
 import { scrollToId, useLenis } from '../../lib/SmoothScroll'
 import { cn } from '../../lib/cn'
+import { CHAPTERS } from '../../data/chapters'
 
 /**
  * Deux éléments qui donnent au défilement un fil de magazine (inspiré des « Editions » de Shopify) :
@@ -10,19 +11,6 @@ import { cn } from '../../lib/cn'
  * Les deux lisent la section sous le milieu de l'écran ; ils n'existent que sur l'accueil.
  */
 
-const CHAPTERS = [
-  { id: 'top', fr: 'Intro', en: 'Intro' },
-  { id: 'morph', fr: 'Trente-neuf', en: 'Thirty-nine' },
-  { id: 'deck', fr: 'Le deck', en: 'The deck' },
-  { id: 'impact', fr: 'Impact', en: 'Impact' },
-  { id: 'hauts-faits', fr: 'Hauts faits', en: 'Highlights' },
-  { id: 'studio', fr: 'Builder', en: 'Builder' },
-  { id: 'ia', fr: 'Agents', en: 'Agents' },
-  { id: 'lab', fr: 'Index', en: 'Index' },
-  { id: 'about', fr: 'À propos', en: 'About' },
-  { id: 'passions', fr: 'Passions', en: 'Passions' },
-  { id: 'contact', fr: 'Contact', en: 'Contact' },
-] as const
 
 export function Chapters() {
   const { lang } = useLang()

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { ArrowUpRight, Check, Copy } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useContent } from '../../data/profile'
@@ -7,11 +7,15 @@ import { RevealText } from '../ui/RevealText'
 import { LiveClock } from '../ui/LiveClock'
 import { ShimmerButton } from '../vendor/magicui/shimmer-button'
 import { Anchor } from '../three/Anchor'
+import { useWebGLSupport } from '../../hooks/useWebGLSupport'
+
+const ChromeFlow = lazy(() => import('../three/ChromeFlow'))
 
 export function Contact() {
   const t = useT()
   const PROFILE = useContent().profile
   const [copied, setCopied] = useState(false)
+  const webgl = useWebGLSupport()
 
   const copy = async () => {
     try {
@@ -31,16 +35,22 @@ export function Contact() {
 
   return (
     <section id="contact" className="theme-dark relative isolate px-[var(--gutter)] pt-32 pb-6 md:pt-44">
-      <Anchor kind="robot" className="top-[8%] left-[6%] w-[11vw] max-md:hidden" par={0.25} tilt={0.7} />
-      {/* Grand panneau cobalt arrondi : le seul aplat coloré plein du site, pour marquer la fin. */}
+      <Anchor kind="robot" className="top-[8%] left-[6%] w-[9vw] max-md:hidden" par={0.25} tilt={0.7} />
+      {/* Grand panneau violet arrondi, avec son chrome liquide animé : la fin du parcours. */}
       <div className="theme-light relative isolate overflow-hidden rounded-[clamp(36px,5vw,72px)] bg-signal px-[clamp(1.5rem,5vw,5rem)] py-[clamp(3rem,8vw,7rem)] text-ink">
+        {/* Le liquide chrome animé remplace l'aplat : l'aplat violet reste dessous tant que WebGL n'a pas démarré (ou s'il est absent). */}
+        {webgl && (
+          <Suspense fallback={null}>
+            <ChromeFlow className="absolute inset-0 -z-10" />
+          </Suspense>
+        )}
 
         <p className="flex items-center gap-3">
           <span className="sticker bg-lemon text-paper">{t.contact.label}</span>
           <span className="label text-ink/80">(07)</span>
         </p>
 
-        <RevealText as="h2" className="display title-outline mt-8 max-w-5xl text-[length:var(--text-title)] [&_em]:!text-[#EADFFF]">
+        <RevealText as="h2" className="display mt-8 max-w-5xl !text-ink text-[length:var(--text-title)] [&_em]:!text-[#EADFFF]">
           <TitleParts parts={t.contact.title} />
         </RevealText>
         <p className="mt-6 max-w-xl text-lg text-ink/85">

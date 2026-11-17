@@ -93,8 +93,8 @@ export function Passions() {
 
   return (
     <section ref={root} id="passions" className="relative isolate [overflow:clip] py-32 md:py-48">
-      <Anchor kind="gamepad" className="top-[1%] right-[3%] w-[15vw] max-md:w-[30vw]" par={0.2} tilt={0.7} />
-      <Anchor kind="psp" className="top-[18%] right-[27%] w-[11vw] max-md:hidden" par={0.25} tilt={0.7} />
+      <Anchor kind="gamepad" className="top-[1%] right-[3%] w-[10vw] max-md:w-[18vw]" par={0.2} tilt={0.7} />
+      <Anchor kind="psp" className="top-[18%] right-[27%] w-[8vw] max-md:hidden" par={0.25} tilt={0.7} />
       <div className="px-[var(--gutter)]">
         <SectionHeading
           index="07"

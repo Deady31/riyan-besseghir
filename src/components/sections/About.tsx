@@ -36,8 +36,7 @@ export function About() {
 
   return (
     <section ref={root} id="about" className="relative isolate px-[var(--gutter)] py-32 md:py-48">
-      <Anchor kind="dumbbell" className="top-[5%] right-[2%] w-[17vw] max-md:w-[32vw]" par={0.15} tilt={0.7} />
-      <Anchor kind="torus" className="top-[1%] left-[40%] w-[7vw] max-md:hidden" par={0.25} />
+      <Anchor kind="dumbbell" className="top-[5%] right-[2%] w-[10vw] max-md:w-[18vw]" par={0.15} tilt={0.7} />
       <SectionHeading index="06" label={a.label} title={<TitleParts parts={a.title} />} />
 
       <div>

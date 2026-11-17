@@ -157,8 +157,7 @@ export function SwipeDeck() {
 
   return (
     <section id="deck" className="relative isolate [overflow:clip] px-[var(--gutter)] py-28 md:py-40" aria-label={t.deck.label}>
-      <Anchor kind="gamepad" className="top-[4%] right-[2.5%] w-[19vw] max-md:w-[34vw]" par={0.15} tilt={0.7} />
-      <Anchor kind="mp3" className="bottom-[6%] left-[2%] w-[9vw] max-md:hidden" par={0.3} tilt={0.7} />
+      <Anchor kind="gamepad" className="top-[4%] right-[2.5%] w-[10vw] max-md:w-[18vw]" par={0.15} tilt={0.7} />
       <SectionHeading index="00" label={t.deck.label} title={<TitleParts parts={t.deck.title} />} intro={t.deck.intro} />
 
       <div className="flex flex-col items-center gap-12">

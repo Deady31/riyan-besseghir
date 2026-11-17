@@ -19,7 +19,7 @@ export function SectionHeading({ index, label, title, intro, className, align = 
         <span className="sticker -rotate-2 bg-lemon">{label}</span>
         <span className="label text-mist">({index})</span>
       </p>
-      <RevealText as="h2" className="display title-outline max-w-6xl text-[length:var(--text-title)] text-balance">
+      <RevealText as="h2" className="display max-w-6xl text-[length:var(--text-title)] text-balance">
         {title}
       </RevealText>
       {intro && (

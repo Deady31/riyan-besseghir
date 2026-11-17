@@ -61,8 +61,7 @@ export function Feats() {
 
   return (
     <section ref={root} id="hauts-faits" className="relative isolate py-32 md:py-48">
-      <Anchor kind="cat" className="top-[3%] right-[3%] w-[9vw] max-md:w-[20vw]" par={0.2} tilt={0.7} />
-      <Anchor kind="walkman" className="top-[40%] left-[1%] w-[9vw] max-md:hidden" par={0.25} tilt={0.7} />
+      <Anchor kind="cat" className="top-[3%] right-[3%] w-[9vw] max-md:w-[14vw]" par={0.2} tilt={0.7} />
       <div className="px-[var(--gutter)]">
         <SectionHeading index="02" label={t.feats.label} title={<TitleParts parts={t.feats.title} />} />
       </div>
