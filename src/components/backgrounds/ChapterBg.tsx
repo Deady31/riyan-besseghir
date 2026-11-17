@@ -97,13 +97,17 @@ export const PRESETS = {
 
 export type ChapterBgKind = keyof typeof PRESETS
 
-/** Formes de révélation (clip-path de départ → d'arrivée), attribuées chapitre par chapitre pour varier les entrées. */
+/**
+ * Formes de révélation : des masques à bord plumé (25 % de dégradé) dont le rayon `--r` grandit au défilement.
+ * Le bord reste doux, la forme se voit quand même.
+ */
 const REVEALS = {
-  iris: ['circle(0% at 50% 100%)', 'circle(150% at 50% 100%)'],
-  curtain: ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)'],
-  sweep: ['inset(0% 100% 0% 0%)', 'inset(0% 0% 0% 0%)'],
-  corner: ['circle(0% at 0% 0%)', 'circle(145% at 0% 0%)'],
+  iris: 'radial-gradient(circle at 50% 100%, #000 calc(var(--r) - 25%), transparent var(--r))',
+  curtain: 'linear-gradient(to top, #000 calc(var(--r) - 25%), transparent var(--r))',
+  sweep: 'linear-gradient(to right, #000 calc(var(--r) - 25%), transparent var(--r))',
+  corner: 'radial-gradient(circle at 0% 0%, #000 calc(var(--r) - 25%), transparent var(--r))',
 } as const
+const REVEAL_END = { iris: '175%', curtain: '130%', sweep: '130%', corner: '175%' } as const
 const REVEAL_OF: Partial<Record<ChapterBgKind, keyof typeof REVEALS>> = {
   deck: 'iris', feats: 'sweep', studio: 'curtain', demo: 'corner', ia: 'iris', lab: 'sweep', about: 'curtain', passions: 'corner', contact: 'iris',
 }
@@ -118,7 +122,7 @@ const lazyFor = (kind: ChapterBgKind) => {
   return c
 }
 
-export function ChapterBg({ kind, className, fade = false }: { kind: ChapterBgKind; className?: string; fade?: boolean }) {
+export function ChapterBg({ kind, className, soft = true }: { kind: ChapterBgKind; className?: string; soft?: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const [near, setNear] = useState(false)
   const [reduced] = useState(() => prefersReducedMotion())
@@ -137,22 +141,24 @@ export function ChapterBg({ kind, className, fade = false }: { kind: ChapterBgKi
     const stage = el?.firstElementChild as HTMLElement | null
     const shape = REVEAL_OF[kind]
     if (!el || !stage || !shape || reduced) return
-    const [from, to] = REVEALS[shape]
+    const mask = REVEALS[shape]
+    gsap.set(stage, { maskImage: mask, webkitMaskImage: mask })
     const tw = gsap.fromTo(
       stage,
-      { clipPath: from, scale: 1.12 },
-      { clipPath: to, scale: 1, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 95%', end: 'top 15%', scrub: 0.6 } },
+      { '--r': '0%', scale: 1.08 },
+      { '--r': REVEAL_END[shape], scale: 1, ease: 'power1.out', scrollTrigger: { trigger: el, start: 'top 100%', end: 'top 10%', scrub: 0.8 } },
     )
     return () => {
       tw.scrollTrigger?.kill()
       tw.kill()
-      gsap.set(stage, { clearProps: 'clipPath,transform' })
+      gsap.set(stage, { clearProps: 'maskImage,webkitMaskImage,transform,--r' })
     }
   }, [kind, reduced])
 
   const preset: Preset = PRESETS[kind]
   const Bg = lazyFor(kind)
-  const mask = fade ? 'linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%)' : undefined
+  // Le fond s'estompe sur 30vh en haut et 40vh en bas du chapitre : jamais de coupure nette au bord d'une section.
+  const mask = !soft ? undefined : 'linear-gradient(to bottom, transparent 0, #000 30vh, #000 calc(100% - 40vh), transparent 100%)'
   return (
     <div
       ref={ref}

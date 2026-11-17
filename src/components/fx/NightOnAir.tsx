@@ -77,7 +77,7 @@ export function NightOnAir() {
 
   return (
     <div ref={root} role="img" aria-label={t.night.aria} className="theme-dark relative z-20 h-[100svh] overflow-hidden isolate bg-[#2B0F3A] [overflow-x:clip]">
-      <ChapterBg kind="onair" fade={false} />
+      <ChapterBg kind="onair" />
       <div data-noise aria-hidden="true" className="absolute -inset-[160px] opacity-[0.14]" style={{ backgroundImage: NOISE }} />
       <div
         data-scan

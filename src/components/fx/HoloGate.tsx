@@ -30,7 +30,7 @@ export function HoloGate() {
     <div ref={root} aria-hidden="true" className="relative h-[200vh]">
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         <div data-holo className="absolute inset-0 isolate bg-[#2B0F3A]" style={{ clipPath: 'circle(0% at 50% 55%)' }}>
-          <ChapterBg kind="holo" fade={false} className="z-0" />
+          <ChapterBg kind="holo" soft={false} className="z-0" />
           <p
             data-holo-word
             className="brand-name absolute inset-0 z-10 grid place-items-center text-[clamp(4rem,2rem+12vw,13rem)] text-[#FFF6E5] [text-shadow:6px_7px_0_#2B0F3A]"
