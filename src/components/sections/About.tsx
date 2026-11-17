@@ -44,17 +44,18 @@ export function About() {
 
       <div>
         <div className="grid gap-14 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-24">
-          <div className="relative">
-            {/* aplat vermillon décalé derrière le portrait : même langage que le hero */}
-            <div className="absolute -right-4 -bottom-4 size-[88%] rounded-[clamp(40px,5vw,72px)] bg-vermilion max-lg:-right-2 max-lg:-bottom-2" aria-hidden="true" />
-            <figure data-about-photo data-reveal-img className="relative aspect-[4/5] overflow-hidden rounded-[clamp(40px,5vw,72px)] bg-graphite">
+          <div className="relative mx-auto w-full max-w-[460px] lg:mx-0">
+            {/* Même portrait détouré que dans le hero, sans cadre ni bloc de couleur : une seule façon de montrer la photo. */}
+            <figure data-about-photo className="relative">
               <img
-                src="/media/about-portrait.webp"
+                src="/media/portrait/naturel.webp"
                 alt={a.photoAlt}
-                className="size-full object-cover object-[50%_20%]"
+                className="block h-auto w-full select-none"
+                style={{ maskImage: 'linear-gradient(to bottom, #000 82%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, #000 82%, transparent 100%)' }}
                 width={900}
                 height={1059}
                 loading="lazy"
+                draggable={false}
               />
             </figure>
           </div>

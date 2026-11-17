@@ -6,7 +6,6 @@ import { cn } from '../../lib/cn'
  * Un seul fond sur tout le site : la vague de fils fins (Threads, React Bits) vue dans « Je construis. Je le raconte tout
  * haut. ». Violet sur les chapitres crème, lilas sur les nuits prune : même mouvement, même trait, donc une seule identité.
  * Le fond n'est monté que lorsque son chapitre approche de l'écran (un seul canvas par chapitre visible).
- * Seule la porte holographique avant Impact garde un effet à part : c'est une transition, pas un fond.
  * Mouvement réduit : aucun fond (le papier crème ou la nuit prune restent).
  */
 
@@ -34,11 +33,6 @@ export const PRESETS = {
   ia: DARK,
   contact: DARK,
   onair: DARK,
-  // Transition avant Impact : mur de tuiles holographiques violettes.
-  holo: {
-    load: () => mod(import('../vendor/reactbits/HoloMosaic')),
-    props: { color: '#7e3fe4', metalColor: '#e8ebf1', spectrum: 'full', tileSize: 1, gap: 0.08, scatter: 0.3, tilt: 0.35, saturation: 0.1, intensity: 1.25, ripple: 0.6, glitter: 0.85, sheen: 0.8, grain: 0.08, speed: 0.5 },
-  },
 } satisfies Record<string, Preset>
 
 export type ChapterBgKind = keyof typeof PRESETS

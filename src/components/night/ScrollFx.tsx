@@ -3,7 +3,7 @@ import { gsap, SplitText, useGSAP, prefersReducedMotion } from '../../lib/motion
 
 /**
  * Animations de scroll globales de la v6, posées par attributs pour rester déclaratives :
- * - [data-light]      : le texte s'allume mot à mot pendant qu'on scrolle (façon page produit Apple)
+ * - [data-light]      : le texte s'allume mot à mot pendant qu'on scrolle (de 55 % à 100 % d'opacité : toujours lisible)
  * - [data-reveal-img] : l'image s'ouvre depuis un cadre resserré et se cale en place
  * - [data-drift]      : léger décalage de parallaxe sur les grands titres
  * + une barre de progression de lecture en haut de page.
@@ -24,8 +24,8 @@ export function ScrollFx({ deps }: { deps: unknown }) {
         const split = SplitText.create(el, { type: 'words', aria: 'none' })
         gsap.fromTo(
           split.words,
-          { opacity: 0.14 },
-          { opacity: 1, ease: 'none', stagger: 0.08, scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 45%', scrub: true } },
+          { opacity: 0.55 },
+          { opacity: 1, ease: 'none', stagger: 0.08, scrollTrigger: { trigger: el, start: 'top 92%', end: 'bottom 60%', scrub: true } },
         )
         return split
       })
@@ -54,7 +54,7 @@ export function ScrollFx({ deps }: { deps: unknown }) {
 
   return (
     <div className="pointer-events-none fixed inset-x-0 top-0 z-[80] h-[2px]" aria-hidden="true">
-      <div ref={bar} className="h-full origin-left scale-x-0 bg-[linear-gradient(90deg,#ff4fa3,#c13cff,#00e0d1)]" />
+      <div ref={bar} className="h-full origin-left scale-x-0 bg-[linear-gradient(90deg,#FF7EC8,#6C2BFF)]" />
     </div>
   )
 }
