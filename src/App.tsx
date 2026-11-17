@@ -1,24 +1,15 @@
 import { WaveField } from './components/backgrounds/WaveField'
-import { FooderDemo } from './components/sections/FooderDemo'
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router'
 import { SmoothScroll, scrollToId, useLenis } from './lib/SmoothScroll'
 import { ScrollTrigger } from './lib/motion'
+import { belowFold, useBelowFoldRequested } from './lib/belowFold'
 import { LangProvider, useLang } from './i18n/LangProvider'
 import { useT } from './i18n/useT'
 import { usePageMeta } from './hooks/usePageMeta'
 import { Nav } from './components/layout/Nav'
 import { Hero } from './components/hero/Hero'
-import { SwipeDeck } from './components/deck/SwipeDeck'
-import { Impact } from './components/sections/Impact'
 import { MorphMoment } from './components/sections/MorphMoment'
-import { Feats } from './components/sections/Feats'
-import { Studio } from './components/sections/Studio'
-import { AiSpotlight } from './components/ai/AiSpotlight'
-import { ProjectIndex } from './components/lab/ProjectIndex'
-import { Passions } from './components/sections/Passions'
-import { About } from './components/sections/About'
-import { Contact } from './components/sections/Contact'
 import { ProjectPage } from './components/project/ProjectPage'
 import ClickSpark from './components/vendor/reactbits/ClickSpark'
 import { PaperBackground } from './components/layout/PaperBackground'
@@ -29,17 +20,42 @@ import { BurstCanvas } from './components/fx/BurstCanvas'
 import { ToyHint } from './components/fx/ToyHint'
 import { EggLayer } from './components/eggs/EggLayer'
 const ModelPreview = lazy(() => import('./components/three/ModelPreview').then((m) => ({ default: m.ModelPreview })))
-import { NightOnAir } from './components/fx/NightOnAir'
 import { ScrollFx } from './components/night/ScrollFx'
 import { useWebGLSupport } from './hooks/useWebGLSupport'
 
 const SiteScene = lazy(() => import('./components/three/SiteScene'))
+const BelowFold = lazy(() => import('./BelowFold'))
+
+/** Place gardée pour le bas de l'accueil tant que son chunk n'est pas arrivé (pas de saut de page au défilement). */
+const BelowFoldGap = () => <div aria-hidden="true" style={{ height: '100svh' }} />
 
 /** Page d'accueil : au retour d'une carte projet, on retrouve la position quittée ou l'ancre demandée. */
 function Home() {
   const { lang } = useLang()
   const lenis = useLenis()
   usePageMeta(null, null)
+  const requested = useBelowFoldRequested()
+  const [idle, setIdle] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const onMount = useCallback(() => setMounted(true), [])
+  // Un retour de fiche projet ou un lien d'ancre a besoin du bas tout de suite.
+  const pending = useRef(
+    typeof window !== 'undefined' &&
+      (sessionStorage.getItem('scrollTo') !== null || sessionStorage.getItem('homeY') !== null || window.location.hash.length > 1),
+  )
+  const wanted = requested || idle || pending.current
+
+  useEffect(() => {
+    // Le bas arrive quand le navigateur est au repos après le premier affichage, ou dès le premier défilement.
+    const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback
+    const id = ric ? ric(() => setIdle(true), { timeout: 2500 }) : window.setTimeout(() => setIdle(true), 1200)
+    const onScroll = () => belowFold.request()
+    window.addEventListener('scroll', onScroll, { passive: true, once: true })
+    return () => {
+      if (!ric) window.clearTimeout(id)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [])
 
   useEffect(() => {
     const id = requestAnimationFrame(() => ScrollTrigger.refresh())
@@ -47,6 +63,7 @@ function Home() {
   }, [lang])
 
   useEffect(() => {
+    if (!mounted && pending.current) return
     const target = sessionStorage.getItem('scrollTo')
     const y = sessionStorage.getItem('homeY')
     sessionStorage.removeItem('scrollTo')
@@ -60,7 +77,7 @@ function Home() {
       sessionStorage.removeItem('homeY')
     }, 350)
     return () => window.clearTimeout(timer)
-  }, [lenis])
+  }, [lenis, mounted])
 
   return (
     <>
@@ -68,17 +85,13 @@ function Home() {
     <main key={lang} className="[overflow-x:clip]">
       <Hero />
       <MorphMoment />
-      <SwipeDeck />
-      <Impact />
-      <Feats />
-      <Studio />
-      <FooderDemo />
-      <AiSpotlight />
-      <ProjectIndex />
-      <About />
-      <Passions />
-      <NightOnAir />
-      <Contact />
+      {wanted ? (
+        <Suspense fallback={<BelowFoldGap />}>
+          <BelowFold onMount={onMount} />
+        </Suspense>
+      ) : (
+        <BelowFoldGap />
+      )}
     </main>
     <EggLayer />
     </>

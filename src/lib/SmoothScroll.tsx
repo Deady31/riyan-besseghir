@@ -1,3 +1,4 @@
+import { belowFold } from './belowFold'
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import Lenis from 'lenis'
 import { gsap, ScrollTrigger, prefersReducedMotion } from './motion'
@@ -28,8 +29,22 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
 }
 
 export function scrollToId(lenis: Lenis | null, id: string) {
+  const go = (el: HTMLElement) => {
+    // Lenis garde la hauteur de page qu'il a mesurée : après l'arrivée du bas, on la lui fait relire avant de défiler.
+    if (lenis) {
+      lenis.resize()
+      lenis.scrollTo(el, { duration: 1.4, offset: 0 })
+    } else el.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
+  }
   const el = document.getElementById(id)
-  if (!el) return
-  if (lenis) lenis.scrollTo(el, { duration: 1.4, offset: 0 })
-  else el.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
+  if (el) return go(el)
+  // Section du bas pas encore arrivée : on demande son chargement puis on attend qu'elle existe (4 s au plus).
+  belowFold.request()
+  let tries = 0
+  const poll = () => {
+    const late = document.getElementById(id)
+    if (late) return void requestAnimationFrame(() => go(late))
+    if (++tries < 240) requestAnimationFrame(poll)
+  }
+  poll()
 }
