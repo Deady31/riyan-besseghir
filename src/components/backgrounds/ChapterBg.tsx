@@ -1,11 +1,12 @@
 import { lazy, Suspense, useEffect, useRef, useState, type ComponentType } from 'react'
-import { prefersReducedMotion } from '../../lib/motion'
+import { gsap, prefersReducedMotion } from '../../lib/motion'
 import { cn } from '../../lib/cn'
 
 /**
  * Un fond animé par chapitre (React Bits). Chaque fond est un module à part, chargé seulement quand son chapitre
  * approche de l'écran et démonté quand il s'éloigne : un ou deux contextes WebGL vivent à la fois, jamais douze.
- * Le fond est fondu en haut et en bas pour que les chapitres s'enchaînent sans couture.
+ * Chaque fond entre par une vraie révélation au défilement (iris, rideau, balayage, coin) : le passage d'un chapitre
+ * à l'autre se voit, au lieu d'un fondu.
  * Mouvement réduit : aucun fond (le papier crème ou la nuit prune restent).
  */
 
@@ -96,6 +97,17 @@ export const PRESETS = {
 
 export type ChapterBgKind = keyof typeof PRESETS
 
+/** Formes de révélation (clip-path de départ → d'arrivée), attribuées chapitre par chapitre pour varier les entrées. */
+const REVEALS = {
+  iris: ['circle(0% at 50% 100%)', 'circle(150% at 50% 100%)'],
+  curtain: ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)'],
+  sweep: ['inset(0% 100% 0% 0%)', 'inset(0% 0% 0% 0%)'],
+  corner: ['circle(0% at 0% 0%)', 'circle(145% at 0% 0%)'],
+} as const
+const REVEAL_OF: Partial<Record<ChapterBgKind, keyof typeof REVEALS>> = {
+  deck: 'iris', feats: 'sweep', studio: 'curtain', demo: 'corner', ia: 'iris', lab: 'sweep', about: 'curtain', passions: 'corner', contact: 'iris',
+}
+
 const lazies = new Map<ChapterBgKind, ComponentType<Record<string, unknown>>>()
 const lazyFor = (kind: ChapterBgKind) => {
   let c = lazies.get(kind)
@@ -106,7 +118,7 @@ const lazyFor = (kind: ChapterBgKind) => {
   return c
 }
 
-export function ChapterBg({ kind, className, fade = true }: { kind: ChapterBgKind; className?: string; fade?: boolean }) {
+export function ChapterBg({ kind, className, fade = false }: { kind: ChapterBgKind; className?: string; fade?: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const [near, setNear] = useState(false)
   const [reduced] = useState(() => prefersReducedMotion())
@@ -118,6 +130,25 @@ export function ChapterBg({ kind, className, fade = true }: { kind: ChapterBgKin
     io.observe(el)
     return () => io.disconnect()
   }, [reduced])
+
+  // Révélation pilotée par le défilement : le fond s'ouvre pendant que le haut du chapitre monte dans l'écran.
+  useEffect(() => {
+    const el = ref.current
+    const stage = el?.firstElementChild as HTMLElement | null
+    const shape = REVEAL_OF[kind]
+    if (!el || !stage || !shape || reduced) return
+    const [from, to] = REVEALS[shape]
+    const tw = gsap.fromTo(
+      stage,
+      { clipPath: from, scale: 1.12 },
+      { clipPath: to, scale: 1, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 95%', end: 'top 15%', scrub: 0.6 } },
+    )
+    return () => {
+      tw.scrollTrigger?.kill()
+      tw.kill()
+      gsap.set(stage, { clearProps: 'clipPath,transform' })
+    }
+  }, [kind, reduced])
 
   const preset: Preset = PRESETS[kind]
   const Bg = lazyFor(kind)
@@ -132,7 +163,7 @@ export function ChapterBg({ kind, className, fade = true }: { kind: ChapterBgKin
     >
       {/* Le canvas a toujours la taille de l'écran et reste collé pendant toute la traversée du chapitre :
           une section de 5 000 px ne crée pas un canvas de 5 000 px. */}
-      <div className="sticky top-0 h-[100svh] w-full">
+      <div className="sticky top-0 h-[100svh] w-full origin-center will-change-[clip-path]">
         {near && (
           <Suspense fallback={null}>
             <Bg {...preset.props} />

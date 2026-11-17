@@ -71,8 +71,6 @@ export function Hero() {
         {PROFILE.name}, {PROFILE.role}
       </h1>
 
-      {/* Aplat signature, et par-dessus le portrait en estampe (HeroPortrait). */}
-      <div data-slab className="absolute top-[4.75rem] right-[7%] h-[calc(78%-4.75rem)] w-[34%] rounded-[56px] bg-signal max-md:top-36 max-md:right-3 max-md:left-[16%] max-md:h-[36%] max-md:w-auto max-md:rounded-[40px]" aria-hidden="true" />
 
       <HeroPortrait />
 
