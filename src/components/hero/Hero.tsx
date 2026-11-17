@@ -19,11 +19,18 @@ export function Hero() {
     () => {
       if (prefersReducedMotion()) return
       const name = SplitText.create('[data-name]', { type: 'chars', mask: 'chars' })
-      const lines = SplitText.create('[data-statement]', { type: 'lines', mask: 'lines', aria: 'none' })
+      // Les lignes sont recoupées quand la police arrive (autoSplit) : sinon la coupure est calculée avec la police de
+      // secours et un mot se retrouve seul sur sa ligne.
+      const lines = SplitText.create('[data-statement]', {
+        type: 'lines',
+        mask: 'lines',
+        aria: 'none',
+        autoSplit: true,
+        onSplit: (self) => gsap.from(self.lines, { yPercent: 110, duration: 1, ease: 'expo.out', stagger: 0.08, delay: 0.75 }),
+      })
       const tl = gsap.timeline({ delay: 0.2 })
       tl.from('[data-slab]', { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'expo.out' })
         .from(name.chars, { yPercent: 105, duration: 1.2, ease: 'expo.out', stagger: 0.03 }, 0.2)
-        .from(lines.lines, { yPercent: 110, duration: 1, ease: 'expo.out', stagger: 0.08 }, 0.55)
         .from('[data-meta]', { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out', stagger: 0.07 }, 0.8)
 
       gsap.to('[data-name-wrap]', {

@@ -83,20 +83,15 @@ html[data-theme='dark'] .theme-follow {
   --color-signal-soft: #6C2BFF;
 }
 
-/* Portrait : les plaques s'impriment l'une après l'autre, chacune d'abord décalée, puis calée. */
-@keyframes print-in {
-  from { opacity: 0; transform: translate(-14px, 9px); filter: blur(4px); }
-  to { opacity: 1; transform: none; filter: none; }
+/* Portrait : il se colle une seule fois (petite montée, rotation qui se pose), puis ne bouge plus. */
+@keyframes sticker-in {
+  /* le centrage horizontal passe par la propriété `translate` (Tailwind) : l'animation ne touche que `transform` */
+  from { opacity: 0; transform: translateY(26px) rotate(-4deg) scale(0.96); }
+  to { opacity: 1; transform: none; }
 }
-@keyframes registration {
-  from { transform: translate(0, 0); }
-  to { transform: translate(2.5px, -2px); }
-}
-.print-fill { animation: print-in 0.9s var(--ease-expo) 0.25s both; }
-.print-dots { animation: print-in 0.9s var(--ease-expo) 0.75s both, registration 7s ease-in-out 1.8s infinite alternate; }
-.print-ink { animation: print-in 0.9s var(--ease-expo) 1.25s both; }
+.sticker-in { animation: sticker-in 0.9s var(--ease-spring) 0.3s both; }
 @media (prefers-reduced-motion: reduce) {
-  .print-fill, .print-dots, .print-ink { animation: none; }
+  .sticker-in { animation: none; }
 }
 
 /* Bulle « Attrape-moi » : petite pastille avec une queue vers l'objet. */
