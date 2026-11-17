@@ -161,9 +161,9 @@ export function SwipeDeck() {
       <Anchor kind="mp3" className="bottom-[6%] left-[2%] w-[9vw] max-md:hidden" par={0.3} tilt={0.7} />
       <SectionHeading index="00" label={t.deck.label} title={<TitleParts parts={t.deck.title} />} intro={t.deck.intro} />
 
-      <div className="grid items-start gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+      <div className="flex flex-col items-center gap-12">
         <div
-          className="relative mx-auto aspect-[4/5] w-full max-w-[420px]"
+          className="relative mx-auto aspect-[4/5] w-full max-w-[440px]"
           role="group"
           aria-roledescription="deck"
           aria-label={done ? t.deck.done : t.deck.count(index + 1, deck.length)}
@@ -213,9 +213,9 @@ export function SwipeDeck() {
           )}
         </div>
 
-        <div className="flex flex-col gap-10 lg:pt-6">
+        <div className="flex w-full max-w-[640px] flex-col items-center gap-8">
           {!done && current && (
-            <div className="flex items-center justify-center gap-5 lg:justify-start">
+            <div className="flex items-center justify-center gap-5">
               <button
                 type="button"
                 onClick={() => decide(-1)}
@@ -237,13 +237,13 @@ export function SwipeDeck() {
               </button>
             </div>
           )}
-          <p className="label text-center text-mist lg:text-left">
+          <p className="label text-center text-mist">
             {done ? t.deck.done : `${t.deck.count(index + 1, deck.length)} · ${t.deck.hint}`}
           </p>
 
-          <div>
+          <div className="w-full text-center">
             <p className="label mb-4 text-paper">{t.deck.kept(kept.length)}</p>
-            <ul className="flex flex-wrap gap-3">
+            <ul className="flex flex-wrap justify-center gap-3">
               {kept.map((p, i) => (
                 <li key={p.id}>
                   <button
