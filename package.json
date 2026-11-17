@@ -9,7 +9,11 @@
     "lint": "oxlint",
     "models": "node tools/models/ingest.mjs",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "qa:shot": "node tools/qa/shot.mjs",
+    "qa:perf": "node tools/qa/perf.mjs",
+    "qa:check": "node tools/qa/check.mjs",
+    "qa:build": "tsc -b && vite build --mode qa && node scripts/postbuild.mjs"
   },
   "dependencies": {
     "@fontsource-variable/rubik": "^5.3.0",

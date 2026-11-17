@@ -1,0 +1,27 @@
+{
+  "enabledPlugins": {
+    "understand-anything@understand-anything": false,
+    "security-guidance@claude-plugins-official": false,
+    "code-review@claude-plugins-official": false
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npx vitest *)",
+      "Bash(npx tsc *)",
+      "Bash(node tools/*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add *)",
+      "Bash(git checkout *)",
+      "Bash(git push -u origin v*)"
+    ],
+    "deny": [
+      "Read(./public/media/**)",
+      "Read(./dist/**)",
+      "Read(./node_modules/**)",
+      "Read(./package-lock.json)"
+    ]
+  }
+}

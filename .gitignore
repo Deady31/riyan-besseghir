@@ -32,3 +32,9 @@ tools/models/inbox/*
 
 .vercel
 .env*
+
+# Captures des scripts de vérification
+tools/qa/out
+
+# URL publique de la démo FOODER pour le build de vérification (aucun secret)
+!.env.qa
