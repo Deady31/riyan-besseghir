@@ -1,22 +1,15 @@
 import { useRef } from 'react'
-import { Lock } from 'lucide-react'
 import { gsap, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { useContent } from '../../data/profile'
 import { TitleParts, useT } from '../../i18n/useT'
-import { BigTile } from '../ui/BigTile'
 import { Anchor } from '../three/Anchor'
 import { SectionHeading } from '../ui/SectionHeading'
 import { RevealText } from '../ui/RevealText'
 
-const REDACTED = [
-  ['92%', '74%', '58%'],
-  ['84%', '96%', '46%'],
-]
-
 export function Feats() {
   const root = useRef<HTMLElement>(null)
   const t = useT()
-  const { hackathon, teasers } = useContent().feats
+  const { hackathon } = useContent().feats
 
   useGSAP(
     () => {
@@ -47,14 +40,6 @@ export function Feats() {
         stagger: 0.1,
         scrollTrigger: { trigger: '[data-delivered]', start: 'top 82%', once: true },
       })
-      const tl = gsap.timeline({ scrollTrigger: { trigger: '[data-teasers]', start: 'top 80%', once: true } })
-      tl.from('[data-teaser]', { y: 50, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.15 })
-        .from('[data-teaser] .redacted-bar', { scaleX: 0, transformOrigin: 'left center', duration: 0.7, ease: 'power3.out', stagger: 0.08 }, 0.35)
-        .from(
-          '[data-teaser] .classified-stamp',
-          { scale: 2.2, opacity: 0, duration: 0.4, ease: 'power4.in', stagger: 0.15, clearProps: 'transform,opacity' },
-          0.9,
-        )
     },
     { scope: root },
   )
@@ -107,50 +92,6 @@ export function Feats() {
             <p className="mt-8 leading-relaxed text-mist">{hackathon.outcome}</p>
           </div>
         </div>
-      </div>
-
-      <div className="mt-32 grid gap-8 px-[var(--gutter)]">
-        <p>
-          <span className="sticker bg-vermilion text-paper">{t.feats.soon}</span>
-        </p>
-        <ul data-teasers className="grid gap-4 md:grid-cols-2">
-          {teasers.map((teaser, i) => (
-            <li key={teaser.title} data-teaser>
-              <BigTile tone="paper" inner="classified group relative overflow-hidden md:!p-11">
-                <div className="label flex items-center justify-between gap-4">
-                  <span className="sticker bg-paper text-ink">
-                    <Lock className="size-3" aria-hidden="true" />
-                    {t.feats.classified}
-                  </span>
-                  <span className="text-mist">{teaser.file}</span>
-                </div>
-
-                <h3 className="mt-14 text-[clamp(1.75rem,1rem+1.6vw,2.75rem)] tracking-[-0.03em]">{teaser.title}</h3>
-
-                <div className="mt-6 space-y-2.5" role="img" aria-label={t.feats.redactedAria}>
-                  {REDACTED[i % REDACTED.length].map((w, j) => (
-                    <span key={j} className="redacted-bar block h-3" style={{ width: w, animationDelay: `${j * 0.35}s` }} />
-                  ))}
-                </div>
-
-                <p className="label mt-10 flex items-center gap-2.5 text-paper">
-                  <span className="relative flex size-2">
-                    <span className="absolute inline-flex size-full animate-ping rounded-full bg-signal opacity-70 motion-reduce:hidden" />
-                    <span className="relative inline-flex size-2 rounded-full bg-signal" />
-                  </span>
-                  {teaser.hint}
-                </p>
-
-                <span
-                  className="classified-stamp label pointer-events-none absolute right-6 bottom-6 -rotate-12 md:right-9 md:bottom-8 rounded-full border-2 border-signal/60 px-4 py-1.5 text-signal"
-                  aria-hidden="true"
-                >
-                  {t.feats.classified}
-                </span>
-              </BigTile>
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   )

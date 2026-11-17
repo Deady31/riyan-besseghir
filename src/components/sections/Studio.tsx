@@ -35,7 +35,8 @@ export function Studio() {
   const withLink = projects.filter((p) => p.link).length
   const withRepo = projects.filter((p) => p.repo).length
   const latest = projects.filter((p) => p.highlight === 'Nouveau' || p.highlight === 'New').slice(0, 6)
-  const log = [...latest, ...projects.filter((p) => !latest.includes(p))].slice(0, 6)
+  const SHOWN_ELSEWHERE = ['fooder', 'chatbot-cv']
+  const log = [...latest, ...projects.filter((p) => !latest.includes(p))].filter((p) => !SHOWN_ELSEWHERE.includes(p.id)).slice(0, 4)
 
   return (
     <section id="studio" className="relative isolate px-[var(--gutter)] py-32 md:py-48" aria-labelledby="studio-title">

@@ -11,7 +11,8 @@ import { Anchor } from '../three/Anchor'
 import { AfkSkater } from './AfkSkater'
 
 // Trois cartes seulement : on arrive vite au paquet vide et à son animation.
-const DECK_IDS = ['chatbot-cv', 'fooder', 'finger'] as const
+// Pas FOODER (il a sa démo juste avant) ni Méca-Riyan (section IA) : le deck montre trois autres projets.
+const DECK_IDS = ['lio', 'one-piece', 'finger'] as const
 
 /** Fond de carte par projet : la palette pop tourne pour que chaque carte ait sa couleur. */
 // pas de citron en grand aplat (illisible) : il reste sur les stickers et petits boutons

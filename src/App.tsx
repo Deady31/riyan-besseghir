@@ -4,6 +4,7 @@ import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router'
 import { SmoothScroll, scrollToId, useLenis } from './lib/SmoothScroll'
 import { ScrollTrigger } from './lib/motion'
 import { belowFold, useBelowFoldRequested } from './lib/belowFold'
+import { useSectionSnap } from './hooks/useSectionSnap'
 import { LangProvider, useLang } from './i18n/LangProvider'
 import { useT } from './i18n/useT'
 import { usePageMeta } from './hooks/usePageMeta'
@@ -34,6 +35,7 @@ function Home() {
   const { lang } = useLang()
   const lenis = useLenis()
   usePageMeta(null, null)
+  useSectionSnap(lenis, true)
   const requested = useBelowFoldRequested()
   const [idle, setIdle] = useState(false)
   const [mounted, setMounted] = useState(false)
