@@ -40,7 +40,7 @@ export function Contact() {
           <span className="label text-ink/80">(07)</span>
         </p>
 
-        <RevealText as="h2" className="display mt-8 max-w-5xl !text-ink text-[length:var(--text-title)] [&_em]:!text-[#D8C8FF]">
+        <RevealText as="h2" className="display title-outline mt-8 max-w-5xl text-[length:var(--text-title)] [&_em]:!text-[#EADFFF]">
           <TitleParts parts={t.contact.title} />
         </RevealText>
         <p className="mt-6 max-w-xl text-lg text-ink/85">

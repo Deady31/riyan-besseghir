@@ -27,7 +27,7 @@
   --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
   --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
 
-  --font-display: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Space Grotesk Variable', 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
   --font-brand: 'Space Grotesk Variable', 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
   --font-editorial: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Rubik Variable', ui-sans-serif, system-ui, sans-serif;
@@ -202,9 +202,9 @@ body {
 
 .display {
   font-family: var(--font-display);
-  font-weight: 900;
+  font-weight: 700;
   text-transform: none;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.05em;
   line-height: 0.95;
   color: var(--color-paper);
 }
@@ -232,6 +232,25 @@ h2, h3 {
   letter-spacing: -0.05em;
   line-height: 0.88;
   text-transform: none;
+}
+
+/* Grands titres : lettres crème, gros contour prune, ombre prune décalée : lisibles sur le crème comme sur la nuit. Le mot en
+   accent prend la couleur forte du monde où il est (violet sur le crème, lilas sur la nuit). Les masques de ligne de SplitText
+   sont élargis pour ne couper ni le contour ni l'ombre. */
+.title-outline {
+  color: #fff6e5;
+  -webkit-text-stroke: 0.09em #2b0f3a;
+  paint-order: stroke fill;
+  text-shadow: 0.07em 0.08em 0 #2b0f3a;
+  /* le contour mange de la place : on rouvre un peu l'espacement serré de .display */
+  letter-spacing: -0.025em;
+}
+.title-outline em {
+  color: var(--color-signal);
+}
+.title-outline > div {
+  padding: 0.1em 0.14em 0.18em 0.1em;
+  margin: -0.1em -0.14em -0.18em -0.1em;
 }
 
 /* Lettres claires cernées de prune, avec une ombre violette décalée : lisible sur la crème comme sur le violet. */

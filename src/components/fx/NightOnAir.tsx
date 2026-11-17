@@ -72,7 +72,7 @@ export function NightOnAir() {
   if (reduced) return null
 
   const label = t.night.word
-  const glyph = 'display absolute inset-0 grid place-items-center text-[clamp(3.5rem,17vw,15rem)] leading-none font-black tracking-[0.04em] uppercase'
+  const glyph = 'display absolute inset-0 grid place-items-center text-[clamp(3.5rem,17vw,15rem)] leading-none font-bold tracking-[0.04em] uppercase'
 
   return (
     <div ref={root} role="img" aria-label={t.night.aria} className="theme-dark relative z-20 h-[100svh] overflow-hidden isolate bg-[#2B0F3A] [overflow-x:clip]">
