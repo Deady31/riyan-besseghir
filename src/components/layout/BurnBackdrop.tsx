@@ -504,7 +504,7 @@ export function BurnBackdrop({ deps }: { deps: string }) {
 
     // Les seuils sont des positions dans la page : on les relit quand le DOM ou la taille changent, pas à chaque image.
     const scan = () => {
-      sections = [...document.querySelectorAll<HTMLElement>('main > section')].slice(0, N)
+      sections = [...document.querySelectorAll<HTMLElement>('main > section, main > .pin-spacer > section')].slice(0, N)
       if (sections.length === 0) return
       sectionZones = sections.map((s) => ZONES[s.id] ?? ZONES.default)
       const bounds = new Array(N).fill(1e9)
