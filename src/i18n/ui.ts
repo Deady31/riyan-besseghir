@@ -1,4 +1,8 @@
 import type { Lang } from './LangProvider'
+import { PROJECTS } from '../data/projects'
+
+/** Nombre de projets du site : les textes le citent, il ne doit jamais être écrit à la main. */
+const N = PROJECTS.length
 
 export type Title = readonly [string, string, string?]
 
@@ -12,7 +16,7 @@ const fr = {
   },
   clockAria: 'Heure locale à Toulouse',
   hero: {
-    statement: 'AI Product Manager. Je fais passer l’IA du slide à la prod : chez Shippingbo, en hackathon, et la nuit sur 39 projets.',
+    statement: `AI Product Manager. Je fais passer l’IA du slide à la prod : chez Shippingbo, en hackathon, et la nuit sur ${N} projets.`,
     cta: { work: 'Voir mes projets', cv: 'Télécharger le CV' },
     scroll: '(Défiler)',
     aria: 'Introduction',
@@ -30,12 +34,12 @@ const fr = {
     done: 'Paquet terminé !',
     restart: 'Rejouer le paquet',
     afk: 'Bon… on rejoue ?',
-    hint: 'Glisse la carte, ou utilise ← → · les 39 projets sont dans l’index, plus bas',
+    hint: `Glisse la carte, ou utilise ← → · les ${N} projets sont dans l’index, plus bas`,
     count: (i: number, n: number) => `${i} / ${n}`,
   },
   morph: {
     aria: 'Chiffre clé',
-    sr: '39 projets construits.',
+    sr: `${N} projets construits.`,
     line1: 'projets construits, de l’idée au produit livré.',
     line2: 'Agents IA, apps grand public, jeux, outils : chacun est une carte à collectionner, plus bas.',
   },
@@ -50,7 +54,7 @@ const fr = {
   gate: {
     eyebrow: 'Bienvenue',
     title: ['Vous êtes ici pour ', 'recruter', ' ou pour découvrir ?'] as Title,
-    recruit: { tag: 'Je recrute', title: 'La version courte', text: 'Qui je suis, mes chiffres, mes expériences, et mon agent qui répond à vos questions. Une minute de lecture.', cta: 'Voir la version recruteur' },
+    recruit: { tag: 'Je recrute', title: 'La version courte', text: 'Qui je suis, mes chiffres, mes expériences et mon agent qui répond à vos questions. Une minute de lecture.', cta: 'Voir la version recruteur' },
     discover: { tag: 'Je découvre', title: 'Le portfolio complet', text: 'Le parcours interactif : projets, démos jouables, objets 3D. Plus long, plus ludique.', cta: 'Entrer dans le portfolio' },
     remember: 'Votre choix est mémorisé. Vous pouvez en changer à tout moment depuis le menu.',
   },
@@ -146,7 +150,7 @@ const fr = {
   ai: {
     label: 'Projets IA',
     title: ['Des agents qui lisent, cherchent ', 'et agissent.'] as Title,
-    intro: 'Quatre produits IA que j’ai cadrés et construits moi-même, de l’idée au produit qui tourne.',
+    intro: 'Un agent que j’ai cadré et construit moi-même, de l’idée au produit qui tourne.',
     featured: '(01) À la une',
     open: (t: string) => `Ouvrir la fiche ${t}`,
   },
@@ -175,7 +179,7 @@ const fr = {
     lead: 'J’ai 25 ans et je suis Product Manager. Ce qui m’intéresse, c’est le moment où une idée devient un produit que quelqu’un utilise vraiment.',
     paragraphs: [
       'Chez Shippingbo, j’ai piloté jusqu’à trois équipes produit en parallèle pendant dix mois : cadrer, prioriser, écrire les specs, et surtout faire passer l’IA de la démo à la prod.',
-      'Le soir, je continue avec Figma et Claude Code : 39 projets, des agents IA, un jeu vidéo, la traduction d’un jeu japonais. Comprendre la technique de l’intérieur me rend meilleur PM.',
+      `Le soir, je continue avec Figma et Claude Code : ${N} projets, des agents IA, un jeu vidéo, la traduction d’un jeu japonais. Comprendre la technique de l’intérieur me rend meilleur PM.`,
       'Prochaine étape : rejoindre une équipe produit qui construit l’IA de demain, et transmettre ce que j’apprends en chemin.',
     ],
     facts: [
@@ -240,7 +244,7 @@ const en: UI = {
   },
   clockAria: 'Local time in Toulouse',
   hero: {
-    statement: 'AI Product Manager. I take AI from slide deck to production: at Shippingbo, at hackathons, and at night across 39 projects.',
+    statement: `AI Product Manager. I take AI from slide deck to production: at Shippingbo, at hackathons, and at night across ${N} projects.`,
     cta: { work: 'See my work', cv: 'Download CV' },
     scroll: '(Scroll)',
     aria: 'Introduction',
@@ -258,12 +262,12 @@ const en: UI = {
     done: 'Deck finished!',
     restart: 'Play again',
     afk: 'So… again?',
-    hint: 'Drag the card, or use ← → · all 39 projects are in the index below',
+    hint: `Drag the card, or use ← → · all ${N} projects are in the index below`,
     count: (i: number, n: number) => `${i} / ${n}`,
   },
   morph: {
     aria: 'Key figure',
-    sr: '39 projects built.',
+    sr: `${N} projects built.`,
     line1: 'projects built, from idea to shipped product.',
     line2: 'AI agents, consumer apps, games, tools: each one is a collectible card, further down.',
   },
@@ -278,7 +282,7 @@ const en: UI = {
   gate: {
     eyebrow: 'Welcome',
     title: ['Are you here to ', 'hire', ' or to explore?'] as Title,
-    recruit: { tag: 'I’m hiring', title: 'The short version', text: 'Who I am, my numbers, my experience, and my agent that answers your questions. One minute to read.', cta: 'See the recruiter version' },
+    recruit: { tag: 'I’m hiring', title: 'The short version', text: 'Who I am, my numbers, my experience and my agent that answers your questions. One minute to read.', cta: 'See the recruiter version' },
     discover: { tag: 'I’m exploring', title: 'The full portfolio', text: 'The interactive tour: projects, playable demos, 3D objects. Longer, more playful.', cta: 'Enter the portfolio' },
     remember: 'Your choice is remembered. You can change it any time from the menu.',
   },
@@ -374,7 +378,7 @@ const en: UI = {
   ai: {
     label: 'AI projects',
     title: ['Agents that read, search ', 'and act.'],
-    intro: 'Four AI products I scoped and built myself, from idea to something that actually runs.',
+    intro: 'An agent I scoped and built myself, from idea to something that actually runs.',
     featured: '(01) Featured',
     open: (t: string) => `Open ${t}`,
   },
@@ -403,7 +407,7 @@ const en: UI = {
     lead: 'I’m 25 and a Product Manager. What I care about is the moment an idea becomes a product someone actually uses.',
     paragraphs: [
       'At Shippingbo, I led up to three feature teams in parallel for ten months: scoping, prioritising, writing specs, and above all taking AI from demo to production.',
-      'At night I keep going with Figma and Claude Code: 39 projects, AI agents, a video game, a fan translation of a Japanese game. Understanding the tech from the inside makes me a better PM.',
+      `At night I keep going with Figma and Claude Code: ${N} projects, AI agents, a video game, a fan translation of a Japanese game. Understanding the tech from the inside makes me a better PM.`,
       'Next step: joining a product team building tomorrow’s AI, and passing on what I learn along the way.',
     ],
     facts: [

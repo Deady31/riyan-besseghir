@@ -59,7 +59,7 @@ const CONTENT = {
     },
     feats: {
       hackathon: {
-        event: 'Hackathon IA for Impact · La Mêlée Numérique · défi BPCE Solutions informatiques',
+        event: 'Hackathon AI for Impact · La Mêlée Numérique · défi BPCE Solutions informatiques',
         date: 'Octobre 2026',
         duration: '30 heures',
         brief: 'Un assistant conversationnel de confiance pour guider clients et prospects vers la bonne réponse, la bonne action et le bon relais humain.',
@@ -92,7 +92,7 @@ const CONTENT = {
       ],
       features: [
         { name: 'Naia, the AI assistant', text: 'A conversational assistant on the Claude API, connected in real time to account data: stock, orders and returns in plain language. Sole PM from discovery to launch, 4 key accounts interviewed: −56% level-1 support tickets in production.' },
-        { name: 'AI Analyses', text: 'Readable audits without spreadsheet work: sales, products, returns and shipping analysed automatically to surface anomalies, drifts and priorities.' },
+        { name: 'AI Analyses', text: 'Readable audits without spreadsheet work: sales, products, returns and shipping analysed automatically to surface anomalies, deviations and priorities.' },
         { name: 'Sales Classes', text: 'Automatic ABCD segmentation of SKUs by real turnover: strategic products, dormant items and SKUs to watch.' },
         { name: 'Duplicate orders', text: 'Automatic duplicate detection to make operations more reliable.' },
       ],

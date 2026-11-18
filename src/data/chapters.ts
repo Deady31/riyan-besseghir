@@ -1,7 +1,9 @@
+import { PROJECTS } from './projects'
+
 /** Les chapitres de l'accueil, dans l'ordre de la page : une seule liste pour le menu et le rail de gauche. */
 export const CHAPTERS = [
   { id: 'top', fr: 'Intro', en: 'Intro' },
-  { id: 'morph', fr: 'Trente-neuf', en: 'Thirty-nine' },
+  { id: 'morph', fr: String(PROJECTS.length), en: String(PROJECTS.length) },
   { id: 'deck', fr: 'Le deck', en: 'The deck' },
   { id: 'impact', fr: 'Impact', en: 'Impact' },
   { id: 'hauts-faits', fr: 'Hackathon IA', en: 'AI hackathon' },

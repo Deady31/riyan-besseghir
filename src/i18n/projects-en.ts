@@ -174,7 +174,7 @@ export const PROJECTS_EN: Record<string, Override> = {
   portfolios: {
     title: 'Portfolios v3 & v4',
     tagline: 'Previous versions of this site.',
-    description: 'A dark lime v3, and a macOS-desktop v4 with draggable windows. They taught me what not to do.',
+    description: 'A dark, lime-green v3, and a macOS-desktop v4 with draggable windows. They taught me what not to do.',
   },
   'garage-dream': {
     tagline: 'My dream garage, on one page.',

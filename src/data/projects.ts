@@ -34,7 +34,7 @@ export const PROJECTS: Project[] = [
     title: 'Méca-Riyan',
     tagline: 'Mon CV ne répond plus, alors je l’ai remplacé par un agent.',
     description:
-      'Agent conversationnel en RAG qui connaît tout mon parcours et répond à la première personne, sans rien inventer. Base de connaissance vectorisée dans Supabase (pgvector), génération sur Groq avec Gemini en secours et une cascade de modèles pour survivre aux quotas. Chaque question sans réponse m’alerte sur Discord, et un tableau de bord me montre les conversations pour enrichir la base.',
+      'Agent conversationnel en RAG qui connaît tout mon parcours et répond à la première personne, sans rien inventer. Base de connaissances vectorisée dans Supabase (pgvector), génération sur Groq avec Gemini en secours et une cascade de modèles pour survivre aux quotas. Chaque question sans réponse m’alerte sur Discord, et un tableau de bord me montre les conversations pour enrichir la base.',
     category: 'ia',
     stack: ['Next.js', 'Groq', 'Gemini', 'Supabase pgvector', 'RAG'],
     status: 'En ligne',
@@ -177,7 +177,7 @@ export const PROJECTS: Project[] = [
     title: 'WANDR',
     tagline: 'Transforme ta ville en terrain de jeu.',
     description:
-      'Exploration urbaine gamifiée : on marche, on découvre des lieux, on collecte des stamps et on grimpe au classement. Carte révélée en temps réel autour de soi.',
+      'Exploration urbaine gamifiée : on marche, on découvre des lieux, on collecte des tampons et on grimpe au classement. Carte révélée en temps réel autour de soi.',
     category: 'consumer',
     stack: ['Expo', 'React Native', 'Firebase', 'Maps'],
     status: 'MVP',
@@ -314,7 +314,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'undercover',
     title: 'Undercover Manga',
-    tagline: 'Trouvez l’imposteur parmi vos amis.',
+    tagline: 'Trouve l’imposteur parmi tes amis.',
     description: 'Jeu de déduction jusqu’à 12 joueurs sur 10 univers manga, avec des mots cohérents et piégeux.',
     category: 'jeux',
     stack: ['Next.js', 'Tailwind'],

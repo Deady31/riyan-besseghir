@@ -1,9 +1,13 @@
+import { PROJECTS } from '../../data/projects'
 import { useState } from 'react'
 import { IPhoneFrame } from '../ui/IPhoneFrame'
 import { useLang } from '../../i18n/LangProvider'
 import { useT } from '../../i18n/useT'
 
 const LIVE_URL = 'https://riyan-cv-chatbot.vercel.app'
+
+/** Le nombre de projets suit les données du site. */
+const N = PROJECTS.length
 
 type Msg = { from: 'user' | 'bot'; text: string; source?: string }
 
@@ -17,7 +21,7 @@ const SCRIPT_EN: Msg[] = [
   { from: 'user', text: 'And outside of work?' },
   {
     from: 'bot',
-    text: 'I build. An agent that found me a Toulouse–Naples flight for €155 instead of €552, a life dashboard coached by Claude, a Godot game… 35 projects in total.',
+    text: `I build. An agent that found me a Toulouse–Naples flight for €155 instead of €552, a life dashboard coached by Claude, a Godot game… ${N} projects in total.`,
     source: 'projects.md',
   },
   { from: 'user', text: 'Why you?' },
@@ -32,19 +36,19 @@ const SCRIPT_FR: Msg[] = [
   { from: 'user', text: 'Parle-moi de ton expérience chez Shippingbo.' },
   {
     from: 'bot',
-    text: '10 mois comme PM/PO, jusqu’à 3 équipes produit en parallèle. J’ai piloté Shippingbo Intelligence, le bundle de quatre features IA, dont Naia, une assistante sur l’API Claude qui a fait baisser les tickets support N1 de 56 % en production.',
+    text: '10 mois comme PM/PO, jusqu’à 3 équipes produit en parallèle. J’ai piloté Shippingbo Intelligence, le bundle de quatre fonctionnalités IA, dont Naia, une assistante sur l’API Claude qui a fait baisser les tickets support N1 de 56 % en production.',
     source: 'parcours.md',
   },
   { from: 'user', text: 'Et en dehors du boulot ?' },
   {
     from: 'bot',
-    text: 'Je construis. Un agent qui m’a trouvé un Toulouse–Naples à 155 € au lieu de 552 €, un dashboard de vie coaché par Claude, un jeu Godot… 35 projets au total.',
+    text: `Je construis. Un agent qui m’a trouvé un Toulouse–Naples à 155 € au lieu de 552 €, un dashboard de vie coaché par Claude, un jeu Godot… ${N} projets au total.`,
     source: 'projets.md',
   },
   { from: 'user', text: 'Pourquoi toi ?' },
   {
     from: 'bot',
-    text: 'Parce que je ne m’arrête pas au cadrage. Au hackathon IA for Impact, j’ai défini le MVP, je l’ai prototypé avec Claude Code et je l’ai pitché devant le jury, en 30 heures.',
+    text: 'Parce que je ne m’arrête pas au cadrage. Au hackathon AI for Impact, j’ai défini le MVP, je l’ai prototypé avec Claude Code et je l’ai pitché devant le jury, en 30 heures.',
     source: 'hauts-faits.md',
   },
 ]
