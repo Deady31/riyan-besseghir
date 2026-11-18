@@ -113,30 +113,30 @@ export default function Recruiter() {
 
   return (
     <div className="min-h-svh bg-ink pb-28 text-paper md:pb-0">
-      <header className="sticky top-0 z-40 border-b border-paper/15 bg-ink/90 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-[var(--gutter)] py-3">
-          <span className="flex items-center gap-2 text-sm font-semibold">
-            <span className="grid size-9 place-items-center rounded-full border border-paper font-bold" aria-hidden="true">
-              R
-            </span>
-            <span className="hidden sm:inline">riyan.world</span>
-            <span className="label ml-2 hidden text-mist md:inline">{r.eyebrow}</span>
-          </span>
-          <div className="flex items-center gap-3">
+      <header className="sticky top-0 z-40 bg-ink/90 backdrop-blur">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-[var(--gutter)] py-4">
+          <span className="text-[15px] font-semibold tracking-[-0.01em] whitespace-nowrap">{profile.name}</span>
+          <nav aria-label={r.eyebrow} className="flex items-center gap-5 text-[15px] font-medium">
+            {tiles
+              .filter((x) => x.id !== 'numbers')
+              .map((x) => (
+                <button key={x.id} type="button" onClick={() => setPanel(x.id)} className="hidden underline-offset-4 hover:underline md:inline">
+                  {x.title}
+                </button>
+              ))}
             <LangSwitch />
-            <button type="button" onClick={toFull} className="pop min-h-11 bg-paper px-4 text-sm font-semibold whitespace-nowrap text-ink">
+            <button type="button" onClick={toFull} className="whitespace-nowrap underline underline-offset-4">
               {r.full} →
             </button>
-          </div>
+          </nav>
         </div>
       </header>
 
-      <main className="relative z-0 mx-auto max-w-5xl px-[var(--gutter)] pt-8 pb-10 md:pt-14">
-        <p className="label text-mist">{r.eyebrow}</p>
-        <h1 className="display mt-2 text-[clamp(2.6rem,1.4rem+5vw,5.2rem)]">{profile.name}</h1>
-        <p className="display text-[clamp(1.5rem,1rem+2vw,2.6rem)] !text-signal">{role}</p>
-        <p className="mt-4 max-w-2xl text-[clamp(1.05rem,1rem+0.4vw,1.3rem)] leading-snug">{summary}</p>
-        <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-base font-semibold">
+      <main className="relative z-0 mx-auto max-w-5xl px-[var(--gutter)] pt-10 pb-12 md:pt-20">
+        <h1 className="display text-[clamp(2.8rem,1.2rem+7vw,6.4rem)] leading-[0.95] text-balance">{role}</h1>
+        <p className="display mt-3 text-[clamp(1.4rem,1rem+1.8vw,2.4rem)] !text-signal">{profile.name}</p>
+        <p className="mt-6 max-w-xl text-[clamp(1.05rem,1rem+0.4vw,1.3rem)] leading-snug text-mist">{summary}</p>
+        <p className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-base font-semibold">
           <span className="inline-flex items-center gap-2.5">
             <span className="size-2.5 rounded-full bg-vermilion" aria-hidden="true" />
             {profile.availability}
@@ -144,33 +144,44 @@ export default function Recruiter() {
           <span className="font-normal text-mist">{profile.location}</span>
         </p>
 
-        <div className="mt-6 flex flex-wrap gap-3">
-          <button type="button" onClick={() => setPanel('projects')} className="pop min-h-12 bg-signal px-6 text-sm font-bold text-ink">
+        <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <button type="button" onClick={() => setPanel('projects')} className="pop min-h-12 bg-signal px-7 text-sm font-bold text-ink">
             {r.seeProjects} →
           </button>
-          <button type="button" onClick={() => setPanel('agent')} className="pop inline-flex min-h-12 items-center gap-2 bg-[#EADFFF] px-6 text-sm font-bold text-paper max-md:hidden">
+          <button type="button" onClick={() => setPanel('agent')} className="hidden min-h-12 items-center gap-2 text-sm font-bold underline underline-offset-4 md:inline-flex">
             <MessageCircle className="size-4" aria-hidden="true" />
             {r.askAgent}
           </button>
-          <a href={profile.links.cv} download className="pop inline-flex min-h-12 items-center gap-2 bg-paper px-6 text-sm font-bold text-ink max-md:hidden">
+          <a href={profile.links.cv} download className="hidden min-h-12 items-center gap-2 text-sm font-bold underline underline-offset-4 md:inline-flex">
             <Download className="size-4" aria-hidden="true" />
             {r.cv}
           </a>
         </div>
 
-        <h2 className="display mt-10 text-[clamp(1.3rem,1rem+1vw,1.8rem)]">{r.ask}</h2>
-        <ul className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-5">
-          {tiles.map((x) => (
-            <li key={x.id}>
-              <button
-                type="button"
-                onClick={() => setPanel(x.id)}
-                className="group flex h-full min-h-[8.5rem] w-full flex-col justify-between rounded-[24px] border-[2.5px] border-[#2B0F3A] bg-[#EADFFF] p-4 text-left shadow-[var(--shadow-card)] transition-transform duration-200 hover:-translate-y-1 focus-visible:-translate-y-1"
-              >
-                <span className="text-signal">{x.icon}</span>
-                <span>
-                  <span className="display block text-[1.25rem]">{x.title}</span>
-                  <span className="mt-0.5 block text-[13px] leading-tight text-mist">{x.hint}</span>
+        <ul className="mt-12 grid grid-cols-3 gap-4 border-y border-paper/20 py-6 md:mt-16">
+          {impact.stats.filter((s) => s.value !== 10).slice(0, 3).map((s) => (
+            <li key={s.label}>
+              <button type="button" onClick={() => setPanel('numbers')} className="block text-left">
+                <span className="display block text-[clamp(1.8rem,1.2rem+3vw,3.6rem)] !text-signal tabular-nums">
+                  {s.prefix}
+                  {s.value}
+                  {s.suffix}
+                </span>
+                <span className="mt-1 block text-[13px] leading-tight text-mist md:text-sm">{s.label}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        <h2 className="sr-only">{r.ask}</h2>
+        <ul>
+          {tiles.filter((x) => x.id !== 'numbers').map((x) => (
+            <li key={x.id} className="border-b border-paper/20">
+              <button type="button" onClick={() => setPanel(x.id)} className="group flex min-h-[4.5rem] w-full items-center justify-between gap-4 py-4 text-left">
+                <span className="display text-[clamp(1.6rem,1.1rem+2.4vw,3rem)] transition-transform duration-200 group-hover:translate-x-2">{x.title}</span>
+                <span className="flex items-center gap-3 text-sm text-mist">
+                  <span className="hidden sm:inline">{x.hint}</span>
+                  <ArrowUpRight className="size-5 text-signal" aria-hidden="true" />
                 </span>
               </button>
             </li>
