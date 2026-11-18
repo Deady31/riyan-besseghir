@@ -108,6 +108,15 @@ const fr = {
     title: ['En 30 heures, mon équipe de 5 ', 'a prototypé un chatbot bancaire IA.'] as Title,
     chips: ['30 heures', 'Équipe de 5', 'Défi BPCE', 'PM + pitch', 'Prototype avec Claude Code'],
     photoAlt: 'Riyan présente le prototype sur scène au Défi IA4IMPACT de BPCE',
+    real: {
+      title: 'À quoi ça ressemble en vrai',
+      note: 'Prototype étudiant non officiel : site et appli reproduits pour la démo, données et clients fictifs, aucune action bancaire réelle.',
+      shots: [
+        { src: '/media/hauts-faits/bpce-assistant-ouvert.webp', alt: 'L’assistant IA ouvert sur la page « Ouvrir un compte » du site, avec ses parcours guidés', caption: 'Sur le site : l’assistant propose des parcours guidés' },
+        { src: '/media/hauts-faits/bpce-assistant-accessibilite.webp', alt: 'Le panneau d’accessibilité de l’assistant : taille du texte, couleurs, police, langage simplifié', caption: 'Accessibilité : texte, couleurs, police, langage simplifié' },
+        { src: '/media/hauts-faits/bpce-assistant-mobile.webp', alt: 'L’assistant dans l’application mobile, sur l’écran « Tous mes comptes » d’un client fictif', caption: 'Dans l’appli mobile : le client est déjà connecté' },
+      ],
+    },
     brief: 'Le brief',
     role: 'Mon rôle',
     soon: 'Prochainement',
@@ -327,6 +336,15 @@ const en: UI = {
     title: ['In 30 hours, my team of 5 ', 'prototyped an AI banking chatbot.'],
     chips: ['30 hours', 'Team of 5', 'BPCE challenge', 'PM + pitch', 'Prototyped with Claude Code'],
     photoAlt: 'Riyan presenting the prototype on stage at BPCE’s IA4IMPACT challenge',
+    real: {
+      title: 'What it really looks like',
+      note: 'Unofficial student prototype: site and app recreated for the demo, fictional data and customers, no real banking action.',
+      shots: [
+        { src: '/media/hauts-faits/bpce-assistant-ouvert.webp', alt: 'The AI assistant open on the “Open an account” page of the site, with its guided flows', caption: 'On the site: the assistant offers guided flows' },
+        { src: '/media/hauts-faits/bpce-assistant-accessibilite.webp', alt: 'The assistant’s accessibility panel: text size, colours, font, simplified language', caption: 'Accessibility: text, colours, font, simplified language' },
+        { src: '/media/hauts-faits/bpce-assistant-mobile.webp', alt: 'The assistant inside the mobile app, on the “All my accounts” screen of a fictional customer', caption: 'In the mobile app: the customer is already signed in' },
+      ],
+    },
     brief: 'The brief',
     role: 'My role',
     soon: 'Coming next',

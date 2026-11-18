@@ -93,6 +93,32 @@ export function Feats() {
           </div>
         </div>
       </div>
+
+      {/* À quoi ça ressemble en vrai : captures du prototype (données fictives). */}
+      <div className="mt-20 px-[var(--gutter)] md:mt-28" aria-labelledby="feats-real-title">
+        <h3 id="feats-real-title" className="display text-[clamp(1.8rem,1rem+2.6vw,3.4rem)]">
+          {t.feats.real.title}
+        </h3>
+        <p className="mt-3 max-w-2xl text-sm leading-snug text-mist">{t.feats.real.note}</p>
+        <ul className="mt-8 grid gap-5 md:grid-cols-3 md:gap-6">
+          {t.feats.real.shots.map((s) => (
+            <li key={s.src}>
+              <figure>
+                <img
+                  src={s.src}
+                  alt={s.alt}
+                  loading="lazy"
+                  decoding="async"
+                  width={900}
+                  height={970}
+                  className="aspect-[9/10] w-full rounded-[28px] border-[2.5px] border-[#2B0F3A] bg-[#EADFFF] object-cover object-top shadow-[var(--shadow-card)]"
+                />
+                <figcaption className="mt-3 text-[15px] leading-snug">{s.caption}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   )
 }

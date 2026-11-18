@@ -11,8 +11,8 @@ import { Anchor } from '../three/Anchor'
 import { AfkSkater } from './AfkSkater'
 
 // Trois cartes seulement : on arrive vite au paquet vide et à son animation.
-// Le paquet montre les trois projets phares : FOODER, LIO et Méca-Riyan.
-const DECK_IDS = ['fooder', 'lio', 'chatbot-cv'] as const
+// Le paquet montre les projets phares : FOODER, Méca-Riyan, l'assistant bancaire (hackathon) et LIO.
+const DECK_IDS = ['fooder', 'chatbot-cv', 'assistant-bancaire', 'lio'] as const
 
 /** Fond de carte par projet : la palette pop tourne pour que chaque carte ait sa couleur. */
 // pas de citron en grand aplat (illisible) : il reste sur les stickers et petits boutons
@@ -61,8 +61,8 @@ function DeckCard({ project, tint, depth }: { project: Project; tint: string; de
         </span>
       </div>
       <div className="shrink-0 p-5 md:p-6">
-        <h3 className="display text-[clamp(1.9rem,1.4rem+1.6vw,2.6rem)]">{project.title}</h3>
-        <p className="mt-2 line-clamp-2 text-[15px] leading-snug text-mist">{project.tagline}</p>
+        <h3 className="display line-clamp-2 min-h-[2.04em] text-[clamp(1.5rem,1.2rem+1.2vw,2.1rem)]" style={{ lineHeight: 1.02 }}>{project.title}</h3>
+        <p className="mt-2 line-clamp-2 min-h-[2.75em] text-[15px] leading-snug text-mist">{project.tagline}</p>
       </div>
     </div>
   )

@@ -56,8 +56,8 @@ export function ProjectsList() {
               )}
               <div className="p-4">
                 <span className="sticker bg-lemon text-paper">{p.status}</span>
-                <h2 className="display mt-2 text-[1.4rem]">{p.title}</h2>
-                <p className="mt-1 text-sm leading-snug">{p.tagline}</p>
+                <h2 className="display mt-2 line-clamp-2 min-h-[2.04em] text-[1.3rem]" style={{ lineHeight: 1.02 }}>{p.title}</h2>
+                <p className="mt-1 line-clamp-2 min-h-[2.75em] text-sm leading-snug">{p.tagline}</p>
               </div>
             </Link>
           </li>

@@ -89,10 +89,10 @@ export function ProjectCard({ project, number, total, categoryLabel, onOpen }: P
                   </span>
                 </CardItem>
                 <CardItem translateZ={48} className="mt-3 block w-full">
-                  <span className="display block text-[clamp(1.5rem,1.1rem+1vw,2.1rem)] leading-[0.98]">{project.title}</span>
+                  <span className="display line-clamp-2 min-h-[2.04em] text-[clamp(1.35rem,1.05rem+0.8vw,1.8rem)]" style={{ lineHeight: 1.02 }}>{project.title}</span>
                 </CardItem>
                 <CardItem translateZ={26} className="mt-3 block w-full">
-                  <span className="line-clamp-2 block text-[15px] leading-snug text-mist">{project.tagline}</span>
+                  <span className="line-clamp-2 min-h-[2.75em] text-[15px] leading-snug text-mist">{project.tagline}</span>
                 </CardItem>
                 <CardItem translateZ={40} className="mt-5 flex w-full items-center justify-between gap-3">
                   <span className="sticker bg-paper text-ink">{project.status}</span>
