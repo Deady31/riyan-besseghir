@@ -32,7 +32,7 @@ const SCRIPT_FR: Msg[] = [
   { from: 'user', text: 'Parle-moi de ton expérience chez Shippingbo.' },
   {
     from: 'bot',
-    text: '10 mois comme PM/PO, jusqu’à 3 feature teams en parallèle. J’ai piloté Shippingbo Intelligence, le bundle de quatre features IA, dont Naia, une assistante sur l’API Claude qui a fait baisser les tickets support N1 de 56 % en production.',
+    text: '10 mois comme PM/PO, jusqu’à 3 équipes produit en parallèle. J’ai piloté Shippingbo Intelligence, le bundle de quatre features IA, dont Naia, une assistante sur l’API Claude qui a fait baisser les tickets support N1 de 56 % en production.',
     source: 'parcours.md',
   },
   { from: 'user', text: 'Et en dehors du boulot ?' },

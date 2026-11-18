@@ -20,11 +20,11 @@ const CONTENT = {
     impact: {
       company: 'Shippingbo',
       context: 'SaaS B2B de logistique e-commerce (OMS, WMS, TMS)',
-      role: 'Product Manager / Product Owner, jusqu’à 3 feature teams en parallèle',
+      role: 'Product Manager / Product Owner, jusqu’à 3 équipes produit en parallèle',
       stats: [
         { value: 56, prefix: '−', suffix: ' %', label: 'de tickets support N1', note: 'en production, grâce à l’assistant IA' },
-        { value: 4, label: 'features IA', note: 'livrées de bout en bout' },
-        { value: 3, label: 'feature teams', note: 'pilotées en parallèle' },
+        { value: 4, label: 'fonctionnalités IA', note: 'livrées de bout en bout' },
+        { value: 3, label: 'équipes produit', note: 'pilotées en parallèle' },
         { value: 10, label: 'mois', note: 'de stage puis CDD' },
       ],
       features: [
