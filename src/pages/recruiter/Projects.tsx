@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { lazy, Suspense, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { ArrowUpRight } from 'lucide-react'
 import { useProjects } from '../../i18n/useProjects'
@@ -6,8 +6,10 @@ import { useT } from '../../i18n/useT'
 import { setMode } from '../../lib/visitorMode'
 import { Page } from './Page'
 
+const BankDemo = lazy(() => import('../../components/demo/BankDemo').then((m) => ({ default: m.BankDemo })))
+
 /** Sélection « à la une » : l'agent, l'app la plus aboutie, un agent en production et des cas de PM livrés. */
-const FEATURED = ['chatbot-cv', 'fooder', 'lio', 'departs', 'qg-hermes', 'spotify', 'tiktok-shop', 'trainer-pm']
+const FEATURED = ['chatbot-cv', 'fooder', 'lio', 'assistant-bancaire', 'departs', 'qg-hermes', 'spotify', 'tiktok-shop', 'trainer-pm']
 
 /** Grille de cartes avec image, comme dans le portfolio complet ; filtres par famille. Un clic ouvre la fiche (page à part, avec retour). */
 export function ProjectsList() {
@@ -92,6 +94,13 @@ export function ProjectDetail() {
         <img src={p.shots[0].src} alt={p.shots[0].alt} className="mt-8 max-h-[32rem] w-full rounded-[24px] border-[2.5px] border-[#2B0F3A] bg-[#EADFFF] object-cover object-top" />
       )}
       <p className="mt-8 max-w-2xl leading-relaxed">{p.description}</p>
+      {p.id === 'assistant-bancaire' && (
+        <div className="mt-8">
+          <Suspense fallback={null}>
+            <BankDemo />
+          </Suspense>
+        </div>
+      )}
       <p className="mt-5 text-sm text-mist">{p.stack.join(' · ')}</p>
       <p className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold">
         {p.link && (

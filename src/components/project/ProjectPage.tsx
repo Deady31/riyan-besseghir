@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { GithubIcon } from '../ui/BrandIcons'
@@ -20,6 +20,8 @@ import { PhoneMock } from './PhoneMock'
 import { LIVE } from '../../data/live'
 import { phoneStage } from '../../lib/phoneStage'
 
+
+const BankDemo = lazy(() => import('../demo/BankDemo').then((m) => ({ default: m.BankDemo })))
 
 const CAT_TONE: Record<string, Tone> = { consumer: 'vermilion', ia: 'cobalt', outils: 'chrome', jeux: 'acid', pm: 'ink', clients: 'chrome' }
 const STEP_TONES: Tone[] = ['paper', 'chrome', 'paper', 'chrome']
@@ -149,6 +151,21 @@ export function ProjectPage() {
                   {t.project.play}
                 </motion.button>
               )}
+              {project.id === 'assistant-bancaire' && (
+                <motion.button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById('demo')
+                    if (el) lenis ? lenis.scrollTo(el, { offset: -90 }) : el.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  whileHover={{ y: -3 }}
+                  whileTap={{ scale: 0.94 }}
+                  transition={{ type: 'spring', stiffness: 420, damping: 18 }}
+                  className="inline-flex items-center gap-2 rounded-full bg-lemon px-7 py-3.5 text-sm font-bold text-paper"
+                >
+                  {t.project.tryDemo} ↓
+                </motion.button>
+              )}
               {project.repo && (
                 <motion.a
                   href={project.repo}
@@ -196,6 +213,17 @@ export function ProjectPage() {
           )}
         </div>
       </motion.section>
+
+      {project.id === 'assistant-bancaire' && (
+        <motion.section {...rise} id="demo" className="mt-16 md:mt-24" aria-labelledby="demo-title">
+          <h2 id="demo-title" className="display mb-8 text-[clamp(2rem,1rem+3vw,4rem)]">
+            {t.project.tryDemo}
+          </h2>
+          <Suspense fallback={<div className="mx-auto h-[36rem] max-w-2xl rounded-[28px] bg-[#EADFFF]" aria-hidden="true" />}>
+            <BankDemo />
+          </Suspense>
+        </motion.section>
+      )}
 
       {/* 1. Pourquoi je l'ai créé */}
       <motion.section {...rise} className="mt-16 grid gap-6 md:mt-24 lg:grid-cols-[minmax(0,0.38fr)_minmax(0,1fr)] lg:gap-10" aria-labelledby="why-title">

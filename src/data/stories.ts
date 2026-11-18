@@ -15,6 +15,52 @@ export type Story = {
 type Pair = { fr: Story; en: Story }
 
 export const STORIES: Record<string, Pair> = {
+  'assistant-bancaire': {
+    fr: {
+      period: 'Octobre 2026',
+      why: `Un client bancaire arrive avec un besoin concret, dit avec ses mots, et ne connaît pas l'organisation du site : il parcourt des pages, reformule, répète, change de canal, puis abandonne. Le défi : l'aider à passer de « je cherche une information » à « je sais quoi faire ensuite ».`,
+      how: [
+        `Le client écrit ou dit son besoin librement ; un garde-fou masque IBAN, numéro de carte, codes et coordonnées avant que rien n'atteigne un modèle.`,
+        `Les actions sensibles (carte perdue, réclamation, code, crédit) suivent des parcours guidés avec une carte de confirmation : rien ne s'exécute sans un clic.`,
+        `Les autres questions passent par un RAG sur 921 fiches de FAQ publiques et par cinq fonctions en lecture seule d'un système d'information simulé ; la réponse cite ses sources.`,
+        `Un conseiller humain reste accessible à tout moment, et l'interface fonctionne au clavier, au lecteur d'écran, en grand texte et à la voix.`,
+      ],
+      decisions: [
+        `Routage hybride : des scénarios écrits pour les actions, l'IA générative pour le reste.`,
+        `Le client est fixé par la session : le modèle ne peut pas choisir de qui il lit les données.`,
+        `Données fictives et tarifs étiquetés « de démonstration » partout, pour ne jamais être pris pour une vraie banque.`,
+        `Sans clé d'IA, la démo fonctionne quand même (scénarios et réponses extraites de la FAQ).`,
+      ],
+      proof: [
+        { label: 'Fiches FAQ indexées', value: '921' },
+        { label: 'Fonctions du SI simulé', value: '5' },
+        { label: 'Hit@3 du RAG (équipe)', value: '95 %' },
+      ],
+      next: `Prototype étudiant non officiel : aucune intégration réelle. En production, les contenus viendraient de BPCE et le masquage s'appuierait sur un outil dédié, avec des modèles hébergés par la banque.`,
+    },
+    en: {
+      period: 'October 2026',
+      why: `A banking customer arrives with a concrete need, in their own words, and doesn't know how the site is organised: they browse pages, rephrase, repeat themselves, switch channels, then give up. The challenge: help them go from "I'm looking for information" to "I know what to do next".`,
+      how: [
+        `The customer writes or says their need freely; a guardrail masks IBAN, card number, codes and contact details before anything reaches a model.`,
+        `Sensitive actions (lost card, complaint, code, loan) follow guided flows with a confirmation card: nothing runs without a click.`,
+        `Other questions go through a RAG over 921 public FAQ entries and five read-only functions of a simulated information system; the answer cites its sources.`,
+        `A human advisor is reachable at any time, and the interface works by keyboard, with a screen reader, in large text and by voice.`,
+      ],
+      decisions: [
+        `Hybrid routing: written scenarios for actions, generative AI for the rest.`,
+        `The customer is fixed by the session: the model cannot choose whose data it reads.`,
+        `Fictional data and prices labelled "demo" everywhere, so it is never mistaken for a real bank.`,
+        `Without an AI key the demo still works (scenarios and answers pulled from the FAQ).`,
+      ],
+      proof: [
+        { label: 'FAQ entries indexed', value: '921' },
+        { label: 'Simulated IS functions', value: '5' },
+        { label: 'RAG Hit@3 (team)', value: '95%' },
+      ],
+      next: `Unofficial student prototype: no real integration. In production the content would come from BPCE and masking would rely on a dedicated tool, with models hosted by the bank.`,
+    },
+  },
   'chatbot-cv': {
     fr: {
       period: '10 → 22 sept. 2026',

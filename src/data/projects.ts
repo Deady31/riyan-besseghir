@@ -68,6 +68,18 @@ export const PROJECTS: Project[] = [
     shots: [shot('lio-ameliore-mobile', 'Assistant horaires LIO sur mobile', 'mobile')],
   },
   {
+    id: 'assistant-bancaire',
+    title: 'Assistant bancaire accessible',
+    tagline: 'Un assistant qui transforme une envie en action, au clavier, au lecteur d’écran ou à la voix.',
+    description:
+      'Prototype du hackathon BPCE-SI IA4Impact 2026, en équipe de cinq. Le client dit son besoin avec ses mots ; les actions sensibles passent par des parcours guidés où rien ne s’exécute sans un clic, les autres questions reçoivent une réponse sourcée, et un conseiller reste toujours à portée. J’ai construit le front, l’agent personnalisé (un système d’information simulé en lecture seule), les garde-fous qui masquent IBAN, carte et codes avant tout modèle, la voix et l’accessibilité. Le dépôt est privé : la démo ci-dessous est une version simulée, avec une banque et des données inventées.',
+    category: 'ia',
+    stack: ['FastAPI', 'RAG', 'Groq', 'Accessibilité', 'Voix', 'Docker'],
+    status: 'Prototype',
+    shots: [shot('assistant-bancaire', 'Démo de l’assistant bancaire : un client fictif perd sa carte et l’assistant propose de la bloquer')],
+    highlight: 'Démo à essayer',
+  },
+  {
     id: 'finger',
     title: 'Atelier des mains',
     tagline: 'Piloter une interface 3D avec ses mains, sans toucher le clavier.',

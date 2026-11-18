@@ -41,6 +41,11 @@ export const PROJECTS_EN: Record<string, Override> = {
     tagline: 'An agent that finds the best flights around Toulouse.',
     description: 'Type “naples late oct 4-5d €150”: the agent queries Google Flights across six airports at once and returns a top 3 as boarding passes. First test: €552 from Toulouse, €155 return direct from Barcelona. No made-up prices: AI understands the request, ranking is tested code.',
   },
+  'assistant-bancaire': {
+    title: 'Accessible banking assistant',
+    tagline: 'An assistant that turns an intent into an action, by keyboard, screen reader or voice.',
+    description: 'Prototype from the BPCE-SI IA4Impact 2026 hackathon, in a team of five. The customer states a need in their own words; sensitive actions go through guided flows where nothing runs without a click, other questions get a sourced answer, and an advisor is always within reach. I built the front end, the personalised agent (a simulated, read-only information system), the guardrails that mask IBAN, card and codes before any model, the voice and the accessibility. The repository is private: the demo below is a simulated version, with an invented bank and data.',
+  },
   lio: {
     title: 'LIO, upgraded',
     tagline: 'Regional bus times in Haute-Garonne, in one sentence.',
