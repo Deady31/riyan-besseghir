@@ -24,7 +24,7 @@ export default function App() {
     <LangProvider>
       <Suspense fallback={null}>
         <Routes>
-          <Route path="recruteur" element={<Recruiter />} />
+          <Route path="recruteur/*" element={<Recruiter />} />
           <Route path="*" element={<Gated />} />
         </Routes>
       </Suspense>
