@@ -509,7 +509,7 @@ export const PROJECTS: Project[] = [
   },
 ]
 
-export const AI_SPOTLIGHT_ORDER = ['chatbot-cv', 'fooder', 'departs', 'lio'] as const
+export const AI_SPOTLIGHT_ORDER = ['chatbot-cv', 'fooder', 'lio'] as const
 
 export const byCategory = (c: Category) => PROJECTS.filter((p) => p.category === c)
 export const byId = (id: string) => PROJECTS.find((p) => p.id === id)

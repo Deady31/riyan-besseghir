@@ -1,78 +1,18 @@
 import { useRef } from 'react'
 import { gsap, useGSAP, prefersReducedMotion } from '../../lib/motion'
-import type { Project } from '../../data/projects'
 import { useProjects } from '../../i18n/useProjects'
 import { TitleParts, useT } from '../../i18n/useT'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Tags } from '../ui/Tags'
 import { ProjectLinks } from '../ui/ProjectLinks'
-import { ShotFrame } from '../ui/ShotFrame'
-import { useOpenProject } from '../../lib/useOpenProject'
 import { ChatDemo } from './ChatDemo'
-import { cn } from '../../lib/cn'
 import { Anchor } from '../three/Anchor'
-
-function FeatureCard({ project, index, wide }: { project: Project; index: number; wide?: boolean }) {
-  const open = useOpenProject()
-  const t = useT()
-  const shot = project.shots[0]
-  return (
-    <article data-feat className={cn('group', wide && 'md:col-span-2')}>
-      <button
-        type="button"
-        onClick={() => open(project)}
-        aria-label={t.ai.open(project.title)}
-        className="relative block w-full overflow-hidden rounded-[44px] bg-graphite"
-      >
-        {wide && shot.frame === 'mobile' ? (
-          <div className="flex aspect-[16/9] items-center justify-center gap-[4%] overflow-hidden bg-bubblegum px-[6%]">
-            {project.shots.slice(0, 3).map((s, i) => (
-              <div
-                key={s.src}
-                className={cn(
-                  'w-[24%] transition-transform duration-[900ms] ease-[var(--ease-expo)] group-hover:scale-[1.04]',
-                  i === 1 ? '-translate-y-[4%] group-hover:-rotate-2' : i === 0 ? 'translate-y-[5%] -rotate-3' : 'translate-y-[5%] rotate-3',
-                )}
-              >
-                <ShotFrame shot={s} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className={cn('grid place-items-center overflow-hidden', wide ? 'aspect-[16/9] p-[6%]' : 'aspect-[4/5] p-[10%]')}>
-            <div
-              className={cn(
-                'transition-transform duration-[900ms] ease-[var(--ease-expo)] group-hover:scale-[1.03]',
-                shot.frame === 'mobile' ? 'w-[52%]' : 'w-full',
-              )}
-            >
-              <ShotFrame shot={shot} />
-            </div>
-          </div>
-        )}
-      </button>
-      <div className="mt-6 grid gap-x-8 gap-y-3 md:grid-cols-[auto_minmax(0,1fr)]">
-        <p className="label pt-2 text-mist">({String(index).padStart(2, '0')})</p>
-        <div>
-          <h3 className="text-3xl tracking-[-0.03em]">
-            {project.title} <span className="text-mist">— {project.status}</span>
-          </h3>
-          <p className="mt-2 max-w-lg leading-relaxed text-mist">{project.tagline}</p>
-          <div className="mt-5 flex flex-wrap items-center gap-4">
-            <ProjectLinks project={project} />
-          </div>
-        </div>
-      </div>
-    </article>
-  )
-}
 
 export function AiSpotlight() {
   const root = useRef<HTMLElement>(null)
   const t = useT()
   const { byId } = useProjects()
-  const get = (id: string) => byId(id) as Project
-  const chat = get('chatbot-cv')
+  const chat = byId('chatbot-cv')!
 
   useGSAP(
     () => {
@@ -105,7 +45,7 @@ export function AiSpotlight() {
   )
 
   return (
-    <section ref={root} id="ia" className="theme-dark relative isolate py-32 md:py-48">
+    <section ref={root} id="ia" className="theme-dark relative isolate pt-32 pb-16 md:pt-48 md:pb-20">
       <Anchor kind="robot" className="top-[30%] right-[1.5%] w-[10vw] max-md:hidden" par={0.25} tilt={0.7} />
       <div className="px-[var(--gutter)]">
         <SectionHeading
@@ -137,11 +77,6 @@ export function AiSpotlight() {
         </div>
       </div>
 
-      <div data-feats className="mt-24 grid gap-x-6 gap-y-20 px-[var(--gutter)] md:grid-cols-2">
-        <FeatureCard project={get('fooder')} index={2} wide />
-        <FeatureCard project={get('departs')} index={3} />
-        <FeatureCard project={get('lio')} index={4} />
-      </div>
     </section>
   )
 }

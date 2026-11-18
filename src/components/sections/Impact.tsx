@@ -71,10 +71,10 @@ export function Impact() {
   )
 
   return (
-    <section ref={root} id="impact" className="relative px-[var(--gutter)] py-32 md:py-48">
+    <section ref={root} id="impact" className="relative px-[var(--gutter)] py-24 md:py-32">
       <Anchor kind="stopwatch" className="top-[3%] left-[1.5%] w-[10vw] max-md:hidden" par={0.12} tilt={0.7} />
       <Anchor kind="stopwatch" className="top-[0.5%] right-[4%] w-[16vw] md:hidden" par={0.2} tilt={0.7} />
-      <SectionHeading index="01" align="right" label={t.impact.label} title={<TitleParts parts={t.impact.title} />} />
+      <SectionHeading index="01" align="right" label={t.impact.label} title={<TitleParts parts={t.impact.title} />} className="!mb-10 md:!mb-14" />
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-16">
         <figure>
@@ -118,7 +118,7 @@ export function Impact() {
         </div>
       </div>
 
-      <div data-stats className="mt-24 grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
+      <div data-stats className="mt-14 grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
         {IMPACT.stats.map((s, i) => (
           <BigTile data-stat key={s.label} tone={STAT_TONES[i % STAT_TONES.length]} inner="flex flex-col justify-between gap-10 !p-6 md:!p-8">
             <Counter
@@ -135,46 +135,48 @@ export function Impact() {
         ))}
       </div>
 
-      <div data-features className="mt-24">
-        <p className="sticker mb-8 bg-lemon text-paper">{t.impact.shipped}</p>
-        <ul className="grid gap-4 md:grid-cols-2 md:gap-6">
-          {IMPACT.features.map((f, i) => (
-            <li data-feature key={f.name}>
-              <BigTile tone={FEATURE_TONES[i % FEATURE_TONES.length]} inner="flex flex-col gap-5 md:!p-10">
-                <span className="label opacity-70">{String(i + 1).padStart(2, '0')}</span>
-                <h3 className="text-[clamp(1.6rem,1.1rem+1.4vw,2.6rem)] leading-[1.02] tracking-[-0.03em]">{f.name}</h3>
-                <p className="max-w-xl leading-relaxed opacity-80">{f.text}</p>
-              </BigTile>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div data-roadmap className="mt-24">
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <p className="label text-mist">{roadmap.title}</p>
-          <span className="sticker bg-lemon text-paper">
-            <span className="size-1.5 rounded-full bg-paper" aria-hidden="true" />
-            {roadmap.badge}
-          </span>
+      {/* Bureau : les 4 livrables à gauche, la roadmap en colonne à droite : un seul bloc compact, sans bande vide. */}
+      <div className="mt-14 grid gap-14 lg:mt-16 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
+        <div data-features>
+          <p className="sticker mb-6 bg-lemon text-paper">{t.impact.shipped}</p>
+          <ul className="grid gap-4 md:grid-cols-2 md:gap-5">
+            {IMPACT.features.map((f, i) => (
+              <li data-feature key={f.name}>
+                <BigTile tone={FEATURE_TONES[i % FEATURE_TONES.length]} inner="flex h-full flex-col gap-4 md:!p-8">
+                  <span className="label opacity-70">{String(i + 1).padStart(2, '0')}</span>
+                  <h3 className="text-[clamp(1.5rem,1.1rem+1vw,2.2rem)] leading-[1.02] tracking-[-0.03em]">{f.name}</h3>
+                  <p className="leading-relaxed opacity-80">{f.text}</p>
+                </BigTile>
+              </li>
+            ))}
+          </ul>
         </div>
-        <ol className="grid gap-4 md:grid-cols-3 md:gap-6">
-          {roadmap.items.map((r, i) => (
-            <li data-roadmap-item key={r.name}>
-              <BigTile tone={i === 1 ? 'cobalt' : 'paper'} inner="flex flex-col">
-                <span className="label opacity-70">{String(i + 1).padStart(2, '0')}</span>
-                <h4 className="mt-10 text-2xl leading-tight tracking-[-0.03em]">{r.name}</h4>
-                <p className="mt-3 leading-relaxed opacity-80">{r.text}</p>
-              </BigTile>
-            </li>
-          ))}
-        </ol>
-      </div>
 
-      <p className="mt-14 inline-flex max-w-3xl items-start gap-3 rounded-[28px] bg-graphite px-6 py-4 text-paper">
-        <span className="mt-2 size-2 shrink-0 rounded-full bg-signal" aria-hidden="true" />
-        {IMPACT.extra}
-      </p>
+        <div data-roadmap>
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+            <p className="label text-mist">{roadmap.title}</p>
+            <span className="sticker bg-lemon text-paper">
+              <span className="size-1.5 rounded-full bg-paper" aria-hidden="true" />
+              {roadmap.badge}
+            </span>
+          </div>
+          <ol className="grid gap-4">
+            {roadmap.items.map((r, i) => (
+              <li data-roadmap-item key={r.name}>
+                <BigTile tone={i === 1 ? 'cobalt' : 'paper'} inner="flex flex-col !p-6">
+                  <span className="label opacity-70">{String(i + 1).padStart(2, '0')}</span>
+                  <h4 className="mt-4 text-2xl leading-tight tracking-[-0.03em]">{r.name}</h4>
+                  <p className="mt-2 leading-relaxed opacity-80">{r.text}</p>
+                </BigTile>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-5 flex items-start gap-3 rounded-[28px] bg-graphite px-5 py-4 text-sm text-paper">
+            <span className="mt-1.5 size-2 shrink-0 rounded-full bg-signal" aria-hidden="true" />
+            {IMPACT.extra}
+          </p>
+        </div>
+      </div>
     </section>
   )
 }

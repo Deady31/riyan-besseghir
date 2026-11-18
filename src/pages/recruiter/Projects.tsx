@@ -9,7 +9,7 @@ import { Page } from './Page'
 const BankDemo = lazy(() => import('../../components/demo/BankDemo').then((m) => ({ default: m.BankDemo })))
 
 /** Sélection « à la une » : l'agent, l'app la plus aboutie, un agent en production et des cas de PM livrés. */
-const FEATURED = ['chatbot-cv', 'fooder', 'lio', 'assistant-bancaire', 'departs', 'qg-hermes', 'spotify', 'tiktok-shop', 'trainer-pm']
+const FEATURED = ['chatbot-cv', 'fooder', 'lio', 'assistant-bancaire', 'qg-hermes', 'spotify', 'tiktok-shop', 'trainer-pm']
 
 /** Grille de cartes avec image, comme dans le portfolio complet ; filtres par famille. Un clic ouvre la fiche (page à part, avec retour). */
 export function ProjectsList() {
