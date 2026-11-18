@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, CalendarRange, ChartNoAxesCombined, CopyCheck, FileUp, MessageSquareText, Puzzle, Sparkles, TrendingDown, Users, Zap, type LucideIcon } from 'lucide-react'
 import { gsap, useGSAP, prefersReducedMotion } from '../../lib/motion'
 import { useContent } from '../../data/profile'
 import { TitleParts, useT } from '../../i18n/useT'
@@ -10,6 +10,61 @@ import { BigTile, type Tone } from '../ui/BigTile'
 
 const STAT_TONES: Tone[] = ['paper', 'cobalt', 'vermilion', 'acid']
 const FEATURE_TONES: Tone[] = ['paper', 'chrome', 'paper', 'chrome']
+
+// Un symbole par case : on comprend avant de lire. L'ordre suit celui des données (livrables, roadmap, chiffres).
+// Classes de ventes (3ᵉ livrable) et Commandes identiques (4ᵉ) ont un mini-visuel à la place de l'icône : l'image y est plus claire que le mot.
+const FEATURE_ICONS: (LucideIcon | null)[] = [MessageSquareText, ChartNoAxesCombined, null, null]
+const ROADMAP_ICONS: LucideIcon[] = [FileUp, Puzzle, Zap]
+const STAT_ICONS: LucideIcon[] = [TrendingDown, Sparkles, Users, CalendarRange]
+
+/** Pastille d'icône : violet sur les cases claires, crème sur la case violette. Elle bouge un peu au survol de la case (`group`). */
+function IconChip({ icon: Icon, onDark = false }: { icon: LucideIcon; onDark?: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`grid size-14 shrink-0 place-items-center rounded-2xl transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110 ${onDark ? 'bg-ink text-signal' : 'bg-signal text-ink'}`}
+    >
+      <Icon className="size-7" strokeWidth={2} />
+    </span>
+  )
+}
+
+/** Classes de ventes : les quatre classes A à D, de la plus stratégique à la plus dormante. */
+function AbcdVisual() {
+  const shades = ['bg-signal text-ink', 'bg-[#8C5BFF] text-ink', 'bg-[#B9A0FF] text-paper', 'bg-[#DCCFFF] text-paper']
+  return (
+    <span aria-hidden="true" className="flex h-14 items-end gap-1.5">
+      {['A', 'B', 'C', 'D'].map((l, i) => (
+        <span
+          key={l}
+          className={`display grid w-10 place-items-center rounded-xl text-lg transition-transform duration-300 group-hover:-translate-y-1 ${shades[i]}`}
+          style={{ height: `${3.5 - i * 0.6}rem`, transitionDelay: `${i * 40}ms` }}
+        >
+          {l}
+        </span>
+      ))}
+    </span>
+  )
+}
+
+/** Commandes identiques : deux cartes qui se chevauchent, fusionnées par une coche. */
+function DuplicateVisual() {
+  return (
+    <span aria-hidden="true" className="relative block h-14 w-24">
+      <span className="absolute top-0 left-0 grid h-11 w-16 rotate-[-6deg] content-center gap-1 rounded-xl border-2 border-[#2B0F3A] bg-[#EADFFF] px-2 transition-transform duration-300 group-hover:-translate-x-1">
+        <span className="h-1.5 w-8 rounded-full bg-[#2B0F3A]/60" />
+        <span className="h-1.5 w-5 rounded-full bg-[#2B0F3A]/30" />
+      </span>
+      <span className="absolute right-0 bottom-0 grid h-11 w-16 rotate-[5deg] content-center gap-1 rounded-xl border-2 border-[#2B0F3A] bg-white px-2 transition-transform duration-300 group-hover:translate-x-1">
+        <span className="h-1.5 w-8 rounded-full bg-[#2B0F3A]/60" />
+        <span className="h-1.5 w-5 rounded-full bg-[#2B0F3A]/30" />
+      </span>
+      <span className="absolute -top-1 -right-1 grid size-7 place-items-center rounded-full bg-[#FF7EC8] text-[#2B0F3A]">
+        <CopyCheck className="size-4" strokeWidth={2.5} />
+      </span>
+    </span>
+  )
+}
 
 export function Impact() {
   const root = useRef<HTMLElement>(null)
@@ -120,7 +175,10 @@ export function Impact() {
 
       <div data-stats className="mt-14 grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
         {IMPACT.stats.map((s, i) => (
-          <BigTile data-stat key={s.label} tone={STAT_TONES[i % STAT_TONES.length]} inner="flex flex-col justify-between gap-10 !p-6 md:!p-8">
+          <BigTile data-stat key={s.label} tone={STAT_TONES[i % STAT_TONES.length]} inner="group flex flex-col justify-between gap-8 !p-6 md:!p-8">
+            <span className="flex justify-end">
+              <IconChip icon={STAT_ICONS[i % STAT_ICONS.length]} onDark={STAT_TONES[i % STAT_TONES.length] === 'cobalt'} />
+            </span>
             <Counter
               value={s.value}
               prefix={s.prefix}
@@ -142,8 +200,11 @@ export function Impact() {
           <ul className="grid gap-4 md:grid-cols-2 md:gap-5">
             {IMPACT.features.map((f, i) => (
               <li data-feature key={f.name}>
-                <BigTile tone={FEATURE_TONES[i % FEATURE_TONES.length]} inner="flex h-full flex-col gap-4 md:!p-8">
-                  <span className="label opacity-70">{String(i + 1).padStart(2, '0')}</span>
+                <BigTile tone={FEATURE_TONES[i % FEATURE_TONES.length]} inner="group flex h-full flex-col gap-4 md:!p-8">
+                  <span className="flex items-start justify-between gap-4">
+                    {FEATURE_ICONS[i] ? <IconChip icon={FEATURE_ICONS[i]!} /> : i === 2 ? <AbcdVisual /> : <DuplicateVisual />}
+                    <span className="label opacity-70">{String(i + 1).padStart(2, '0')}</span>
+                  </span>
                   <h3 className="text-[clamp(1.5rem,1.1rem+1vw,2.2rem)] leading-[1.02] tracking-[-0.03em]">{f.name}</h3>
                   <p className="leading-relaxed opacity-80">{f.text}</p>
                 </BigTile>
@@ -163,8 +224,11 @@ export function Impact() {
           <ol className="grid gap-4">
             {roadmap.items.map((r, i) => (
               <li data-roadmap-item key={r.name}>
-                <BigTile tone={i === 1 ? 'cobalt' : 'paper'} inner="flex flex-col !p-6">
-                  <span className="label opacity-70">{String(i + 1).padStart(2, '0')}</span>
+                <BigTile tone={i === 1 ? 'cobalt' : 'paper'} inner="group flex flex-col !p-6">
+                  <span className="flex items-start justify-between gap-4">
+                    <IconChip icon={ROADMAP_ICONS[i % ROADMAP_ICONS.length]} onDark={i === 1} />
+                    <span className="label opacity-70">{String(i + 1).padStart(2, '0')}</span>
+                  </span>
                   <h4 className="mt-4 text-2xl leading-tight tracking-[-0.03em]">{r.name}</h4>
                   <p className="mt-2 leading-relaxed opacity-80">{r.text}</p>
                 </BigTile>
