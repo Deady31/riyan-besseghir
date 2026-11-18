@@ -32,7 +32,17 @@ export const gpuArgs = () =>
 
 export async function launch(extra = []) {
   const { chromium } = await loadPlaywright()
-  return chromium.launch({ headless: true, args: [...gpuArgs(), ...extra] })
+  const browser = await chromium.launch({ headless: true, args: [...gpuArgs(), ...extra] })
+  // Le site affiche un écran de choix tant qu'aucun mode n'est mémorisé : les scripts entrent par défaut dans le portfolio complet.
+  // Les scripts qui testent le choix lui-même passent `fresh: true` à leur contexte via ce drapeau.
+  const newContext = browser.newContext.bind(browser)
+  browser.newContext = async (opts = {}) => {
+    const { fresh, ...rest } = opts
+    const ctx = await newContext(rest)
+    if (!fresh) await ctx.addInitScript(() => { try { localStorage.setItem('riyan-mode', 'full') } catch {} })
+    return ctx
+  }
+  return browser
 }
 
 /** Sert `dist/` avec `vite preview` et renvoie { url, stop }. Si --url est donné, ne lance rien. */

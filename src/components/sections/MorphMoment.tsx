@@ -31,11 +31,11 @@ export function MorphMoment() {
         .fromTo('[data-layer="2"]', { x: 0, y: 0 }, { x: 28, y: 28, ease: 'power2.out', duration: 1 }, 0.2)
         .fromTo('[data-caption]', { opacity: 0, y: 30 }, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.5 }, 0.5)
 
-      // Sortie sobre : la légende s'efface, le relief se replie sous le chiffre, qui remonte légèrement et disparaît.
+      // Sortie sobre : le relief se replie sous le chiffre, qui remonte légèrement et disparaît ; la légende reste lisible jusqu'à ce moment-là et s'efface avec lui.
       const exit = gsap.timeline({ scrollTrigger: { trigger: root.current, start: 'bottom 165%', end: 'bottom 100%', scrub: 0.4 } })
       exit
         // fromTo + immediateRender:false : sinon la sortie mémorise l'opacité 0 posée par l'entrée et la légende ne s'efface jamais.
-        .fromTo('[data-caption]', { opacity: 1, y: 0 }, { opacity: 0, y: -20, ease: 'power1.in', duration: 0.3, immediateRender: false }, 0)
+        .fromTo('[data-caption]', { opacity: 1, y: 0 }, { opacity: 0, y: -20, ease: 'power1.in', duration: 0.4, immediateRender: false }, 0.6)
         .to('[data-layer]', { x: 0, y: 0, ease: 'power2.inOut', duration: 0.6 }, 0.1)
         .to('[data-big]', { yPercent: -12, scale: 0.94, rotation: 0, ease: 'power2.in', duration: 0.8 }, 0.2)
         .to('[data-big]', { opacity: 0, ease: 'power1.in', duration: 0.4 }, 0.6)

@@ -9,7 +9,7 @@ const base = url.replace(/\/$/, '')
 const path = (p) => new URL(p.url()).pathname
 for (const mobile of [false, true]) {
   const tag = mobile ? 'm' : 'd'
-  const ctx = await b.newContext({ viewport: viewport(mobile), isMobile: mobile, hasTouch: mobile })
+  const ctx = await b.newContext({ viewport: viewport(mobile), isMobile: mobile, hasTouch: mobile, fresh: true })
   const p = await ctx.newPage()
   const errors = []
   p.on('pageerror', (e) => errors.push(e.message))
