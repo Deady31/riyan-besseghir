@@ -1,12 +1,34 @@
 // Après `vite build` : une page HTML par projet (titre, description, Open Graph, texte lisible sans JavaScript),
 // plus sitemap.xml et robots.txt. Les données viennent des mêmes fichiers que le site (Node lit le TypeScript directement).
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs'
 import { PROJECTS } from '../src/data/projects.ts'
 import { STORIES } from '../src/data/stories.ts'
 
 const SITE = 'https://riyan-besseghir.vercel.app'
 const dist = new URL('../dist/', import.meta.url)
-const template = readFileSync(new URL('index.html', dist), 'utf8')
+const assets = readdirSync(new URL('assets/', dist))
+
+// Les deux polices du texte sont demandées dès le HTML (sinon le navigateur ne les découvre qu'après le CSS, puis le premier rendu attend).
+const fontLinks = ['rubik-latin-wght-normal', 'space-grotesk-latin-wght-normal']
+  .map((n) => assets.find((f) => f.startsWith(n) && f.endsWith('.woff2')))
+  .filter(Boolean)
+  .map((f) => `<link rel="preload" as="font" type="font/woff2" href="/assets/${f}" crossorigin />`)
+  .join('\n    ')
+// Fichiers de la page recruteur (chargée à la demande) : demandés en parallèle du script principal par le script d'index.html.
+const recruiterChunk = assets.find((f) => /^Recruiter-.*\.js$/.test(f))
+const recruiterFiles = recruiterChunk
+  ? [
+      recruiterChunk,
+      ...new Set(
+        [...readFileSync(new URL(`assets/${recruiterChunk}`, dist), 'utf8').matchAll(/from"\.\/([^"]+\.js)"/g)]
+          .map((m) => m[1])
+          .filter((f) => !/^(index|jsx-runtime)-/.test(f)),
+      ),
+    ].map((f) => `/assets/${f}`)
+  : []
+const baseHtml = readFileSync(new URL('index.html', dist), 'utf8').replace('var RC = []', `var RC = ${JSON.stringify(recruiterFiles)}`)
+const template = fontLinks ? baseHtml.replace('</head>', `    ${fontLinks}\n  </head>`) : baseHtml
+writeFileSync(new URL('index.html', dist), template)
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
 for (const p of PROJECTS) {
@@ -23,7 +45,7 @@ for (const p of PROJECTS) {
     story?.decisions?.length ? `<h2>Ce que j’ai décidé</h2><ul>${story.decisions.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>` : '',
     `<p><a href="/">Riyan Besseghir, AI Product Manager</a></p>`,
   ].join('')
-  let html = template
+  const html = template
     .replace(/<title>.*?<\/title>/s, `<title>${esc(title)}</title>`)
     .replace(/<meta name="description"[^>]*>/, `<meta name="description" content="${esc(desc)}" />`)
     .replace(/<meta property="og:title"[^>]*>/, `<meta property="og:title" content="${esc(title)}" />`)

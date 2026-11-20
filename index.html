@@ -26,7 +26,24 @@
   <body>
     <div id="root"></div>
     <!-- Le portrait est le plus gros élément du premier écran : on le demande avant que le JS ne s'exécute. -->
-    <link rel="preload" as="image" href="/media/portrait/naturel.webp" type="image/webp" fetchpriority="high" />
+    <!-- Préchargement selon la page et le mode mémorisé : le portrait (130 Ko) seulement pour l'accueil complet, le code de la version recruteur seulement pour elle.
+         `RC` est rempli au build (scripts/postbuild.mjs) avec les fichiers de la page recruteur. -->
+    <script>
+      try {
+        var RC = []
+        var mode = localStorage.getItem('riyan-mode')
+        var path = location.pathname
+        var add = function (rel, href, extra) {
+          var l = document.createElement('link')
+          l.rel = rel
+          l.href = href
+          for (var k in extra) l[k] = extra[k]
+          document.head.appendChild(l)
+        }
+        if (path === '/' && mode === 'full') add('preload', '/media/portrait/naturel.webp', { as: 'image', type: 'image/webp', fetchPriority: 'high' })
+        if (path.indexOf('/recruteur') === 0 || (path === '/' && mode === 'recruiter')) RC.forEach(function (h) { add('modulepreload', h, {}) })
+      } catch (e) {}
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

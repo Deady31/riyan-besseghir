@@ -13,6 +13,7 @@ export async function loadPlaywright() {
     () => import('playwright'),
     () => (process.env.PLAYWRIGHT_PATH ? import(pathToFileURL(process.env.PLAYWRIGHT_PATH).href) : Promise.reject(new Error('pas de PLAYWRIGHT_PATH'))),
     () => import('file:///C:/Users/RIYAN/Desktop/QG%20IA%20JOB/Projet%20ANTIGRAVITY/Projet%20TEST%20FOODER/node_modules/playwright/index.mjs'),
+    () => import('file:///C:/Users/RIYAN/Desktop/QG%20IA%20JOB/career-ops/node_modules/playwright/index.mjs'),
   ]
   for (const t of tries) {
     try {
