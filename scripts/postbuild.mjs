@@ -8,12 +8,6 @@ const SITE = 'https://riyan-besseghir.vercel.app'
 const dist = new URL('../dist/', import.meta.url)
 const assets = readdirSync(new URL('assets/', dist))
 
-// Les deux polices du texte sont demandées dès le HTML (sinon le navigateur ne les découvre qu'après le CSS, puis le premier rendu attend).
-const fontLinks = ['rubik-latin-wght-normal', 'space-grotesk-latin-wght-normal']
-  .map((n) => assets.find((f) => f.startsWith(n) && f.endsWith('.woff2')))
-  .filter(Boolean)
-  .map((f) => `<link rel="preload" as="font" type="font/woff2" href="/assets/${f}" crossorigin />`)
-  .join('\n    ')
 // Fichiers de la page recruteur (chargée à la demande) : demandés en parallèle du script principal par le script d'index.html.
 const recruiterChunk = assets.find((f) => /^Recruiter-.*\.js$/.test(f))
 const recruiterFiles = recruiterChunk
@@ -27,7 +21,7 @@ const recruiterFiles = recruiterChunk
     ].map((f) => `/assets/${f}`)
   : []
 const baseHtml = readFileSync(new URL('index.html', dist), 'utf8').replace('var RC = []', `var RC = ${JSON.stringify(recruiterFiles)}`)
-const template = fontLinks ? baseHtml.replace('</head>', `    ${fontLinks}\n  </head>`) : baseHtml
+const template = baseHtml
 writeFileSync(new URL('index.html', dist), template)
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
